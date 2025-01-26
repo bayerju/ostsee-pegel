@@ -1,0 +1,18 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Scraper",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/src/scripts/scrape.mts",
+      "runtimeArgs": [
+        "--loader",
+        "ts-node/esm"
+      ],
+      "outFiles": ["${workspaceFolder}/**/*.js"],
+      "console": "integratedTerminal"
+    }
+  ]
+} 

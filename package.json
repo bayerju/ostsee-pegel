@@ -19,7 +19,7 @@
     "preview": "next build && next start",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "scrape": "node --loader ts-node/esm src/scripts/scrape.mts"
+    "scrape": "tsx src/scripts/scrape.mts"
   },
   "dependencies": {
     "@prisma/client": "^5.14.0",

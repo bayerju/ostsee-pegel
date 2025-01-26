@@ -6,15 +6,12 @@ const BSH_URL = 'https://www.bsh.de/DE/DATEN/Vorhersagen/Wasserstand_Ostsee/wass
 // GET handler for the API route
 export async function GET() {
   console.log('Starting browser...');
-  const browser = await puppeteer.launch({ headless: "new" });
+  const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
 
   try {
     console.log('Navigating to BSH website...');
     await page.goto(BSH_URL, { waitUntil: 'networkidle0' });
-
-    // Wait for the table to load
-    await page.waitForSelector('table');
 
     // Get the HTML content
     const html = await page.content();
