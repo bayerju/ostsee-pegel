@@ -1,1 +1,49 @@
-[]
+{
+  "lastUpdated": "26.01.2025, 13:36 Uhr",
+  "data": [
+    [
+      "Kieler Bucht\n\nDie erwarteten Abweichungen vom mittleren Wasserstand im Bereich Kieler Bucht sind: Bis Sonntag Abend zwischen +5cm und +60cm, Sonntag in der Nacht zwischen +0cm und +35cm und Montag im Tagesverlauf zwischen -5cm und +35cm.",
+      "Lübecker Bucht\n\nDie erwarteten Abweichungen vom mittleren Wasserstand im Bereich Lübecker Bucht sind: Bis Sonntag Abend zwischen +15cm und +45cm, Sonntag in der Nacht zwischen +10cm und +35cm und Montag im Tagesverlauf zwischen +10cm und +35cm.",
+      "westlich Rügens\n\nDie erwarteten Abweichungen vom mittleren Wasserstand im Bereich westlich Rügens sind: Bis Sonntag Abend zwischen +20cm und +45cm, Sonntag in der Nacht zwischen +10cm und +35cm und Montag im Tagesverlauf zwischen +10cm und +35cm.",
+      "östlich Rügens\n\nDie erwarteten Abweichungen vom mittleren Wasserstand im Bereich östlich Rügens sind: Bis Sonntag Abend zwischen +20cm und +40cm, Sonntag in der Nacht zwischen +15cm und +45cm und Montag im Tagesverlauf zwischen +10cm und +30cm.",
+      "Kleines Haff\n\nDie erwarteten Abweichungen vom mittleren Wasserstand im Bereich Kleines Haff sind: Bis Sonntag Abend zwischen +20cm und +35cm, Sonntag in der Nacht zwischen +20cm und +45cm und Montag im Tagesverlauf zwischen +20cm und +40cm."
+    ],
+    [
+      "Bis Sonntag Abend"
+    ],
+    [
+      "+60+5⇒",
+      "+45+15⇒",
+      "+45+20⇒",
+      "+40+20⇒",
+      "+35+20⇒"
+    ],
+    [
+      "Sonntag in der Nacht"
+    ],
+    [
+      "+35+0⇒",
+      "+35+10⇒",
+      "+35+10⇒",
+      "+45+15⇒",
+      "+45+20⇒"
+    ],
+    [
+      "Montag im Tagesverlauf"
+    ],
+    [
+      "+35-5⇒",
+      "+35+10⇓",
+      "+35+10⇓",
+      "+30+10⇒",
+      "+40+20⇒"
+    ],
+    [
+      "Grafik→",
+      "Grafik→",
+      "Grafik→",
+      "Grafik→",
+      "Grafik→"
+    ]
+  ]
+}
