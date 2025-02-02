@@ -56,7 +56,7 @@ export async function scrapeWebsite(): Promise<ScrapedData> {
         const rowData: string[] = [];
 
         for (const cell of cells) {
-            const textContent = await cell.evaluate(el => el.textContent?.trim() || '');
+            const textContent = await cell.evaluate(el => el.textContent?.trim() ?? '');
             rowData.push(textContent);
         }
 
@@ -69,7 +69,7 @@ export async function scrapeWebsite(): Promise<ScrapedData> {
 
     const lastUpdated = await page.evaluate(() => {
       const caption = document.querySelector('table caption small')?.textContent;
-      return caption?.replace('Vorhersage erstellt am', '').trim() || '';
+      return caption?.replace('Vorhersage erstellt am', '').trim() ?? '';
     });
 
     return { lastUpdated, data: tableData };
@@ -79,4 +79,4 @@ export async function scrapeWebsite(): Promise<ScrapedData> {
 }
 
 // Run the script
-scrapeWebsite();
+// scrapeWebsite();

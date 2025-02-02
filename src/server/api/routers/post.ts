@@ -18,7 +18,7 @@ function getNumbers(aString: string | undefined) {
   if (!aString) {
     throw new Error("No string found");
   }
-  const matches = aString.match(/([+-]\d+)([+-]\d+)/);
+  const matches = /([+-]\d+)([+-]\d+)/.exec(aString);
   const firstNumber = matches?.[1] ? parseInt(matches[1]) : null;  // e.g., +35
   const secondNumber = matches?.[2] ? parseInt(matches[2]) : null; // e.g., -5 or +10
 
@@ -56,7 +56,7 @@ function parseData(aWaterLevels: typeof waterLevels): ParsedData {
     }
 
             // Extract numeric values from strings like "+35-5⇒" or "+35+10⇓"
-  const matches = aWaterLevels.data[2][index].match(/([+-]\d+)([+-]\d+)/);
+  const matches = /([+-]\d+)([+-]\d+)/.exec(aWaterLevels.data[2][index]);
   const firstNumber = matches?.[1] ? parseInt(matches[1]) : null;  // e.g., +35
   const secondNumber = matches?.[2] ? parseInt(matches[2]) : null; // e.g., -5 or +10
   
