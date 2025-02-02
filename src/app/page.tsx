@@ -2,7 +2,7 @@ import Link from "next/link";
 
 // import { LatestPost } from "~/app/_components/post";
 import { api, HydrateClient } from "~/trpc/server";
-import { ScrapeButton } from "~/components/ScrapeButton";
+// import { ScrapeButton } from "~/components/ScrapeButton";
 
 export default async function Home() {
   const hello = await api.post.hello({ text: "from tRPC" });
@@ -48,7 +48,7 @@ export default async function Home() {
 
           {/* <LatestPost /> */}
 
-          <ScrapeButton />
+          {/* <ScrapeButton /> */}
         </div>
       </main>
     </HydrateClient>
