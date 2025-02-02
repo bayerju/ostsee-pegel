@@ -15,10 +15,10 @@ export function ScrapeButton() {
   return (
     <button
       onClick={() => scrape.mutate()}
-      disabled={scrape.isLoading}
+      // disabled={scrape.isLoading}
       className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700 disabled:bg-gray-400"
     >
-      {scrape.isLoading ? "Scraping..." : "Scrape Data"}
+      {/* {scrape.isLoading ? "Scraping..." : "Scrape Data"} */}
     </button>
   );
 }
