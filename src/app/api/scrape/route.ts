@@ -131,55 +131,54 @@ function parseData(aWaterLevels: typeof waterLevels): ParsedData {
       continue;
     }
 
-            // Extract numeric values from strings like "+35-5⇒" or "+35+10⇓"
-  const matches = /([+-]\d+)([+-]\d+)/.exec(aWaterLevels.data[2][index]);
-  const firstNumber = matches?.[1] ? parseInt(matches[1]) : null;  // e.g., +35
-  const secondNumber = matches?.[2] ? parseInt(matches[2]) : null; // e.g., -5 or +10
-  
-  if (!aWaterLevels.data[1]?.[0]) {
-    throw new Error("No time found");
-  }
+    // Use getNumbers function to extract numbers
+    const { min: secondNumber, max: firstNumber } = getNumbers(aWaterLevels.data[2][index]);
 
-  if (!firstNumber || !secondNumber) {
-    throw new Error("No numbers found");
-  }
-  result.data.push({
-    location: locationString,
-    time: aWaterLevels.data[1][0],
-    min: secondNumber,
-    max: firstNumber,
-  });
+    if (!aWaterLevels.data[1]?.[0]) {
+      throw new Error("No time found");
+    }
 
-  const numbersString = aWaterLevels.data[4]?.[index];
-  if (isNil(numbersString)) {
-    throw new Error("No numbers found");
-  }
+    if (isNil(firstNumber) || isNil(secondNumber)) {
+      throw new Error("No numbers found in the first row");
+    }
 
-  let {min, max} = getNumbers(numbersString);
+    result.data.push({
+      location: locationString,
+      time: aWaterLevels.data[1][0],
+      min: secondNumber,
+      max: firstNumber,
+    });
 
-  if (!aWaterLevels.data[3]?.[0]) {
-    throw new Error("No time found");
-  }
+    const numbersString = aWaterLevels.data[4]?.[index];
+    if (isNil(numbersString)) {
+      throw new Error("The string that should be for numbers is undefined or null");
+    }
 
-  result.data.push({
-    location: locationString,
-    time: aWaterLevels.data[3][0],
-    min: min,
-    max: max,
-  });
+    let {min, max} = getNumbers(numbersString);
 
-  ({min, max} = getNumbers(aWaterLevels.data[6]?.[index]));
+    if (!aWaterLevels.data[3]?.[0]) {
+      throw new Error("No time found");
+    }
 
-  if (!aWaterLevels.data[5]?.[0]) {
-    throw new Error("No time found");
-  }
+    result.data.push({
+      location: locationString,
+      time: aWaterLevels.data[3][0],
+      min: min,
+      max: max,
+    });
 
-  result.data.push({
-    location: locationString,
-    time: aWaterLevels.data[5][0],
-    min: min,
-    max: max,
-  });
+    ({min, max} = getNumbers(aWaterLevels.data[6]?.[index]));
+
+    if (!aWaterLevels.data[5]?.[0]) {
+      throw new Error("No time found");
+    }
+
+    result.data.push({
+      location: locationString,
+      time: aWaterLevels.data[5][0],
+      min: min,
+      max: max,
+    });
   }
   return result;
 }
