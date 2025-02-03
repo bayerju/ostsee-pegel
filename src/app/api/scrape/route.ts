@@ -100,7 +100,7 @@ function getNumbers(aString: string | undefined) {
 
   if (isNil(firstNumber) || isNil(secondNumber)) {
     debugger;
-    throw new Error("No numbers found");
+    throw new Error(`No numbers found in string: "${aString}"`);
   }
 
   return {max: firstNumber, min: secondNumber};
@@ -150,7 +150,12 @@ function parseData(aWaterLevels: typeof waterLevels): ParsedData {
     max: firstNumber,
   });
 
-  let {min, max} = getNumbers(aWaterLevels.data[4]?.[index]);
+  const numbersString = aWaterLevels.data[4]?.[index];
+  if (isNil(numbersString)) {
+    throw new Error("No numbers found");
+  }
+
+  let {min, max} = getNumbers(numbersString);
 
   if (!aWaterLevels.data[3]?.[0]) {
     throw new Error("No time found");
