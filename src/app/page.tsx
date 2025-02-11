@@ -24,7 +24,7 @@ export default async function Home() {
           <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
             <div className="rounded-lg bg-white/10 p-6 backdrop-blur-lg">
               <h3 className="mb-3 text-xl font-semibold">
-                Echtzeitüberwachung
+               Vorhersagedaten des BSH
               </h3>
               <p>
                 Kontinuierliche Überwachung der Wasserstände an der gesamten
@@ -34,11 +34,10 @@ export default async function Home() {
 
             <div className="rounded-lg bg-white/10 p-6 backdrop-blur-lg">
               <h3 className="mb-3 text-xl font-semibold">
-                Telegram-Benachrichtigungen
+                Benachrichtigungen die Sie auch bekommen
               </h3>
               <p>
-                Sofortige Benachrichtigungen über Telegram, wenn Ihre
-                festgelegten Grenzwerte erreicht werden
+                Sofortige Benachrichtigungen über Telegram, Email, Whatsapp oder SMS
               </p>
             </div>
 
@@ -68,11 +67,11 @@ export default async function Home() {
           <div className="mt-16">
             <Link href="/signup">
               <button className="rounded-full bg-blue-500 px-8 py-3 text-lg font-semibold transition-colors hover:bg-blue-600">
-                Jetzt mit Telegram verbinden
+                Jetzt vor Hochwasser warnen lassen
               </button>
             </Link>
             <p className="mt-4 text-sm text-gray-300">
-              Kostenlos und ohne Installation - Sie benötigen nur Telegram
+              Zahle was es dir Wert ist - ab 0€ möglich
             </p>
           </div>
         </div>

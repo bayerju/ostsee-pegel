@@ -8,7 +8,7 @@ interface WaterLevelSliderProps {
   defaultValue: string;
   min: string;
   max: string;
-  standardText: string;
+  standardText?: string;
   showPlus?: boolean;
 }
 

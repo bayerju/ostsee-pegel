@@ -1,4 +1,4 @@
-import { login, signup } from "../auth/actions";
+import { login } from "../auth/actions";
 import Link from "next/link";
 
 export default function LoginPage() {
@@ -48,7 +48,7 @@ export default function LoginPage() {
           </div>
 
           <button
-            formAction={signup}
+            formAction={login}
             type="submit"
             className="w-full rounded-full bg-blue-500 px-8 py-3 text-lg font-semibold transition-colors hover:bg-blue-600"
           >
@@ -58,10 +58,7 @@ export default function LoginPage() {
 
         <div className="mt-6 text-center">
           Noch kein Konto?{" "}
-          <Link
-            href="/auth/signup"
-            className="text-blue-400 hover:text-blue-300"
-          >
+          <Link href="/signup" className="text-blue-400 hover:text-blue-300">
             Jetzt registrieren
           </Link>
         </div>

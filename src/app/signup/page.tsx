@@ -60,7 +60,7 @@ export default function SignupPage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          {/* <div className="grid grid-cols-2 gap-3">
             <button
               type="button"
               className="flex w-full items-center justify-center gap-3 rounded-lg border border-white/20 bg-white/5 px-3 py-2 hover:bg-white/10"
@@ -75,7 +75,7 @@ export default function SignupPage() {
               <img src="/apple.svg" alt="Apple" className="h-5 w-5" />
               Apple
             </button>
-          </div>
+          </div> */}
         </form>
 
         <div className="mt-6 text-center">

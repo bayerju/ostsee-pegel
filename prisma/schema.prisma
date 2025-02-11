@@ -321,6 +321,7 @@ model users {
   one_time_tokens             one_time_tokens[]
   sessions                    sessions[]
   profiles                    profiles[]
+  warnings                    warnings[]
 
   @@index([instance_id])
   @@index([is_anonymous])
@@ -349,6 +350,20 @@ model profiles {
 //   water_levels water_levels[]
 
   @@index([user_id], map: "idx_profiles_user_id")
+  @@schema("public")
+}
+
+model warnings {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id String @db.Uuid
+  user users @relation(fields: [user_id], references: [id])
+  regions String[]
+  highWaterThreshold Int
+  lowWaterThreshold Int
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime?      @default(now()) @db.Timestamptz(6)
+
+  @@index([user_id], map: "idx_warnings_user_id")
   @@schema("public")
 }
 
