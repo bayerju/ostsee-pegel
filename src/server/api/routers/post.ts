@@ -1,8 +1,5 @@
 import { z } from "zod";
-import waterLevels from "~/scripts/water_levels.json";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { scrapeWebsite } from "~/scripts/scrape";
-import { isNil } from "lodash";
 
 
 
