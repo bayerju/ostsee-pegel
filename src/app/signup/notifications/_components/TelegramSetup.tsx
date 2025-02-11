@@ -1,3 +1,5 @@
+import { Button } from "~/components/ui/button";
+
 interface TelegramSetupProps {
   onBack: () => void;
 }
@@ -28,16 +30,17 @@ export function TelegramSetup({ onBack }: TelegramSetupProps) {
             Ohne das @ Symbol eingeben
           </p>
         </div>
-      </div>
 
-      <div className="rounded-lg bg-white/10 p-6">
-        <h2 className="mb-4 text-xl font-semibold">Nächste Schritte:</h2>
-        <ol className="list-inside list-decimal space-y-2">
-          <li>Öffnen Sie Telegram</li>
-          <li>Suchen Sie nach unserem Bot: @OstseeWasserBot</li>
-          <li>Starten Sie den Bot mit dem /start Befehl</li>
-          <li>Sie erhalten eine Bestätigungsnachricht</li>
-        </ol>
+        <div className=" p-6">
+            <h2 className="mb-4 text-xl font-semibold">Nächste Schritte:</h2>
+            <ol className="list-inside list-decimal space-y-2">
+            <li>Öffnen Sie Telegram</li>
+            <li>Suchen Sie nach unserem Bot: @OstseeWasserBot</li>
+            <li>Starten Sie den Bot mit dem /start Befehl</li>
+            <li>Sie erhalten eine Bestätigungsnachricht</li>
+          </ol>
+        </div>
+        <Button>Ersteinrichtung abschließen</Button>
       </div>
     </>
   );

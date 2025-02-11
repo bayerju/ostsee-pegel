@@ -23,7 +23,7 @@ export default function NotificationsSetupPage() {
           Benachrichtigungsmethode auswählen
         </h1>
 
-        {!selectedMethod ? (
+        {/* {!selectedMethod ? ( */}
           <div className="space-y-4">
             <NotificationOption
               title="E-Mail"
@@ -59,7 +59,7 @@ export default function NotificationsSetupPage() {
               disabled
             />
           </div>
-        ) : (
+        {/* ) : (
           <form className="space-y-6">
             {selectedMethod === "email" && (
               <EmailSetup onBack={() => setSelectedMethod(null)} />
@@ -76,7 +76,7 @@ export default function NotificationsSetupPage() {
               Einrichtung abschließen
             </button>
           </form>
-        )}
+        )} */}
       </div>
     </main>
   );

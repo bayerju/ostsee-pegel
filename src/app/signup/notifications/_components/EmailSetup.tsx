@@ -12,7 +12,7 @@ export function EmailSetup({ onBack }: EmailSetupProps) {
           onClick={onBack}
           className="text-sm text-blue-300 hover:text-blue-400"
         >
-          Andere Methode wählen
+          X
         </button>
       </div>
       <label className="flex items-center space-x-2">
@@ -24,6 +24,15 @@ export function EmailSetup({ onBack }: EmailSetupProps) {
         />
         <span>E-Mail Benachrichtigungen aktivieren</span>
       </label>
+      <div className="flex justify-end">
+        <button
+          type="button"
+          onClick={onBack}
+          className="rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-600"
+        >
+          Emails aktivieren
+        </button>
+      </div>
     </div>
   );
 }
