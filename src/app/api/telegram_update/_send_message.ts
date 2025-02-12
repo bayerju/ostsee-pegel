@@ -1,4 +1,4 @@
-import { sendResponseSchema } from "./schemas";
+import { sendResponseSchema } from "./zod_schemas";
 
 export async function sendMessage(chatId: number, text: string) {
   const response = await fetch(

@@ -371,7 +371,7 @@ model warnings {
 
 model otps {
   id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  code String
+  code String @unique
   userId String @db.Uuid
   user users @relation(fields: [userId], references: [id])
   expiresAt DateTime @db.Timestamptz(6)

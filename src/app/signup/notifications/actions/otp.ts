@@ -24,29 +24,51 @@ export async function createNotificationOTP() {
     throw new Error("User not found");
   }
 
-  // Generate a 6-digit OTP
-  const otpValue = generateOTP(6);
-
-  // Store in database with 10-minute expiration
-  const otp = await db.otps.create({
-    data: {
-      code: otpValue,
-      userId: user.id,
-      expiresAt: new Date(Date.now() + 10 * 60 * 1000), // 10 minutes
+  await db.otps.deleteMany({
+    where: {
+      expiresAt: {
+        lte: new Date(),
+      },
     },
   });
 
+  let otpValue = generateOTP(6);
+  let otp = null;
+  const maxAttempts = 5;
+
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    if (attempt > 0) {
+      otpValue = generateOTP(6);
+    }
+    try {
+      // Store in database with 10-minute expiration
+      otp = await db.otps.create({
+        data: {
+          code: otpValue,
+          userId: user.id,
+          expiresAt: new Date(Date.now() + 10 * 60 * 1000), // 10 minutes
+        },
+      });
+      break; // Successfully created OTP, exit loop
+    } catch (error) {
+      if (attempt === maxAttempts - 1) {
+        throw new Error("Failed to generate unique OTP after multiple attempts");
+      }
+      // If it's a unique constraint error, continue to next attempt
+      // Otherwise, throw the error
+      if (!(error instanceof Error && error.message.includes("Unique constraint"))) {
+        throw error;
+      }
+    }
+  }
+
   if (otp) {
-    await db.otps.updateMany({
+    await db.otps.deleteMany({
       where: {
         userId: user.id,
-        isActive: true,
         id: {
           not: otp.id,
         },
-      },
-      data: {
-        isActive: false,
       },
     });
     return otpValue;

@@ -2,7 +2,7 @@ import { type NextRequest } from "next/server";
 import { db } from "~/server/db";
 import { sendMessage } from "./_send_message";
 import { isNil } from "lodash";
-import { telegramUpdateSchema } from "./schemas";
+import { telegramUpdateSchema } from "./zod_schemas";
 
 export async function POST(request: NextRequest) {
   try {
