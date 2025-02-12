@@ -1,16 +1,4 @@
-import { z } from "zod";
-import { messageSchema } from "./route";
-
-const sendResponseSchema = z
-  .object({
-    ok: z.boolean(),
-    result: z
-      .object({
-        message: messageSchema,
-      })
-      .passthrough(),
-  })
-  .passthrough();
+import { sendResponseSchema } from "./schemas";
 
 export async function sendMessage(chatId: number, text: string) {
   const response = await fetch(
