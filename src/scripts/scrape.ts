@@ -3,7 +3,7 @@ import fs from "fs";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 
-const BSH_URL = "https://www2.bsh.de/aktdat/wvd/ostsee/Ostsee.html";
+export const BSH_URL = "https://www2.bsh.de/aktdat/wvd/ostsee/Ostsee.html";
 
 interface WaterLevelRange {
   min: number;

@@ -9,3 +9,13 @@ export interface ScrapedData {
   lastUpdated: string;
   stations: WaterLevelData[];
 }
+
+export interface ParsedData {
+  lastUpdated: string;
+  data: {
+    location: string;
+    min: number;
+    max: number;
+    time: string;
+  }[];
+}

@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
       const sixDigitCode = /\b\d{6}\b/.exec(message.text)?.[0];
       if (message.text.startsWith("/start ")) {
         const response = await sendMessage(
-          message.chat.id,
+          message.chat.id.toString(),
           `Hallo ${message.from.first_name} ${message.from.last_name}! Bitte gebe den folgenden 6 stelligen Code ein um die Benachrichtigungen zu aktivieren:\n\n`,
         );
         console.log(response);
@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
         });
         if (!otp) {
           await sendMessage(
-            message.chat.id,
+            message.chat.id.toString(),
             `Der Code ist ungültig oder abgelaufen. Bitte erstelle dir auf der webseite einen neuen Code um die Benachrichtigungen zu aktivieren.\n\n${process.env.NEXT_PUBLIC_WEB_URL}`,
           );
           continue;
@@ -84,7 +84,7 @@ export async function POST(request: NextRequest) {
         });
 
         await sendMessage(
-          message.from.id,
+          message.from.id.toString(),
           "Die Benachrichtigungen wurden erfolgreich aktiviert. Du erhältst nun eine Benachrichtigung wenn der Wasserstand sich unter oder über deine gesetzten Schwellwerte verändert.",
         );
         continue;
@@ -96,13 +96,13 @@ export async function POST(request: NextRequest) {
       });
       if (telegramService) {
         await sendMessage(
-          message.chat.id,
+          message.chat.id.toString(),
           "Es sieht so aus als wäre dein account bereits erfolgreich verknüpft. Wenn du uns Kontaktieren wills, mache das doch am besten per Email an: wasserstands-warnung@protonmail.com\n\n",
         );
         continue;
       }
       await sendMessage(
-        message.chat.id,
+        message.chat.id.toString(),
         "Bitte gebe den Code ein um die Benachrichtigungen zu aktivieren. Solltest du nicht wissen welchen Code ich meine, schaue doch einfach auf unserer Webseite nach.\n\n",
       );
 
