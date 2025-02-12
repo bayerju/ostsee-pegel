@@ -1,6 +1,4 @@
-import { setFirstWarning } from "~/app/warnings/actions";
-import { WaterLevelSlider } from "./_components/WaterLevelSlider";
-import { createClient } from "~/utils/supabase/server";
+import { createClient } from "~/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { db } from "~/server/db";
 import { WarningForm } from "./_components/WarningForm";
