@@ -8,4 +8,4 @@ export interface WaterLevelData {
 export interface ScrapedData {
   lastUpdated: string;
   stations: WaterLevelData[];
-} 
+}

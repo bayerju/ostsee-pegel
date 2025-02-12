@@ -1,7 +1,7 @@
 "use server";
 
-import { createClient } from "~/lib/supabase/server"
-import { redirect } from "next/navigation"
+import { createClient } from "~/lib/supabase/server";
+import { redirect } from "next/navigation";
 import { z } from "zod";
 import { db } from "~/server/db";
 
@@ -16,57 +16,68 @@ export async function setNotifications(formData: FormData): Promise<void> {
   redirect("/dashboard");
 }
 
-
 const phoneNumberRegex = /^\+[1-9]\d{1,14}$/;
-const phoneNumberSchema = z.string().regex(phoneNumberRegex, "Ungültige Telefonnummer");
+const phoneNumberSchema = z
+  .string()
+  .regex(phoneNumberRegex, "Ungültige Telefonnummer");
 
 export async function setTelegram(formData: FormData): Promise<void> {
-    const supabase = await createClient();
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-    if (authError || !user) {
-      redirect("/login");
-    }
+  const supabase = await createClient();
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser();
+  if (authError || !user) {
+    redirect("/login");
+  }
 
   const telegramUsernameOrNumber = formData.get("telegramUsernameOrNumber");
 
-  const { data: validatedString, success: validatedStringSuccess, error: validatedStringError } = z.string().safeParse(telegramUsernameOrNumber);
+  const {
+    data: validatedString,
+    success: validatedStringSuccess,
+    error: validatedStringError,
+  } = z.string().safeParse(telegramUsernameOrNumber);
   if (!validatedStringSuccess) {
     throw new Error(validatedStringError.errors[0]?.message);
   }
 
-  const { data: validatedPhoneNumber, success: validatedPhoneNumberSuccess, error: validatedPhoneNumberError } = phoneNumberSchema.safeParse(telegramUsernameOrNumber);
+  const {
+    data: validatedPhoneNumber,
+    success: validatedPhoneNumberSuccess,
+    error: validatedPhoneNumberError,
+  } = phoneNumberSchema.safeParse(telegramUsernameOrNumber);
   if (validatedPhoneNumberSuccess) {
     console.log("Telefonnummer");
     const updatedUser = await db.users.update({
-        where: {
-            id: user.id,
-        },
-        data: {
-            phone: validatedPhoneNumber,
-        },
+      where: {
+        id: user.id,
+      },
+      data: {
+        phone: validatedPhoneNumber,
+      },
     });
     return;
   }
 
   if (validatedString.startsWith("@")) {
-    const updatedUser = await db.users.update({
+    const updatedUser = await db.users
+      .update({
         where: {
-            id: user.id,
+          id: user.id,
         },
         data: {
-            telegram_username: validatedString,
+          telegram_username: validatedString,
         },
-    }).catch((error) => {
+      })
+      .catch((error) => {
         console.error(error);
-        throw new Error("Fehler beim Aktualisieren des Telegram-Benutzernamens");
-    });
+        throw new Error(
+          "Fehler beim Aktualisieren des Telegram-Benutzernamens",
+        );
+      });
     return;
   }
-
-
-
-
-
 
   console.log({ telegramUsernameOrNumber });
 }

@@ -8,7 +8,13 @@ import { setTelegram } from "~/app/notifications/actions";
 
 type NotificationMethod = "email" | "telegram" | "whatsapp" | "sms" | null;
 
-export function ClientNotificationsSetupPage({ initialOtp, recreateOTP }: { initialOtp: string, recreateOTP: () => Promise<string> }) {
+export function ClientNotificationsSetupPage({
+  initialOtp,
+  recreateOTP,
+}: {
+  initialOtp: string;
+  recreateOTP: () => Promise<string>;
+}) {
   const [selectedMethod, setSelectedMethod] =
     useState<NotificationMethod>(null);
 

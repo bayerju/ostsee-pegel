@@ -24,7 +24,7 @@ export default async function Home() {
           <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
             <div className="rounded-lg bg-white/10 p-6 backdrop-blur-lg">
               <h3 className="mb-3 text-xl font-semibold">
-               Vorhersagedaten des BSH
+                Vorhersagedaten des BSH
               </h3>
               <p>
                 Kontinuierliche Überwachung der Wasserstände an der gesamten
@@ -37,7 +37,8 @@ export default async function Home() {
                 Benachrichtigungen die Sie auch bekommen
               </h3>
               <p>
-                Sofortige Benachrichtigungen über Telegram, Email, Whatsapp oder SMS
+                Sofortige Benachrichtigungen über Telegram, Email, Whatsapp oder
+                SMS
               </p>
             </div>
 

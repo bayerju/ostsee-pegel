@@ -19,7 +19,10 @@ const warningsSchema = z.object({
 
 export async function setFirstWarning(formData: FormData): Promise<void> {
   const supabase = await createClient();
-  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser();
   if (authError || !user) {
     redirect("/login");
   }
@@ -35,7 +38,8 @@ export async function setFirstWarning(formData: FormData): Promise<void> {
     throw new Error(validatedFields.error.errors[0]?.message);
   }
 
-  const { regions, highWaterThreshold, lowWaterThreshold } = validatedFields.data;
+  const { regions, highWaterThreshold, lowWaterThreshold } =
+    validatedFields.data;
 
   const existingWarning = await db.warnings.findFirst({
     where: {
@@ -44,19 +48,19 @@ export async function setFirstWarning(formData: FormData): Promise<void> {
   });
 
   if (existingWarning) {
-      await db.warnings.upsert({
-        where: {
-          id: existingWarning?.id ?? undefined,
-        },
-        update: {
-          regions,
-          highWaterThreshold,
-          lowWaterThreshold,
-        },
-        create: {
-          user_id: user.id,
-          regions,
-          highWaterThreshold,
+    await db.warnings.upsert({
+      where: {
+        id: existingWarning?.id ?? undefined,
+      },
+      update: {
+        regions,
+        highWaterThreshold,
+        lowWaterThreshold,
+      },
+      create: {
+        user_id: user.id,
+        regions,
+        highWaterThreshold,
         lowWaterThreshold,
       },
     });
