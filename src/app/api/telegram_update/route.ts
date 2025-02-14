@@ -35,6 +35,9 @@ export async function POST(request: NextRequest) {
       const updates = await db.telegram_messages.findMany({
         where: {
           updateId: update_id.toString(),
+          createdAt: {
+            gt: new Date(Date.now() - 1000 * 60 * 60 * 24),
+          },
         },
       });
 
