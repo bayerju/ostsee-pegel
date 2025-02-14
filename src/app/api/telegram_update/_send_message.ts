@@ -9,6 +9,7 @@ export async function sendMessage(chatId: string, text: string) {
     return new Response("Failed to send message", { status: 500 });
   }
   const data = (await response.json()) as unknown;
+  console.log({data})
   const parsedData = sendResponseSchema.parse(data);
   return parsedData;
 }

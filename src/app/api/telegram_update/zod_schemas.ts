@@ -43,10 +43,6 @@ export const telegramUpdateSchema = z
 export const sendResponseSchema = z
 .object({
   ok: z.boolean(),
-  result: z
-    .object({
-      message: messageSchema,
-    })
-    .passthrough(),
+  result: messageSchema,
 })
 .passthrough();

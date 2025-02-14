@@ -34,6 +34,7 @@ export async function POST(request: NextRequest) {
 
       await db.telegram_messages.create({
         data: {
+          updateId: update_id.toString(),
           messageId: message.message_id.toString(),
           telegramUserId: message.from.id.toString(),
           messageText: message.text,
