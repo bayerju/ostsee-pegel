@@ -32,6 +32,16 @@ export async function POST(request: NextRequest) {
     for (const update of result.data.result) {
       const { message, update_id } = update;
 
+      const updates = await db.telegram_messages.findMany({
+        where: {
+          updateId: update_id.toString(),
+        },
+      });
+
+      if (updates.length > 0) {
+        continue;
+      }
+
       await db.telegram_messages.create({
         data: {
           updateId: update_id.toString(),
