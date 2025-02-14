@@ -13,20 +13,41 @@ async function main() {
      create or replace function public.handle_new_user()
      returns trigger as $$
      begin
-         insert into public.profile (id, email, phone, email_confirmed, phone_confirmed)
-         values (
-           new.id,
-           new.email,
-           new.phone,
-           new.email_confirmed,
-           new.phone_confirmed
-         );
-         return new;
+         -- Immediately log the new user
+         raise notice 'New user created with ID: %, Email: %', new.id, new.email;
+
+         begin
+             -- Simple insert with minimal required fields
+             insert into public.profiles (
+                 id,
+                 email,
+                 email_confirmed
+             )
+             values (
+                 new.id,
+                 new.email,
+                 false
+             );
+             
+             raise notice 'Profile created successfully for user: %', new.id;
+             return new;
+             
+         exception when others then
+             -- Detailed error logging
+             raise notice 'Profile creation failed for user %. Error: %',
+                 new.id, SQLERRM;
+             return new;
+         end;
      end;
      $$ language plpgsql security definer;
      `;
+
   await sql`
-     create or replace trigger on_auth_user_created
+     drop trigger if exists on_auth_user_created on auth.users;
+  `;
+
+  await sql`
+     create trigger on_auth_user_created
          after insert on auth.users
          for each row execute procedure public.handle_new_user();
    `;
@@ -43,7 +64,7 @@ async function main() {
 
   await sql`
      create or replace trigger on_profile_user_deleted
-       after delete on public.profile
+       after delete on public.profiles
        for each row execute procedure public.handle_user_delete()
    `;
 

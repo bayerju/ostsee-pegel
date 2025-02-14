@@ -49,9 +49,9 @@ export async function setTelegram(formData: FormData): Promise<void> {
   } = phoneNumberSchema.safeParse(telegramUsernameOrNumber);
   if (validatedPhoneNumberSuccess) {
     console.log("Telefonnummer");
-    const updatedUser = await db.users.update({
+    const updatedUser = await db.profiles.update({
       where: {
-        id: user.id,
+        authId: user.id,
       },
       data: {
         phone: validatedPhoneNumber,
@@ -61,10 +61,10 @@ export async function setTelegram(formData: FormData): Promise<void> {
   }
 
   if (validatedString.startsWith("@")) {
-    const updatedUser = await db.users
+    const updatedUser = await db.profiles
       .update({
         where: {
-          id: user.id,
+          authId: user.id,
         },
         data: {
           telegram_username: validatedString,

@@ -2,8 +2,10 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { db } from "~/server/db";
 
 import { createClient } from "~/lib/supabase/server";
+import { isNil } from "lodash";
 
 export async function login(formData: FormData) {
   const supabase = await createClient();
@@ -36,7 +38,7 @@ export async function signup(formData: FormData) {
     password: formData.get("password") as string,
   };
 
-  const { error } = await supabase.auth.signUp(data);
+  const { error, data: user } = await supabase.auth.signUp(data);
 
 
   if (error) {
@@ -44,8 +46,27 @@ export async function signup(formData: FormData) {
     return;
   }
 
+  if (isNil(user.user)) {
+    console.error("User not found");
+    return;
+  }
+
+  await db.profiles.create({
+    data: {
+      email: data.email,
+      email_confirmed: false,
+      authId: user.user.id,
+      phone: "",
+      phone_confirmed: false,
+    },
+  });
+
   const { error: signInError } = await supabase.auth.signInWithPassword(data);
-  console.error(signInError);
+
+  if (signInError) {
+    console.error(signInError);
+    return;
+  }
 
   revalidatePath("/", "layout");
   redirect("/signup/warnings");

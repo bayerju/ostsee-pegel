@@ -3,7 +3,7 @@ import { type ParsedData } from "./types";
 import { sendMessage } from "../telegram_update/_send_message";
 import { BSH_URL } from "~/scripts/scrape";
 export async function notifyUsers(predictions: ParsedData) {
-  const users = await db.users.findMany({
+  const users = await db.profiles.findMany({
     where: {
       warnings: {
         some: {
@@ -22,7 +22,7 @@ export async function notifyUsers(predictions: ParsedData) {
       },
     },
     include: {
-      telegram_services: true,
+      telegramService: true,
       warnings: {
         where: {
           OR: predictions.data.map((iPrediction) => ({
@@ -42,8 +42,8 @@ export async function notifyUsers(predictions: ParsedData) {
   });
 
   await Promise.all(users.map(async (user) => {
-    if (user.telegram_services?.chatId) {
-      await sendMessage(user.telegram_services.chatId, `Achtung folgende Warnung hat angeschlagen: ${user.warnings.map((iWarning) => `${iWarning.regions.join(", ")}: ${iWarning.lowWaterThreshold} - ${iWarning.highWaterThreshold}`).join("\n")} \n\n ${BSH_URL}`);
+    if (user.telegramService?.chatId) {
+      await sendMessage(user.telegramService.chatId, `Achtung folgende Warnung hat angeschlagen: ${user.warnings.map((iWarning) => `${iWarning.regions.join(", ")}: ${iWarning.lowWaterThreshold} - ${iWarning.highWaterThreshold}`).join("\n")} \n\n ${BSH_URL}`);
     }
   }));
 }

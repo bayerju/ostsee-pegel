@@ -1,3 +1,4 @@
+import { SignUpButton } from "@clerk/nextjs";
 import Link from "next/link";
 
 // import { LatestPost } from "~/app/_components/post";
@@ -71,6 +72,11 @@ export default async function Home() {
                 Jetzt vor Hochwasser warnen lassen
               </button>
             </Link>
+            {/* <SignUpButton>
+              <button className="rounded-full bg-blue-500 px-8 py-3 text-lg font-semibold transition-colors hover:bg-blue-600">
+                Jetzt vor Hochwasser warnen lassen
+              </button>
+            </SignUpButton> */}
             <p className="mt-4 text-sm text-gray-300">
               Zahle was es dir Wert ist - ab 0€ möglich
             </p>

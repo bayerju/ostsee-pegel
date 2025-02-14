@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
           telegramUserId: message.from.id.toString(),
           messageText: message.text,
           chatId: message.chat.id.toString(),
-          telegramUsername: message.from.username,
+          telegram_username: message.from.username,
         },
       });
       // if (!message.text.startsWith("/start ")) continue;
