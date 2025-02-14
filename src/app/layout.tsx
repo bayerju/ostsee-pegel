@@ -8,14 +8,14 @@ import { createClient } from "~/lib/supabase/server";
 import { TRPCReactProvider } from "~/trpc/react";
 import { signOut } from "~/app/auth/actions";
 
-import {
-  ClerkProvider,
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from "@clerk/nextjs";
+// import {
+//   ClerkProvider,
+//   SignInButton,
+//   SignUpButton,
+//   SignedIn,
+//   SignedOut,
+//   UserButton,
+// } from "@clerk/nextjs";
 
 export const metadata: Metadata = {
   title: "Hochwasser-Warnung",

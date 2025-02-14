@@ -22,7 +22,6 @@
     "scrape": "tsx src/scripts/scrape.mts"
   },
   "dependencies": {
-    "@clerk/nextjs": "^6.11.3",
     "@prisma/client": "^5.14.0",
     "@radix-ui/react-slot": "^1.1.2",
     "@supabase/ssr": "^0.5.2",

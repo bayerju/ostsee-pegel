@@ -1,4 +1,4 @@
-import { SignUpButton } from "@clerk/nextjs";
+// import { SignUpButton } from "@clerk/nextjs";
 import Link from "next/link";
 
 // import { LatestPost } from "~/app/_components/post";
