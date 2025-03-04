@@ -5,6 +5,7 @@ import { scrapeWebsite } from "~/scripts/scrape";
 import type waterLevels from "~/scripts/water_levels.json";
 import { isNil } from "lodash";
 import { type ParsedData } from "./types";
+import { notifyUsers } from "./notify_users";
 // const BSH_URL =
 //   "https://www.bsh.de/DE/DATEN/Vorhersagen/Wasserstand_Ostsee/wasserstand_ostsee_node.html";
 
@@ -70,6 +71,8 @@ export async function POST() {
           last_data_update: parsedData.lastUpdated,
         })),
     });
+
+    await notifyUsers(parsedData);
 
     return Response.json({ success: true });
   } catch (error) {
