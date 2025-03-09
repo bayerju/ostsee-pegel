@@ -41,7 +41,13 @@ export function TelegramSetup({
             value={`https://t.me/WasserstandsWarnungBot?text=${currentOtp}`}
             className="h-48 w-48"
           />
-          <button
+          <Link
+            href={`https://t.me/WasserstandsWarnungBot?text=${currentOtp}`}
+            className="text-sm text-blue-600 hover:text-blue-800 disabled:opacity-50"
+          >
+            Öffne den Link mit Telegram
+          </Link>
+          {/* <button
             onClick={() => {
               startTransition(async () => {
                 const newOtp = await recreateOTP();
@@ -52,36 +58,36 @@ export function TelegramSetup({
             className="text-sm text-blue-600 hover:text-blue-800 disabled:opacity-50"
           >
             {isPending ? "Wird aktualisiert..." : "QR-Code aktualisieren"}
-          </button>
+          </button> */}
         </div>
 
         <ol className="space-y-3 text-sm">
-          <li className="flex items-center gap-2">
-            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-500 text-sm">
+          <li className="flex items-start gap-2">
+            <span className="flex h-6 w-6 min-w-6 shrink-0 items-center justify-center rounded-full bg-blue-500 text-sm">
               1
             </span>
-            Scanne den QR-Code
+            Scanne den QR-Code oder öffne den Link mit Telegram
           </li>
-          <li className="flex items-center gap-2">
-            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-500 text-sm">
+          <li className="flex items-start gap-2">
+            <span className="flex h-6 w-6 min-w-6 shrink-0 items-center justify-center rounded-full bg-blue-500 text-sm">
               2
             </span>
             Öffne den Link mit Telegram
           </li>
-          <li className="flex items-center gap-2">
-            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-500 text-sm">
+          <li className="flex items-start gap-2">
+            <span className="flex h-6 w-6 min-w-6 shrink-0 items-center justify-center rounded-full bg-blue-500 text-sm">
               3
             </span>
             Starte den Bot mit dem Befehl /start
           </li>
-          <li className="flex items-center gap-2">
-            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-500 text-sm">
+          <li className="flex items-start gap-2">
+            <span className="flex h-6 w-6 min-w-6 shrink-0 items-center justify-center rounded-full bg-blue-500 text-sm">
               4
             </span>
             Schicke den Bestätigungscode ab
           </li>
-          <li className="flex items-center gap-2">
-            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-500 text-sm">
+          <li className="flex items-start gap-2">
+            <span className="flex h-6 w-6 min-w-6 shrink-0 items-center justify-center rounded-full bg-blue-500 text-sm">
               5
             </span>
             Erhalte eine Bestätigungsnachricht

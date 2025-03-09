@@ -18,7 +18,7 @@ const warningsSchema = z.object({
     .max(0, "Niedrigwasser-Schwellenwert darf maximal 0 cm sein"),
 });
 
-export async function setFirstWarning(formData: FormData): Promise<void> {
+export async function setFirstWarning(prevState: {message: string}, formData: FormData) {
   const headersList = await headers();
   const referer = headersList.get('referer');
   
@@ -80,4 +80,5 @@ export async function setFirstWarning(formData: FormData): Promise<void> {
   }
 if (referer?.endsWith("/signup/warnings"))
   redirect("/signup/notifications");
+return { message: "success" };
 }

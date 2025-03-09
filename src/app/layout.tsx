@@ -7,6 +7,7 @@ import { createClient } from "~/lib/supabase/server";
 
 import { TRPCReactProvider } from "~/trpc/react";
 import { signOut } from "~/app/auth/actions";
+import { Toaster } from "sonner";
 
 // import {
 //   ClerkProvider,
@@ -69,6 +70,7 @@ export default async function RootLayout({
             )}
           </nav>
           <TRPCReactProvider>{children}</TRPCReactProvider>
+          <Toaster />
         </body>
       </html>
     // </ClerkProvider>

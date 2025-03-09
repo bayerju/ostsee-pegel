@@ -31,14 +31,6 @@ export function ClientNotificationsSetupPage({
 
         {/* {!selectedMethod ? ( */}
         <div className="space-y-4">
-          <NotificationOption
-            title="E-Mail"
-            description="Erhalten Sie detaillierte Benachrichtigungen per E-Mail"
-            onClick={() => setSelectedMethod("email")}
-            isSelected={selectedMethod === "email"}
-          >
-            <EmailSetup onBack={() => setSelectedMethod(null)} />
-          </NotificationOption>
 
           <NotificationOption
             title="Telegram"
@@ -53,21 +45,32 @@ export function ClientNotificationsSetupPage({
               recreateOTP={recreateOTP}
             />
           </NotificationOption>
+          <NotificationOption
+            title="E-Mail"
+            description="Erhalten Sie detaillierte Benachrichtigungen per E-Mail"
+            onClick={() => setSelectedMethod("email")}
+            isSelected={selectedMethod === "email"}
+            comingSoon
+          >
+            <EmailSetup onBack={() => setSelectedMethod(null)} />
+          </NotificationOption>
 
           <NotificationOption
             title="WhatsApp"
-            description="Erhalten Sie Benachrichtigungen direkt in WhatsApp (Coming Soon)"
+            description="Erhalten Sie Benachrichtigungen direkt in WhatsApp"
             isPremium
             price="2€/Monat"
             disabled
+            comingSoon
           />
 
           <NotificationOption
             title="SMS"
-            description="Erhalten Sie Benachrichtigungen per SMS (Coming Soon)"
+            description="Erhalten Sie Benachrichtigungen per SMS"
             isPremium
             price="3€/Monat"
             disabled
+            comingSoon
           />
         </div>
         {/* ) : (
