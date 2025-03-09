@@ -1,11 +1,22 @@
 // import { SignUpButton } from "@clerk/nextjs";
 import Link from "next/link";
+import { createClient } from "~/lib/supabase/server";
+import { redirect } from "next/navigation";
 
 // import { LatestPost } from "~/app/_components/post";
 import { api, HydrateClient } from "~/trpc/server";
 // import { ScrapeButton } from "~/components/ScrapeButton";
 
 export default async function Home() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (user) {
+    redirect("/settings");
+  }
+
   const hello = await api.post.hello({ text: "from tRPC" });
 
   // void api.post.getLatest.prefetch();

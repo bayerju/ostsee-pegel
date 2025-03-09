@@ -4,6 +4,7 @@ import { createClient } from "~/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { db } from "~/server/db";
+import { headers } from 'next/headers';
 
 const warningsSchema = z.object({
   regions: z.array(z.string()).min(1, "Bitte mindestens eine Region auswählen"),
@@ -18,6 +19,9 @@ const warningsSchema = z.object({
 });
 
 export async function setFirstWarning(formData: FormData): Promise<void> {
+  const headersList = await headers();
+  const referer = headersList.get('referer');
+  
   const supabase = await createClient();
   const {
     data: { user },
@@ -74,6 +78,6 @@ export async function setFirstWarning(formData: FormData): Promise<void> {
       },
     });
   }
-
+if (referer?.endsWith("/signup/warnings"))
   redirect("/signup/notifications");
 }

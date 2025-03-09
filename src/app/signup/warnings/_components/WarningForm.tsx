@@ -11,9 +11,16 @@ interface WarningFormProps {
     highWaterThreshold?: number;
     lowWaterThreshold?: number;
   } | null;
+  submitButtonText?: string;
+  redirectTo?: string;
 }
 
-export function WarningForm({ regions, lastWarning }: WarningFormProps) {
+export function WarningForm({
+  regions,
+  lastWarning,
+  submitButtonText = "Weiter zu Benachrichtigungen",
+  redirectTo = "/signup/notifications",
+}: WarningFormProps) {
   const [selectedRegions, setSelectedRegions] = useState<string[]>(
     lastWarning?.regions ?? [],
   );
@@ -83,7 +90,7 @@ export function WarningForm({ regions, lastWarning }: WarningFormProps) {
           disabled={selectedRegions.length === 0}
           className="w-full rounded-full bg-blue-500 px-8 py-3 text-lg font-semibold transition-colors hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-50"
         >
-          Weiter zu Benachrichtigungen
+          {submitButtonText}
         </button>
         {selectedRegions.length === 0 && (
           <label className="text-sm text-red-400">
