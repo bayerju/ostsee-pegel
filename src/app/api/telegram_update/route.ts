@@ -5,26 +5,15 @@ import { isNil } from "lodash";
 import { telegramUpdateSchema } from "./zod_schemas";
 
 export async function POST(request: NextRequest) {
+  console.log("Telegram update received");
+
   try {
-    const fetchResult = await fetch(
-      `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/getUpdates`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      },
-    );
 
-    if (!fetchResult.ok) {
-      console.error("Failed to fetch updates", { status: 500 });
-      return new Response("Failed to fetch updates", { status: 500 });
-    }
-
-    const data = (await fetchResult.json()) as unknown;
-    const result = telegramUpdateSchema.safeParse(data);
+    const {updates} = await request.json() as {updates: unknown};
+    const result = telegramUpdateSchema.safeParse(updates);
 
     if (!result.success) {
-      console.error("Invalid response format:", result.error, data);
+      console.error("Invalid response format:", result.error, updates);
       return new Response("Invalid response format", { status: 400 });
     }
 
