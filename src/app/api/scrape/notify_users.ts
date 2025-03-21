@@ -50,11 +50,11 @@ export async function notifyUsers(predictions: ParsedData) {
           .filter(iWarning => iWarning.regions.some(iRegion => iRegion === iPrediction.location))
           .map(iWarning => ({
             ...iWarning,
-            exceedsLowWaterThreshold: iPrediction.min <= iWarning.lowWaterThreshold,
-            exceedsHighWaterThreshold: iPrediction.max >= iWarning.highWaterThreshold,
+            exceedsLowWaterThreshold: iPrediction.min <= iWarning.lowWaterThreshold ? iPrediction.min : undefined,
+            exceedsHighWaterThreshold: iPrediction.max >= iWarning.highWaterThreshold ? iPrediction.max : undefined,
             // isActive: iPrediction.min <= iWarning.lowWaterThreshold || iPrediction.max >= iWarning.highWaterThreshold
           }))
-          .filter(iWarning => iWarning.exceedsHighWaterThreshold || iWarning.exceedsLowWaterThreshold);
+          .filter(iWarning => !isNil(iWarning.exceedsHighWaterThreshold) || !isNil(iWarning.exceedsLowWaterThreshold));
 
         return {
           prediction: iPrediction,
@@ -77,9 +77,10 @@ export async function notifyUsers(predictions: ParsedData) {
   await Promise.all(userWithPredictionWarningMapping.map(async (user) => {
     const userWasntNotifiedIn24Hours = user.warnings.some(iWarning => isNil(iWarning.last_notified) || iWarning.last_notified < new Date(Date.now() - 1000 * 60 * 60 * 24)); 
     if (user.telegramService?.chatId && userWasntNotifiedIn24Hours && user.predictionWarnings.length > 0) {
-      const message = `Achtung folgende Warnung(en) haben angeschlagen: \n ${user.predictionWarnings
-        .map((iPredictionWarning) => ` Das Wasser in ${iPredictionWarning.prediction.location} liegt zwischen ${iPredictionWarning.prediction.min} und ${iPredictionWarning.prediction.max} Meter.`)
-        .join("\n")} \n\n ${BSH_URL}`;
+      const message = createNotificationMessage(user) + `\n\n ${BSH_URL}`;
+      // `Achtung folgende Warnung(en) haben angeschlagen: \n ${user.predictionWarnings
+      //   .map((iPredictionWarning) => ` Das Wasser in ${iPredictionWarning.prediction.location} liegt zwischen ${iPredictionWarning.prediction.min} und ${iPredictionWarning.prediction.max} Meter.`)
+      //   .join("\n")} \n\n ${BSH_URL}`;
       await sendMessage(user.telegramService.chatId, message);
       await db.warnings.updateMany({
         where: { user_id: user.authId },
@@ -87,6 +88,16 @@ export async function notifyUsers(predictions: ParsedData) {
       });
     }
   }));
+
+  function createNotificationMessage(user: typeof userWithPredictionWarningMapping[number]) {
+    if (user.predictionWarnings[0]?.warnings[0]?.exceedsHighWaterThreshold) {
+      return `Das Wasser in ${user.predictionWarnings[0]?.prediction.location} liegt mit +${user.predictionWarnings[0]?.warnings[0]?.exceedsHighWaterThreshold}cm über der Warnschwelle von ${user.predictionWarnings[0]?.warnings[0]?.highWaterThreshold}cm.`;
+    }
+    if (user.predictionWarnings[0]?.warnings[0]?.exceedsLowWaterThreshold) {
+      return `Das Wasser in ${user.predictionWarnings[0]?.prediction.location} liegt mit -${user.predictionWarnings[0]?.warnings[0]?.exceedsLowWaterThreshold}cm unter der Warnschwelle von ${user.predictionWarnings[0]?.warnings[0]?.lowWaterThreshold}cm.`;
+    }
+    return `hier ist keine Warnung angeschlagen, dass du eine Nachricht kriegst hätte nicht passieren sollen. wir untersuchen das.`;
+  }
 
   // const usersToNotify = users
   // .map(iUser => {
