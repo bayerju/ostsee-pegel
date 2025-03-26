@@ -9,6 +9,8 @@ import { TRPCReactProvider } from "~/trpc/react";
 import { signOut } from "~/app/auth/actions";
 import { Toaster } from "sonner";
 
+import { PostHogProvider } from "~/components/providers/posthog";
+
 // import {
 //   ClerkProvider,
 //   SignInButton,
@@ -36,6 +38,7 @@ export default async function RootLayout({
     // <ClerkProvider>
       <html lang="en" className={`${GeistSans.variable}`}>
         <body>
+          <PostHogProvider>
           {/* <header className="flex h-16 items-center justify-end gap-4 p-4">
             <SignedOut>
               <SignInButton />
@@ -71,6 +74,7 @@ export default async function RootLayout({
           </nav>
           <TRPCReactProvider>{children}</TRPCReactProvider>
           <Toaster />
+          </PostHogProvider>
         </body>
       </html>
     // </ClerkProvider>
