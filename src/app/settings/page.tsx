@@ -1,22 +1,24 @@
-import { createClient } from "~/lib/supabase/server";
+// import { createClient } from "~/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { db } from "~/server/db";
 import { WarningForm } from "~/app/signup/warnings/_components/WarningForm";
+import { auth } from "@clerk/nextjs/server";
+import { isNil } from "lodash";
 
 export default async function SettingsPage() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-    error: authError,
-  } = await supabase.auth.getUser();
-
-  if (authError || !user) {
+  // const supabase = await createClient();
+  // const {
+  //   data: { user },
+  //   error: authError,
+  // } = await supabase.auth.getUser();
+  const user = await auth();
+  if (isNil(user.userId)) {
     redirect("/login");
   }
 
   const currentWarning = await db.warnings.findFirst({
     where: {
-      user_id: user.id,
+      user_id: user.userId,
     },
     orderBy: {
       created_at: "desc",

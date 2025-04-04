@@ -10,15 +10,16 @@ import { signOut } from "~/app/auth/actions";
 import { Toaster } from "sonner";
 
 import { PostHogProvider } from "~/components/providers/posthog";
-
-// import {
-//   ClerkProvider,
-//   SignInButton,
-//   SignUpButton,
-//   SignedIn,
-//   SignedOut,
-//   UserButton,
-// } from "@clerk/nextjs";
+import { SignOutButton } from "~/components/auth/signout_button";
+import {
+  ClerkProvider,
+  SignInButton,
+  // SignOutButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from "@clerk/nextjs";
 
 export const metadata: Metadata = {
   title: "Hochwasser-Warnung",
@@ -29,54 +30,63 @@ export const metadata: Metadata = {
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  // const supabase = await createClient();
+  // const {
+  //   data: { user },
+  // } = await supabase.auth.getUser();
 
   return (
-    // <ClerkProvider>
+    <ClerkProvider>
       <html lang="en" className={`${GeistSans.variable}`}>
         <body>
           <PostHogProvider>
-          {/* <header className="flex h-16 items-center justify-end gap-4 p-4">
-            <SignedOut>
-              <SignInButton />
-              <SignUpButton />
-            </SignedOut>
-            <SignedIn>
-              <UserButton />
-            </SignedIn>
-          </header> */}
-          <nav className="absolute left-0 top-0 flex items-center gap-4 p-4">
-            <Link
-              href="/"
-              className="flex h-8 w-8 items-center justify-center rounded-lg transition-colors hover:bg-white/10"
-            >
-              <img src="/icon.webp" alt="Home" className="h-6 w-6" />
-            </Link>
-          </nav>
-          <nav className="absolute right-0 top-0 p-4">
-            {user ? (
-              <form action={signOut}>
-                <button className="rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-sm text-white transition-colors hover:bg-white/20">
-                  Abmelden
-                </button>
-              </form>
-            ) : (
+            {/* <header className="flex h-16 items-center justify-end gap-4 p-4">
+              <SignedOut>
+                <SignInButton />
+                <SignUpButton />
+              </SignedOut>
+              <SignedIn>
+                <UserButton />
+              </SignedIn>
+            </header> */}
+            <nav className="absolute left-0 top-0 flex items-center gap-4 p-4">
               <Link
-                href="/login"
-                className="rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-sm text-white transition-colors hover:bg-white/20"
+                href="/"
+                className="flex h-8 w-8 items-center justify-center rounded-lg transition-colors hover:bg-white/10"
               >
-                Anmelden
+                <img src="/icon.webp" alt="Home" className="h-6 w-6" />
               </Link>
-            )}
-          </nav>
-          <TRPCReactProvider>{children}</TRPCReactProvider>
-          <Toaster />
+            </nav>
+            <nav className="absolute right-0 top-0 p-4">
+              {/* <SignedOut>
+                <SignInButton />
+                <SignUpButton />
+              </SignedOut>
+              <SignedIn>
+                <UserButton />
+              </SignedIn> */}
+              <SignedIn>
+                {/* <form action={signOut}>
+                  <button className="rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-sm text-white transition-colors hover:bg-white/20">
+                    Abmelden
+                  </button>
+                </form> */}
+                <SignOutButton />
+              </SignedIn>
+              <SignedOut>
+                <Link
+                  href="/login"
+                  className="rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-sm text-white transition-colors hover:bg-white/20"
+                >
+                  Anmelden
+                </Link>
+              </SignedOut>
+            </nav>
+            <TRPCReactProvider>{children}</TRPCReactProvider>
+            <Toaster />
           </PostHogProvider>
         </body>
       </html>
-    // </ClerkProvider>
+    </ClerkProvider>
   );
 }

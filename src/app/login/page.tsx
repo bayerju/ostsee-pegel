@@ -1,6 +1,22 @@
-import { login } from "../auth/actions";
-import Link from "next/link";
+"use client";
 
+import { SignIn, useSignIn } from "@clerk/nextjs";
+// import { login, resetPassword } from "../auth/actions";
+import Link from "next/link";
+import { useState } from "react";
+import { tryCatch } from "~/lib/try-catch";
+import { redirect } from "next/navigation";
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "~/components/ui/dialog";
+import { Button } from "~/components/ui/button";
+import { ForgotPasswordDialog } from "./forgot_password_dialog";
+import { Input } from "~/components/ui/input";
 export default function LoginPage() {
   // const handleSubmit = async (e: React.FormEvent) => {
   //   e.preventDefault();
@@ -14,6 +30,14 @@ export default function LoginPage() {
   //   }
   // };
 
+  const { isLoaded, signIn, setActive } = useSignIn();
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
+  const [showPasswordResetDialog, setShowPasswordResetDialog] = useState(false);
+
+  if (!isLoaded) return <div>Loading...</div>;
+
   return (
     <main className="flex min-h-screen flex-col items-center bg-gradient-to-b from-[#0066cc] to-[#001a33] text-white">
       <div className="container mx-auto max-w-md px-4 py-16">
@@ -25,36 +49,96 @@ export default function LoginPage() {
         </Link>
 
         <h1 className="mb-8 text-3xl font-bold">Anmelden</h1>
+        <Dialog
+          open={showPasswordResetDialog}
+          onOpenChange={(state) => {
+            if (document.activeElement instanceof HTMLElement) {
+              document.activeElement.blur();
+            }
+            // setShowPasswordResetDialog(state);
+            setTimeout(() => setShowPasswordResetDialog(state), 10);
+          }}
+        >
+          <form className="space-y-6">
+            <div>
+              <label className="mb-2 block text-lg">E-Mail Adresse</label>
+              <Input
+                type="email"
+                name="email"
+                className="w-full rounded-lg border border-white/20 bg-white/10 p-3 focus:border-blue-400 focus:outline-none"
+                required
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  // signIn.identifier = e.target.value;
+                }}
+                value={email}
+              />
+              <div className="min-h-6 text-red-400" id="error-message">
+                {error}
+              </div>
+            </div>
 
-        <form className="space-y-6">
-          <div>
-            <label className="mb-2 block text-lg">E-Mail Adresse</label>
-            <input
-              type="email"
-              name="email"
-              className="w-full rounded-lg border border-white/20 bg-white/10 p-3 focus:border-blue-400 focus:outline-none"
-              required
-            />
-          </div>
+            <div>
+              <label className="mb-2 block text-lg">Passwort</label>
+              <Input
+                type="password"
+                name="password"
+                className="w-full rounded-lg border border-white/20 bg-white/10 p-3 focus:border-blue-400 focus:outline-none"
+                required
+                onChange={(e) => setPassword(e.target.value)}
+                value={password}
+              />
+              <ForgotPasswordDialog email={email} />
+            </div>
 
-          <div>
-            <label className="mb-2 block text-lg">Passwort</label>
-            <input
-              type="password"
-              name="password"
-              className="w-full rounded-lg border border-white/20 bg-white/10 p-3 focus:border-blue-400 focus:outline-none"
-              required
-            />
-          </div>
+            <button
+              // formAction={login}
+              onClick={async (e) => {
+                e.preventDefault(); // Prevent form submission
+                setError(""); // Clear previous errors
 
-          <button
-            formAction={login}
-            type="submit"
-            className="w-full rounded-full bg-blue-500 px-8 py-3 text-lg font-semibold transition-colors hover:bg-blue-600"
-          >
-            Anmelden
-          </button>
-        </form>
+                if (!email || !password) {
+                  setError("Bitte füllen Sie alle Felder aus");
+                  return;
+                }
+
+                try {
+                  const result = await signIn.create({
+                    identifier: email,
+                    password: password,
+                  });
+
+                  if (result.status === "complete") {
+                    await setActive({ session: result.createdSessionId });
+                    redirect("/");
+                  } else {
+                    setError(
+                      "Anmeldung fehlgeschlagen. Bitte versuchen Sie es erneut.",
+                    );
+                  }
+                } catch (err) {
+                  console.error(err);
+                  if (err instanceof Error) {
+                    setError(err.message);
+                  } else if (
+                    typeof err === "object" &&
+                    err !== null &&
+                    "message" in err
+                  ) {
+                    setError(String(err.message));
+                  } else {
+                    setError("Ein Fehler ist aufgetreten");
+                  }
+                }
+              }}
+              disabled={!isLoaded}
+              type="submit"
+              className="w-full rounded-full bg-blue-500 px-8 py-3 text-lg font-semibold transition-colors hover:bg-blue-600"
+            >
+              Anmelden
+            </button>
+          </form>
+        </Dialog>
 
         <div className="mt-6 text-center">
           Noch kein Konto?{" "}

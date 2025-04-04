@@ -5,24 +5,38 @@ import { redirect } from "next/navigation";
 
 // import { LatestPost } from "~/app/_components/post";
 import { api, HydrateClient } from "~/trpc/server";
+import { SignedIn, SignedOut } from "@clerk/nextjs";
+import { auth, clerkClient } from "@clerk/nextjs/server";
 // import { ScrapeButton } from "~/components/ScrapeButton";
 
 export default async function Home() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  // const supabase = await createClient();
+  // const {
+  //   data: { user },
+  // } = await supabase.auth.getUser();
 
-  if (user) {
-    redirect("/settings");
-  }
+  // if (user) {
+  //   redirect("/settings");
+  // }
 
   const hello = await api.post.hello({ text: "from tRPC" });
+
+  // const session = await clerkClient.sessions.getUser();
+  const session = await auth()
+
+  console.log({session});
+  if (session?.userId) {
+    redirect("/settings");  
+  }
 
   // void api.post.getLatest.prefetch();
 
   return (
     <HydrateClient>
+      {/* <SignedIn>
+        {redirect("/settings")}
+      </SignedIn> */}
+      {/* <SignedOut> */}
       <main className="flex min-h-screen flex-col items-center bg-gradient-to-b from-[#0066cc] to-[#001a33] text-white">
         {/* Hero Section */}
         <div className="container mx-auto px-4 py-16 text-center">
@@ -94,6 +108,8 @@ export default async function Home() {
           </div>
         </div>
       </main>
+
+      {/* </SignedOut> */}
     </HydrateClient>
   );
 }
