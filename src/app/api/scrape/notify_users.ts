@@ -5,7 +5,7 @@ import { BSH_URL } from "~/scripts/scrape";
 import { isNil } from "lodash";
 
 export async function notifyUsers(predictions: ParsedData) {
-  const users = await db.profiles.findMany({
+  const users = await db.user.findMany({
     where: {
       warnings: {
         some: {
@@ -83,7 +83,7 @@ export async function notifyUsers(predictions: ParsedData) {
       //   .join("\n")} \n\n ${BSH_URL}`;
       await sendMessage(user.telegramService.chatId, message);
       await db.warnings.updateMany({
-        where: { user_id: user.authId },
+        where: { user_id: user.id },
         data: { last_notified: new Date() },
       });
     }

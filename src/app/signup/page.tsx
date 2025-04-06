@@ -8,27 +8,31 @@ import { useState } from "react";
 // import { api } from "~/trpc/server";
 import { api } from "~/trpc/react";
 import { useSignIn } from "@clerk/nextjs";
-
+import { authClient } from "~/lib/auth-client";
+import { useRouter } from "next/navigation";
 export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { isLoaded, signIn, setActive } = useSignIn();
+  const [isPending, setIsPending] = useState(false);
+  const [error, setError] = useState("");
+  const router = useRouter();
+  // const { isLoaded, signIn, setActive } = useSignIn();
 
-  if (!isLoaded) {
-    return <div>Loading...</div>;
-  }
+  // if (!isLoaded) {
+  //   return <div>Loading...</div>;
+  // }
 
-  const signup = api.auth.signup.useMutation({
-    onSuccess: async (data) => {
-      const signInResult = await signIn?.create({
-        strategy: "password",
-        identifier: email,
-        password: password,
-      });
-      await setActive({ session: signInResult?.createdSessionId });
-      console.log(data);
-    },
-  });
+  // const signup = api.auth.signup.useMutation({
+  //   onSuccess: async (data) => {
+  //     const signInResult = await signIn?.create({
+  //       strategy: "password",
+  //       identifier: email,
+  //       password: password,
+  //     });
+  //     await setActive({ session: signInResult?.createdSessionId });
+  //     console.log(data);
+  //   },
+  // });
 
   return (
     <main className="flex min-h-screen flex-col items-center bg-gradient-to-b from-[#0066cc] to-[#001a33] text-white">
@@ -55,6 +59,7 @@ export default function SignupPage() {
               onChange={(e) => setEmail(e.target.value)}
               value={email}
             />
+            {error && <p className="text-red-500">{error}</p>}
           </div>
 
           {/* Password */}
@@ -99,9 +104,33 @@ export default function SignupPage() {
             type="submit"
             className="w-full rounded-full bg-blue-500 px-8 py-3 text-lg font-semibold transition-colors hover:bg-blue-600"
             onClick={async () => {
-              signup.mutate({ email, password });
+              await authClient.signUp.email(
+                {
+                  email: email,
+                  password: password,
+                  name: "",
+                },
+                {
+                  onRequest: (ctx) => {
+                    setIsPending(true);
+                    console.log("ctx", ctx);
+                  },
+                  onSuccess: (data) => {
+                    setIsPending(false);
+                    router.refresh();
+                    router.push("/signup/warnings");
+                    console.log("data", data);
+                  },
+                  onError: (error) => {
+                    setError(error.error.message);
+                    setIsPending(false);
+                    console.log("error", error);
+                  },
+                },
+              );
+              // signup.mutate({ email, password });
             }}
-            disabled={signup.isPending}
+            disabled={isPending}
           >
             Weiter
           </button>
@@ -117,23 +146,6 @@ export default function SignupPage() {
               </span>
             </div>
           </div>
-
-          {/* <div className="grid grid-cols-2 gap-3">
-            <button
-              type="button"
-              className="flex w-full items-center justify-center gap-3 rounded-lg border border-white/20 bg-white/5 px-3 py-2 hover:bg-white/10"
-            >
-              <img src="/google.svg" alt="Google" className="h-5 w-5" />
-              Google
-            </button>
-            <button
-              type="button"
-              className="flex w-full items-center justify-center gap-3 rounded-lg border border-white/20 bg-white/5 px-3 py-2 hover:bg-white/10"
-            >
-              <img src="/apple.svg" alt="Apple" className="h-5 w-5" />
-              Apple
-            </button>
-          </div> */}
         </form>
 
         <div className="mt-6 text-center">

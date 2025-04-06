@@ -1,29 +1,28 @@
 // import { createClient } from "~/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { db } from "~/server/db";
-import { WarningForm } from "~/app/signup/warnings/_components/WarningForm";
-import { auth } from "@clerk/nextjs/server";
+import { WarningForm } from "~/app/protected/signup_flow/warnings/_components/WarningForm";
+// import { auth } from "@clerk/nextjs/server";
 import { isNil } from "lodash";
+import { auth } from "~/lib/auth";
+import { headers } from "next/headers";
+import { api } from "~/trpc/server";
 
 export default async function SettingsPage() {
-  // const supabase = await createClient();
-  // const {
-  //   data: { user },
-  //   error: authError,
-  // } = await supabase.auth.getUser();
-  const user = await auth();
-  if (isNil(user.userId)) {
+  const session = await auth.api.getSession({ headers: await headers() });
+  if (isNil(session?.session.userId)) {
     redirect("/login");
   }
 
   const currentWarning = await db.warnings.findFirst({
     where: {
-      user_id: user.userId,
+      user_id: session?.session.userId,
     },
     orderBy: {
       created_at: "desc",
     },
   });
+  // const currentWarning = trpc.warnings.getFirstWarning.useQuery();
 
   const regions = [
     "Kieler Bucht",

@@ -14,10 +14,11 @@ import { Input } from "~/components/ui/input";
 import { useSignIn } from "@clerk/nextjs";
 import { tryCatch } from "~/lib/try-catch";
 import { toast } from "sonner";
+import { authClient } from "~/lib/auth-client";
 
 export function ForgotPasswordDialog(props: { email: string }) {
   const [email, setEmail] = useState(props.email);
-  const { isLoaded, signIn } = useSignIn();
+  // const { isLoaded, signIn } = useSignIn();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -28,7 +29,7 @@ export function ForgotPasswordDialog(props: { email: string }) {
     console.log("ForgotPasswordDialog email changed", email);
     setEmail(props.email);
   }, [props.email]);
-  if (!isLoaded) return <div>Loading...</div>;
+  if (isLoading) return <div>Loading...</div>;
   return (
     <>
       <DialogTrigger asChild>
@@ -45,8 +46,7 @@ export function ForgotPasswordDialog(props: { email: string }) {
           Passwort vergessen?
         </Button>
       </DialogTrigger>
-      <DialogContent
-      >
+      <DialogContent>
         <DialogTitle>Passwort vergessen?</DialogTitle>
         <DialogDescription>
           Geben Sie Ihre E-Mail Adresse ein und wir senden Ihnen einen Link zum
@@ -69,24 +69,46 @@ export function ForgotPasswordDialog(props: { email: string }) {
             <Button
               disabled={isLoading}
               onClick={async () => {
-                setIsLoading(true);
-                const { data, error } = await tryCatch(
-                  signIn.create({
-                    strategy: "email_link",
-                    identifier: email,
-                    redirectUrl:
-                      "http://localhost:3000/account/update-password",
-                  }),
+                await authClient.forgetPassword(
+                  {
+                    email: email,
+                    redirectTo: "/account/update-password",
+                  },
+                  {
+                    onRequest: (ctx) => {
+                      console.log("sendForgetPassword request", ctx);
+                      setIsLoading(true);
+                    },
+                    onSuccess: (data) => {
+                      console.log("sendForgetPassword success", data);
+                      setIsLoading(false);
+                      setIsSuccess(true);
+                    },
+                    onError: (error) => {
+                      console.log("sendForgetPassword error", error);
+                      setIsLoading(false);
+                      setError(error.error.message);
+                    },
+                  },
                 );
-                console.log("signin status: ", signIn.status);
-                console.log("signin result: ", error, data);
-                if (error) {
-                  setIsLoading(false);
-                  setError(error.message);
-                  return;
-                }
-                setIsSuccess(true);
-                toast.success("E-Mail wurde gesendet");
+                // setIsLoading(true);
+                // const { data, error } = await tryCatch(
+                //   signIn.create({
+                //     strategy: "email_link",
+                //     identifier: email,
+                //     redirectUrl:
+                //       "http://localhost:3000/account/update-password",
+                //   }),
+                // );
+                // console.log("signin status: ", signIn.status);
+                // console.log("signin result: ", error, data);
+                // if (error) {
+                //   setIsLoading(false);
+                //   setError(error.message);
+                //   return;
+                // }
+                // setIsSuccess(true);
+                // toast.success("E-Mail wurde gesendet");
               }}
             >
               Senden

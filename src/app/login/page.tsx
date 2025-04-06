@@ -5,7 +5,7 @@ import { SignIn, useSignIn } from "@clerk/nextjs";
 import Link from "next/link";
 import { useState } from "react";
 import { tryCatch } from "~/lib/try-catch";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import {
   Dialog,
   DialogContent,
@@ -17,6 +17,7 @@ import {
 import { Button } from "~/components/ui/button";
 import { ForgotPasswordDialog } from "./forgot_password_dialog";
 import { Input } from "~/components/ui/input";
+import { authClient } from "~/lib/auth-client";
 export default function LoginPage() {
   // const handleSubmit = async (e: React.FormEvent) => {
   //   e.preventDefault();
@@ -30,13 +31,15 @@ export default function LoginPage() {
   //   }
   // };
 
-  const { isLoaded, signIn, setActive } = useSignIn();
+  // const { isLoaded, signIn, setActive } = useSignIn();
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
+  const [isPending, setIsPending] = useState(false);
   const [showPasswordResetDialog, setShowPasswordResetDialog] = useState(false);
+  const router = useRouter();
 
-  if (!isLoaded) return <div>Loading...</div>;
+  if (isPending) return <div>Loading...</div>;
 
   return (
     <main className="flex min-h-screen flex-col items-center bg-gradient-to-b from-[#0066cc] to-[#001a33] text-white">
@@ -101,37 +104,34 @@ export default function LoginPage() {
                   setError("Bitte füllen Sie alle Felder aus");
                   return;
                 }
-
-                try {
-                  const result = await signIn.create({
-                    identifier: email,
+                await authClient.signIn.email(
+                  {
+                    email: email,
                     password: password,
-                  });
-
-                  if (result.status === "complete") {
-                    await setActive({ session: result.createdSessionId });
-                    redirect("/");
-                  } else {
-                    setError(
-                      "Anmeldung fehlgeschlagen. Bitte versuchen Sie es erneut.",
-                    );
-                  }
-                } catch (err) {
-                  console.error(err);
-                  if (err instanceof Error) {
-                    setError(err.message);
-                  } else if (
-                    typeof err === "object" &&
-                    err !== null &&
-                    "message" in err
-                  ) {
-                    setError(String(err.message));
-                  } else {
-                    setError("Ein Fehler ist aufgetreten");
-                  }
-                }
+                  },
+                  {
+                    onRequest: (ctx) => {
+                      console.log(ctx);
+                      setIsPending(true);
+                    },
+                    onSuccess: (data) => {
+                      setIsPending(false);
+                      router.push("/protected/settings");
+                      router.refresh();
+                      console.log(data);
+                    },
+                    onError: (error) => {
+                      setIsPending(false);
+                      setError(error.error.message);
+                      console.log("error", error);
+                    },
+                    onResponse: (response) => {
+                      console.log("response", response);
+                    },
+                  },
+                );
               }}
-              disabled={!isLoaded}
+              disabled={isPending}
               type="submit"
               className="w-full rounded-full bg-blue-500 px-8 py-3 text-lg font-semibold transition-colors hover:bg-blue-600"
             >

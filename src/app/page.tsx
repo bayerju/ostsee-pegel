@@ -5,8 +5,8 @@ import { redirect } from "next/navigation";
 
 // import { LatestPost } from "~/app/_components/post";
 import { api, HydrateClient } from "~/trpc/server";
-import { SignedIn, SignedOut } from "@clerk/nextjs";
-import { auth, clerkClient } from "@clerk/nextjs/server";
+import { headers } from "next/headers";
+import { auth } from "~/lib/auth";
 // import { ScrapeButton } from "~/components/ScrapeButton";
 
 export default async function Home() {
@@ -22,11 +22,11 @@ export default async function Home() {
   const hello = await api.post.hello({ text: "from tRPC" });
 
   // const session = await clerkClient.sessions.getUser();
-  const session = await auth()
+  const session = await auth.api.getSession({ headers: await headers() });
 
-  console.log({session});
-  if (session?.userId) {
-    redirect("/settings");  
+  console.log({ session });
+  if (session?.user.id) {
+    redirect("/protected/settings");
   }
 
   // void api.post.getLatest.prefetch();

@@ -1,10 +1,11 @@
 "use server";
 
-import { createClient } from "~/lib/supabase/server";
+// import { createClient } from "~/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { db } from "~/server/db";
 import { headers } from 'next/headers';
+import { auth } from "~/lib/auth";
 
 const warningsSchema = z.object({
   regions: z.array(z.string()).min(1, "Bitte mindestens eine Region auswählen"),
@@ -22,14 +23,16 @@ export async function setFirstWarning(prevState: {message: string}, formData: Fo
   const headersList = await headers();
   const referer = headersList.get('referer');
   
-  const supabase = await createClient();
-  const {
-    data: { user },
-    error: authError,
-  } = await supabase.auth.getUser();
-  if (authError || !user) {
+  // const supabase = await createClient();
+  // const {
+  //   data: { user },
+  //   error: authError,
+  // } = await supabase.auth.getUser();
+  const session = await auth.api.getSession({ headers: await headers() });
+  if (!session) {
     redirect("/login");
   }
+  const user = session.user;
 
   const validatedFields = warningsSchema.safeParse({
     regions: formData.getAll("regions"),
@@ -71,7 +74,11 @@ export async function setFirstWarning(prevState: {message: string}, formData: Fo
   } else {
     await db.warnings.create({
       data: {
-        user_id: user.id,
+        user: {
+          connect: {
+            id: user.id,
+          },
+        },
         regions,
         highWaterThreshold,
         lowWaterThreshold,

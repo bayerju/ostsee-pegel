@@ -1,29 +1,28 @@
-"use client"
-import { updatePassword } from "~/app/auth/actions";
+"use client";
 import { api } from "~/trpc/react";
 import { useState } from "react";
-import router from "next/router";
-import { redirect } from "next/navigation";
 import { toast } from "sonner";
-// import { createClient } from "~/lib/supabase/client";
 
 export default function UpdatePasswordPage() {
-    // const supa = createClient();
-    const updatePassword = api.auth.changePassword.useMutation({
-        onSuccess: () => {
-            toast.success("Passwort erfolgreich geändert");
-            console.log("Passwort erfolgreich geändert");
-        }
-    });
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
+  const updatePassword = api.auth.changePassword.useMutation({
+    onSuccess: () => {
+      toast.success("Passwort erfolgreich geändert");
+      console.log("Passwort erfolgreich geändert");
+    },
+  });
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   return (
     <main className="flex min-h-screen flex-col items-center bg-gradient-to-b from-[#0066cc] to-[#001a33] text-white">
       <div className="container mx-auto max-w-md px-4 py-16">
         <h1 className="mb-8 text-3xl font-bold">Passwort ändern</h1>
 
         <form className="space-y-6">
-          <div aria-live="polite" id="error-message" className="text-red-400 min-h-6">
+          <div
+            aria-live="polite"
+            id="error-message"
+            className="min-h-6 text-red-400"
+          >
             {/* Errors will be shown here by the form action */}
           </div>
 
@@ -42,7 +41,9 @@ export default function UpdatePasswordPage() {
           </div>
 
           <div>
-            <label className="mb-2 block text-lg">Neues Passwort bestätigen</label>
+            <label className="mb-2 block text-lg">
+              Neues Passwort bestätigen
+            </label>
             <input
               type="password"
               name="confirmPassword"
@@ -57,7 +58,9 @@ export default function UpdatePasswordPage() {
           <button
             type="submit"
             className="w-full rounded-full bg-blue-500 px-8 py-3 text-lg font-semibold transition-colors hover:bg-blue-600"
-            onClick={() => updatePassword.mutateAsync({ password, confirmPassword })}
+            onClick={() =>
+              updatePassword.mutateAsync({ password, confirmPassword })
+            }
             disabled={updatePassword.isPending}
           >
             Passwort ändern

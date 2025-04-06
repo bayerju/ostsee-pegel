@@ -8,57 +8,57 @@ import { tryCatch } from "~/lib/try-catch";
 import { db } from "~/server/db";
 
 export const authRouter = createTRPCRouter({
-  signup: publicProcedure
-    .input(z.object({ email: z.string().email(), password: z.string().min(8) }))
-    .mutation(async ({ input, ctx }) => {
-      const { email, password } = input;
-      const clerk = await clerkClient();
-      const {data: user, error} = await tryCatch(clerk.users.createUser({
-        emailAddress: [email],
-        password: password,
-      }))
-      if (error) {
-        throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: error.message,
-          cause: error,
-        })
-      }
-      if (user.id) {
-        await db.profiles.create({
-          data: {
-            email: email,
-            email_confirmed: false,
-            authId: user.id,
-            phone: "",
-            phone_confirmed: false,
-          },
-        });
+  // signup: publicProcedure
+  //   .input(z.object({ email: z.string().email(), password: z.string().min(8) }))
+  //   .mutation(async ({ input, ctx }) => {
+  //     const { email, password } = input;
+  //     const clerk = await clerkClient();
+  //     const {data: user, error} = await tryCatch(clerk.users.createUser({
+  //       emailAddress: [email],
+  //       password: password,
+  //     }))
+  //     if (error) {
+  //       throw new TRPCError({
+  //         code: "INTERNAL_SERVER_ERROR",
+  //         message: error.message,
+  //         cause: error,
+  //       })
+  //     }
+  //     if (user.id) {
+  //       await db.profiles.create({
+  //         data: {
+  //           email: email,
+  //           email_confirmed: false,
+  //           authId: user.id,
+  //           phone: "",
+  //           phone_confirmed: false,
+  //         },
+  //       });
     
-        // const session = await clerk.sessions
-        // const { data: session, error: sessionError } = await tryCatch(
-        //   clerk.sessions.createSession({
-        //     userId: user.id,
-        //     lastActiveAt: new Date(),
-        //     expireAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
-        //   })
-        // );
+  //       // const session = await clerk.sessions
+  //       // const { data: session, error: sessionError } = await tryCatch(
+  //       //   clerk.sessions.createSession({
+  //       //     userId: user.id,
+  //       //     lastActiveAt: new Date(),
+  //       //     expireAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
+  //       //   })
+  //       // );
 
-        // if (sessionError) {
-        //   throw new TRPCError({
-        //     code: "INTERNAL_SERVER_ERROR",
-        //     message: "Failed to create session",
-        //     cause: sessionError,
-        //   });
-        // }
+  //       // if (sessionError) {
+  //       //   throw new TRPCError({
+  //       //     code: "INTERNAL_SERVER_ERROR",
+  //       //     message: "Failed to create session",
+  //       //     cause: sessionError,
+  //       //   });
+  //       // }
 
-        return {
-          user,
-          // sessionId: session.id,
-          // token: session.token,
-        };
-      }
-    }),
+  //       return {
+  //         user,
+  //         // sessionId: session.id,
+  //         // token: session.token,
+  //       };
+  //     }
+  //   }),
 
   // login: publicProcedure
   //   .input(z.object({ email: z.string().email(), password: z.string().min(8) }))
