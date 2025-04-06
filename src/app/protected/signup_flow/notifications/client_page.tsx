@@ -4,7 +4,6 @@ import { useState } from "react";
 import { NotificationOption } from "./_components/NotificationOption";
 import { EmailSetup } from "./_components/EmailSetup";
 import { TelegramSetup } from "./_components/TelegramSetup";
-import { setTelegram } from "~/app/notifications/actions";
 
 type NotificationMethod = "email" | "telegram" | "whatsapp" | "sms" | null;
 
@@ -31,7 +30,6 @@ export function ClientNotificationsSetupPage({
 
         {/* {!selectedMethod ? ( */}
         <div className="space-y-4">
-
           <NotificationOption
             title="Telegram"
             description="Erhalten Sie sofortige Benachrichtigungen direkt in Telegram"
@@ -40,7 +38,6 @@ export function ClientNotificationsSetupPage({
           >
             <TelegramSetup
               onBack={() => setSelectedMethod(null)}
-              onSubmit={setTelegram}
               initialOtp={initialOtp}
               recreateOTP={recreateOTP}
             />
@@ -73,24 +70,6 @@ export function ClientNotificationsSetupPage({
             comingSoon
           />
         </div>
-        {/* ) : (
-          <form className="space-y-6">
-            {selectedMethod === "email" && (
-              <EmailSetup onBack={() => setSelectedMethod(null)} />
-            )}
-            {selectedMethod === "telegram" && (
-              <TelegramSetup onBack={() => setSelectedMethod(null)} />
-            )}
-
-            <button
-              formAction={setNotifications}
-              type="submit"
-              className="w-full rounded-full bg-blue-500 px-8 py-3 text-lg font-semibold transition-colors hover:bg-blue-600"
-            >
-              Einrichtung abschließen
-            </button>
-          </form>
-        )} */}
       </div>
     </main>
   );

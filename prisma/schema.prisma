@@ -1,100 +1,166 @@
+
 generator client {
-  provider        = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
   // directUrl = env("DIRECT_URL")
 }
 
-model profiles {
-  id              BigInt   @id @default(autoincrement())
-  authId          String   @unique
-  email           String?
-  phone           String? 
-  email_confirmed Boolean  @default(false)
-  phone_confirmed Boolean  @default(false)
-  warnings warnings[]
-  telegramService telegram_services?
-  telegram_username String?
-  otps otps[]
-}
+// model profiles {
+//   id                BigInt             @id @default(autoincrement())
+//   authId            String             @unique
+//   email             String?
+//   phone             String?
+//   email_confirmed   Boolean            @default(false)
+//   phone_confirmed   Boolean            @default(false)
+//   warnings          warnings[]
+//   telegramService   telegram_services?
+//   telegram_username String?
+//   otps              otps[]
+// }
 
 model locations {
-  id                BigInt              @id @default(autoincrement())
-  name              String              @unique
-  display_name      String?
-  description       String?
+  id           BigInt        @id @default(autoincrement())
+  name         String        @unique
+  display_name String?
+  description  String?
   // water_predictions water_location_predictions[]
-  predictions predictions[]
+  predictions  predictions[]
+
   @@index([name], map: "idx_locations_name")
 }
 
 model warnings {
-  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  user_id String
-  user profiles @relation(fields: [user_id], references: [authId])
-  regions String[]
+  id                 String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id            String
+  user               User  @relation(fields: [user_id], references: [id])
+  regions            String[]
   highWaterThreshold Int
-  lowWaterThreshold Int
-  last_notified DateTime? @db.Timestamptz(6)
-  created_at DateTime @default(now()) @db.Timestamptz(6)
-  updated_at   DateTime?      @default(now()) @db.Timestamptz(6)
+  lowWaterThreshold  Int
+  last_notified      DateTime? @db.Timestamptz(6)
+  created_at         DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime? @default(now()) @db.Timestamptz(6)
 
   @@index([user_id], map: "idx_warnings_user_id")
 }
 
 model otps {
-  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  code String @unique
-  userId String
-  user profiles @relation(fields: [userId], references: [authId])
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  code      String   @unique
+  userId    String
+  user      User @relation(fields: [userId], references: [id])
   expiresAt DateTime @db.Timestamptz(6)
   createdAt DateTime @default(now()) @db.Timestamptz(6)
-  isActive Boolean @default(true)
+  isActive  Boolean  @default(true)
 }
 
 model telegram_services {
-  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId String @unique
-  user profiles @relation(fields: [userId], references: [authId])
-  chatId String
-  username String?
-  telegramUserId String?
+  id               String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId           String              @unique
+  user             User            @relation(fields: [userId], references: [id])
+  chatId           String
+  username         String?
+  telegramUserId   String?
   telegramMessages telegram_messages[]
-  createdAt DateTime @default(now()) @db.Timestamptz(6)
-  updatedAt DateTime @default(now()) @db.Timestamptz(6)
+  createdAt        DateTime            @default(now()) @db.Timestamptz(6)
+  updatedAt        DateTime            @default(now()) @db.Timestamptz(6)
 
 }
 
 model telegram_messages {
-  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  telegramServiceId String? @db.Uuid
-  telegramService telegram_services? @relation(fields: [telegramServiceId], references: [id])
-  messageId String
-  updateId String
-  telegramUserId String?
-  messageText String?
-  chatId String?
+  id                String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  telegramServiceId String?            @db.Uuid
+  telegramService   telegram_services? @relation(fields: [telegramServiceId], references: [id])
+  messageId         String
+  updateId          String
+  telegramUserId    String?
+  messageText       String?
+  chatId            String?
   telegram_username String?
-  createdAt DateTime @default(now()) @db.Timestamptz(6)
-  updatedAt DateTime @default(now()) @db.Timestamptz(6)
+  createdAt         DateTime           @default(now()) @db.Timestamptz(6)
+  updatedAt         DateTime           @default(now()) @db.Timestamptz(6)
 
 }
 
 model predictions {
-    id              BigInt     @id @default(autoincrement())
-    // water_location_predictions_id     BigInt
-    predicted_level_min Decimal @db.Decimal
-    predicted_level_max Decimal @db.Decimal
-    prediction_time String
-    last_data_update String
-    location_id BigInt
-    location locations @relation(fields: [location_id], references: [id])
-    createdAt       DateTime @default(now()) @db.Timestamptz(6)
-    updatedAt       DateTime @default(now()) @db.Timestamptz(6)
-    // prediction_time DateTime @db.Timestamptz(6)
-    // water_location_predictions        water_location_predictions @relation(fields: [water_location_predictions_id], references: [id])
+  id                  BigInt    @id @default(autoincrement())
+  // water_location_predictions_id     BigInt
+  predicted_level_min Decimal   @db.Decimal
+  predicted_level_max Decimal   @db.Decimal
+  prediction_time     String
+  last_data_update    String
+  location_id         BigInt
+  location            locations @relation(fields: [location_id], references: [id])
+  createdAt           DateTime  @default(now()) @db.Timestamptz(6)
+  updatedAt           DateTime  @default(now()) @db.Timestamptz(6)
+  // prediction_time DateTime @db.Timestamptz(6)
+  // water_location_predictions        water_location_predictions @relation(fields: [water_location_predictions_id], references: [id])
 
+}
+
+model User {
+  id            String    @id
+  name          String
+  email         String
+  emailVerified Boolean
+  image         String?
+  createdAt     DateTime
+  updatedAt     DateTime
+  sessions      Session[]
+  accounts      Account[]
+  warnings          warnings[]
+  telegramService   telegram_services?
+  telegram_username String?
+  otps              otps[]
+
+  @@unique([email])
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime
+  updatedAt DateTime
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime
+  updatedAt             DateTime
+
+  @@map("account")
+}
+
+model Verification {
+  id         String    @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime?
+  updatedAt  DateTime?
+
+  @@map("verification")
 }
