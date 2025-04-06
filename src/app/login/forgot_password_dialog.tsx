@@ -11,14 +11,10 @@ import {
 import { Button } from "~/components/ui/button";
 import { useEffect, useState } from "react";
 import { Input } from "~/components/ui/input";
-import { useSignIn } from "@clerk/nextjs";
-import { tryCatch } from "~/lib/try-catch";
-import { toast } from "sonner";
 import { authClient } from "~/lib/auth-client";
 
 export function ForgotPasswordDialog(props: { email: string }) {
   const [email, setEmail] = useState(props.email);
-  // const { isLoaded, signIn } = useSignIn();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isSuccess, setIsSuccess] = useState(false);

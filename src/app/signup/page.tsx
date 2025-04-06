@@ -7,7 +7,6 @@ import { z } from "zod";
 import { useState } from "react";
 // import { api } from "~/trpc/server";
 import { api } from "~/trpc/react";
-import { useSignIn } from "@clerk/nextjs";
 import { authClient } from "~/lib/auth-client";
 import { useRouter } from "next/navigation";
 export default function SignupPage() {

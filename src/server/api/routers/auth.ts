@@ -3,7 +3,6 @@ import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { createClient } from "~/lib/supabase/server";
 // import { redirect } from "next/navigation";
 import { TRPCError } from "@trpc/server";
-import { clerkClient } from '@clerk/nextjs/server';
 import { tryCatch } from "~/lib/try-catch";
 import { db } from "~/server/db";
 
@@ -66,40 +65,40 @@ export const authRouter = createTRPCRouter({
   //     const { email, password } = input;
   //     const clerk = await clerkClient();
 
-  resetPassword: publicProcedure
-    .input(z.object({ email: z.string().email() }))
-    .mutation(async ({ input, ctx }) => {
-      const { email } = input;
-      const supabase = await createClient();
-      const { data, error } = await supabase.auth.resetPasswordForEmail(email);
-      if (error) {
-         throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: "Failed to reset password",
-        });
-      }
-    //   redirect("/auth/confirm");
-      return data;
-    }),
+  // resetPassword: publicProcedure
+  //   .input(z.object({ email: z.string().email() }))
+  //   .mutation(async ({ input, ctx }) => {
+  //     const { email } = input;
+  //     const supabase = await createClient();
+  //     const { data, error } = await supabase.auth.resetPasswordForEmail(email);
+  //     if (error) {
+  //        throw new TRPCError({
+  //         code: "INTERNAL_SERVER_ERROR",
+  //         message: "Failed to reset password",
+  //       });
+  //     }
+  //   //   redirect("/auth/confirm");
+  //     return data;
+  //   }),
 
-    changePassword: publicProcedure
-    .input(z.object({ password: z.string().min(8), confirmPassword: z.string().min(8) }))
-    .mutation(async ({ input, ctx }) => {
-        const { password, confirmPassword } = input;
-        if (password !== confirmPassword) {
-            throw new TRPCError({
-                code: "BAD_REQUEST",
-                message: "Passwords do not match",
-            })
-        }
-        const supabase = await createClient();
-        const { data, error } = await supabase.auth.updateUser({ password });
-        if (error && error.code !== "same_password") {
-            throw new TRPCError({
-                code: "INTERNAL_SERVER_ERROR",
-                message: error.message,
-            })
-        }
-        return data;
-    })
+    // changePassword: publicProcedure
+    // .input(z.object({ password: z.string().min(8), confirmPassword: z.string().min(8) }))
+    // .mutation(async ({ input, ctx }) => {
+    //     const { password, confirmPassword } = input;
+    //     if (password !== confirmPassword) {
+    //         throw new TRPCError({
+    //             code: "BAD_REQUEST",
+    //             message: "Passwords do not match",
+    //         })
+    //     }
+    //     const supabase = await createClient();
+    //     const { data, error } = await supabase.auth.updateUser({ password });
+    //     if (error && error.code !== "same_password") {
+    //         throw new TRPCError({
+    //             code: "INTERNAL_SERVER_ERROR",
+    //             message: error.message,
+    //         })
+    //     }
+    //     return data;
+    // })
 });

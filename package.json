@@ -23,7 +23,6 @@
     "maildev": "email dev --port 3009 --dir src/lib/email/templates"
   },
   "dependencies": {
-    "@clerk/nextjs": "^6.12.12",
     "@prisma/client": "^5.14.0",
     "@radix-ui/react-dialog": "^1.1.6",
     "@radix-ui/react-slot": "^1.1.2",
