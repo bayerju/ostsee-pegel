@@ -1,7 +1,9 @@
 "use server";
 
+import { auth } from "~/lib/auth";
 import { db } from "~/server/db";
-import { createClient } from "~/lib/supabase/server";
+import { headers } from "next/headers";
+// import { createClient } from "~/lib/supabase/server";
 
 function generateOTP(length: number): string {
   const digits = "0123456789";
@@ -15,10 +17,14 @@ function generateOTP(length: number): string {
 }
 
 export async function createNotificationOTP() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  // const supabase = await createClient();
+  // const {
+  //   data: { user },
+  // } = await supabase.auth.getUser();
+
+  const session = await auth.api.getSession({headers: await headers()});
+
+  const user = session?.user;
 
   if (!user) {
     throw new Error("User not found");

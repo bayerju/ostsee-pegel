@@ -1,7 +1,5 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { createClient } from "~/lib/supabase/server";
-// import { redirect } from "next/navigation";
 import { TRPCError } from "@trpc/server";
 import { tryCatch } from "~/lib/try-catch";
 import { db } from "~/server/db";

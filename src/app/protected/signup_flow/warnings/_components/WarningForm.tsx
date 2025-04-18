@@ -6,7 +6,7 @@ import { WaterLevelSlider } from "./WaterLevelSlider";
 import { setFirstWarning } from "~/app/protected/warnings/actions";
 import { toast } from "sonner";
 import { api } from "~/trpc/react";
-import { redirect, usePathname } from "next/navigation";
+import { redirect, usePathname, useRouter } from "next/navigation";
 import { isNil } from "lodash";
 
 interface WarningFormProps {
@@ -25,14 +25,15 @@ export function WarningForm({
   submitButtonText = "Weiter zu Benachrichtigungen",
   lastWarning,
 }: WarningFormProps) {
+  const router = useRouter();
   const { data: firstWarningQuery } = api.warnings.getFirstWarning.useQuery();
   const pathName = usePathname();
   const submitWarningMutation = api.warnings.updateWarning.useMutation({
     onSuccess: (data) => {
-      toast.success("Erfolgreich gespeichert");
       // invalidate
-      if (pathName.endsWith("/signup/warnings")) {
-        redirect("/signup/notifications");
+      toast.success(`gespeichert`);
+      if (pathName.endsWith("/protected/signup_flow/warnings")) {
+        router.push("/protected/signup_flow/notifications");
       }
     },
   });
@@ -63,9 +64,13 @@ export function WarningForm({
   //   }
   // }, [firstWarningQuery]);
 
-  if (!firstWarningQuery) {
+  if (firstWarningQuery === undefined) {
     return <div>Loading...</div>;
   }
+
+  // if (firstWarningQuery === null) {
+  //   redirect("/protected/signup_flow/warnings");
+  // }
 
   return (
     <form className="space-y-6">

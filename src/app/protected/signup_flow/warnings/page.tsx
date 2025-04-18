@@ -1,16 +1,14 @@
-import { createClient } from "~/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { db } from "~/server/db";
 import { WarningForm } from "./_components/WarningForm";
+import { auth } from "~/lib/auth";
+import { headers } from "next/headers";
 
 export default async function WarningsSetupPage() {
-  const supabase = await createClient();
+  const session = await auth.api.getSession({headers: await headers()});
+  const user = session?.user;
 
-  const {
-    data: { user },
-    error: authError,
-  } = await supabase.auth.getUser();
-  if (authError || !user) {
+  if (!user) {
     redirect("/login");
   }
 

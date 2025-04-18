@@ -14,9 +14,11 @@ export const warningsRouter = createTRPCRouter({
           user_id: user.id,
         },
       });
+
+      console.log("firstWarningOfUser", firstWarningOfUser);
       const newWarning = await ctx.db.warnings.upsert({
         where: {
-          id: firstWarningOfUser?.id ?? undefined,
+          id: firstWarningOfUser?.id ?? "00000000-0000-0000-0000-000000000000",
         },
         update: {
           regions,
