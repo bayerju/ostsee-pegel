@@ -7,14 +7,12 @@ import Link from "next/link";
 
 interface TelegramSetupProps {
   onBack: () => void;
-  onSubmit: (formData: FormData) => void;
   initialOtp: string;
   recreateOTP: () => Promise<string>;
 }
 
 export function TelegramSetup({
   onBack,
-  onSubmit,
   initialOtp,
   recreateOTP,
 }: TelegramSetupProps) {

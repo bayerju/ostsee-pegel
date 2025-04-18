@@ -10,6 +10,8 @@ interface WaterLevelSliderProps {
   max: string;
   standardText?: string;
   showPlus?: boolean;
+  value: string;
+  onChange: (value: string) => void;
 }
 
 export function WaterLevelSlider({
@@ -20,8 +22,10 @@ export function WaterLevelSlider({
   max,
   standardText,
   showPlus = false,
+  value,
+  onChange,
 }: WaterLevelSliderProps) {
-  const [value, setValue] = useState(defaultValue);
+  const [localValue, setLocalValue] = useState(defaultValue);
 
   return (
     <div>
@@ -39,7 +43,7 @@ export function WaterLevelSlider({
           min={min}
           max={max}
           value={value}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={(e) => onChange(e.target.value)}
           className="w-full accent-blue-400"
         />
         <span className="min-w-[4rem] text-center text-blue-300">
