@@ -2,7 +2,7 @@ import * as cheerio from "cheerio";
 import fs from "fs";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
-
+import https, { request } from "https";
 export const BSH_URL = "https://www2.bsh.de/aktdat/wvd/ostsee/Ostsee.html";
 
 interface WaterLevelRange {
@@ -38,39 +38,64 @@ export interface ScrapedData {
 }
 
 export async function scrapeWebsite(): Promise<ScrapedData> {
-  const response = await fetch(BSH_URL);
-
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-
-  const html = await response.text();
-  const $ = cheerio.load(html) as cheerio.CheerioAPI;
-
-  const tableData: string[][] = [];
-
-  $("table tbody tr").each((_, row) => {
-    const rowData: string[] = [];
-    $(row)
-      .find("th, td")
-      .each((_, cell) => {
-        const text = $(cell).text().trim();
-        rowData.push(text);
-      });
-
-    if (rowData.length === 2) return;
-    if (rowData.length > 5) {
-      filterIndexesInPlace(rowData, [0, 3, 6, 9, 12]);
-    }
-    tableData.push(rowData);
+  // TODO: Remove this once we have a proper SSL certificate
+  const agent = new https.Agent({
+    rejectUnauthorized: false,
   });
 
-  const lastUpdated = $("table caption small")
-    .text()
-    .replace("Vorhersage erstellt am", "")
-    .trim();
+  return new Promise((resolve, reject) => {
+    const req = request(BSH_URL, {
+      agent,
+      headers: {
+        'User-Agent': 'Mozilla/5.0' // Some sites require a user agent
+      }
+    }, (res) => {
+      if (res.statusCode !== 200) {
+        reject(new Error(`HTTP error! status: ${res.statusCode}`));
+        return;
+      }
 
-  return { lastUpdated, data: tableData };
+      let data = '';
+      res.on('data', (chunk) => {
+        data += chunk;
+      });
+
+      res.on('end', () => {
+        const $ = cheerio.load(data) as cheerio.CheerioAPI;
+
+        const tableData: string[][] = [];
+
+        $("table tbody tr").each((_, row) => {
+          const rowData: string[] = [];
+          $(row)
+            .find("th, td")
+            .each((_, cell) => {
+              const text = $(cell).text().trim();
+              rowData.push(text);
+            });
+
+          if (rowData.length === 2) return;
+          if (rowData.length > 5) {
+            filterIndexesInPlace(rowData, [0, 3, 6, 9, 12]);
+          }
+          tableData.push(rowData);
+        });
+
+        const lastUpdated = $("table caption small")
+          .text()
+          .replace("Vorhersage erstellt am", "")
+          .trim();
+
+        resolve({ lastUpdated, data: tableData });
+      });
+    });
+
+    req.on('error', (error) => {
+      reject(error);
+    });
+
+    req.end();
+  });
 }
 
 // Run the script
