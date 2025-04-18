@@ -117,7 +117,7 @@ export default function SignupPage() {
                   onSuccess: (data) => {
                     setIsPending(false);
                     router.refresh();
-                    router.push("/signup/warnings");
+                    router.push("/protected/signup_flow/warnings");
                     console.log("data", data);
                   },
                   onError: (error) => {
