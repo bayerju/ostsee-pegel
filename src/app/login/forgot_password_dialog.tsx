@@ -25,7 +25,7 @@ export function ForgotPasswordDialog(props: { email: string }) {
     console.log("ForgotPasswordDialog email changed", email);
     setEmail(props.email);
   }, [props.email]);
-  if (isLoading) return <div>Loading...</div>;
+  // if (isLoading) return <div>Loading...</div>;
   return (
     <>
       <DialogTrigger asChild>
