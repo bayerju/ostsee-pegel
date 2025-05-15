@@ -13,6 +13,11 @@ export const env = createEnv({
       .default("development"),
     // SENDGRID_API_KEY: z.string(),
     PLUNK_API_KEY: z.string(),
+    IMPRINT_NAME: z.string(),
+    IMPRINT_ADDRESS: z.string(),
+    IMPRINT_CITY: z.string(),
+    IMPRINT_PHONE: z.string(),
+    IMPRINT_EMAIL: z.string(),
   },
 
   /**
@@ -33,6 +38,11 @@ export const env = createEnv({
     NODE_ENV: process.env.NODE_ENV,
     // SENDGRID_API_KEY: process.env.SENDGRID_API_KEY,
     PLUNK_API_KEY: process.env.PLUNK_API_KEY,
+    IMPRINT_NAME: process.env.IMPRINT_NAME,
+    IMPRINT_ADDRESS: process.env.IMPRINT_ADDRESS,
+    IMPRINT_CITY: process.env.IMPRINT_CITY,
+    IMPRINT_PHONE: process.env.IMPRINT_PHONE,
+    IMPRINT_EMAIL: process.env.IMPRINT_EMAIL,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**

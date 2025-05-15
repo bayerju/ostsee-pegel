@@ -7,6 +7,7 @@ import { Toaster } from "sonner";
 
 import { PostHogProvider } from "~/components/providers/posthog";
 import { Nav } from "~/components/nav/nav";
+import { Footer } from "~/components/footer/footer";
 
 export const metadata: Metadata = {
   title: "Hochwasser-Warnung",
@@ -24,7 +25,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
-      <body>
+      <body className="flex min-h-screen flex-col">
         <PostHogProvider>
           {/* <header className="flex h-16 items-center justify-end gap-4 p-4">
               <SignedOut>
@@ -35,8 +36,13 @@ export default async function RootLayout({
                 <UserButton />
               </SignedIn>
             </header> */}
-          <Nav />
-          <TRPCReactProvider>{children}</TRPCReactProvider>
+          <TRPCReactProvider>
+            <div className="min-h-screen flex-1">
+              <Nav />
+              {children}
+            </div>
+            <Footer />
+          </TRPCReactProvider>
           <Toaster />
         </PostHogProvider>
       </body>

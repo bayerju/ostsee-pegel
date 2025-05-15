@@ -24,7 +24,9 @@
   },
   "dependencies": {
     "@prisma/client": "^5.14.0",
+    "@radix-ui/react-collapsible": "^1.1.8",
     "@radix-ui/react-dialog": "^1.1.6",
+    "@radix-ui/react-navigation-menu": "^1.2.10",
     "@radix-ui/react-slot": "^1.1.2",
     "@react-email/components": "0.0.36",
     "@react-email/render": "^1.0.6",
