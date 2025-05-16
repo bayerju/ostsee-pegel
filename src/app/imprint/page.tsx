@@ -6,7 +6,6 @@ export default async function Imprint() {
     name: env.IMPRINT_NAME,
     address: env.IMPRINT_ADDRESS,
     city: env.IMPRINT_CITY,
-    phone: env.IMPRINT_PHONE,
     email: env.IMPRINT_EMAIL,
   };
 
@@ -23,7 +22,6 @@ export default async function Imprint() {
 
       <section className="mb-6">
         <h2 className="mb-4 text-xl font-semibold">Kontakt</h2>
-        <p>Telefon: {imprint.phone}</p>
         <p>E-Mail: {imprint.email}</p>
       </section>
 

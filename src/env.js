@@ -16,7 +16,6 @@ export const env = createEnv({
     IMPRINT_NAME: z.string(),
     IMPRINT_ADDRESS: z.string(),
     IMPRINT_CITY: z.string(),
-    IMPRINT_PHONE: z.string(),
     IMPRINT_EMAIL: z.string(),
   },
 
@@ -41,7 +40,6 @@ export const env = createEnv({
     IMPRINT_NAME: process.env.IMPRINT_NAME,
     IMPRINT_ADDRESS: process.env.IMPRINT_ADDRESS,
     IMPRINT_CITY: process.env.IMPRINT_CITY,
-    IMPRINT_PHONE: process.env.IMPRINT_PHONE,
     IMPRINT_EMAIL: process.env.IMPRINT_EMAIL,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
