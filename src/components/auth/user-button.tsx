@@ -174,7 +174,10 @@ export function UserButton({
               </Link>
             )}
 
-            <SignOutButton />
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>
+              <SignOutButton />
+            </DropdownMenuItem>
           </>
         )}
       </DropdownMenuContent>

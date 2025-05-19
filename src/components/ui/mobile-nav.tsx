@@ -17,20 +17,6 @@ export type MenuItem = {
   submenu?: MenuItem[];
 };
 
-const menuItems: MenuItem[] = [
-  { title: "Home", href: "/" },
-  { title: "About", href: "/about" },
-  {
-    title: "Services",
-    submenu: [
-      { title: "Web Development", href: "/services/web-development" },
-      { title: "Mobile Apps", href: "/services/mobile-apps" },
-      { title: "Consulting", href: "/services/consulting" },
-    ],
-  },
-  { title: "Contact", href: "/contact" },
-];
-
 const MenuItemComponent: React.FC<{ item: MenuItem; depth?: number }> = ({
   item,
   depth = 0,

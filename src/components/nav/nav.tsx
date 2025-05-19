@@ -15,7 +15,7 @@ import HamburgerMenu from "~/components/ui/mobile-nav";
 import { UserButton } from "../auth/user-button";
 
 const menuItems = [
-  { title: "Home", href: "/" },
+  { title: "Startseite", href: "/" },
   { title: "Preise", href: "/pricing" },
   { title: "FAQ", href: "/faq" },
 ];
