@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
@@ -46,6 +47,19 @@ export default function SignupPage() {
         <h1 className="mb-8 text-3xl font-bold">Konto erstellen</h1>
 
         <form className="space-y-6">
+          {/* Name */}
+          <div>
+            <label className="mb-2 block text-lg">Name</label>
+            <input
+              type="text"
+              name="name"
+              id="name"
+              className="w-full rounded-lg border border-white/20 bg-white/10 p-3 focus:border-blue-400 focus:outline-none"
+              required
+              onChange={(e) => setName(e.target.value)}
+              value={name}
+            />
+          </div>
           {/* Email */}
           <div>
             <label className="mb-2 block text-lg">E-Mail Adresse</label>
@@ -107,7 +121,7 @@ export default function SignupPage() {
                 {
                   email: email,
                   password: password,
-                  name: "",
+                  name: name,
                 },
                 {
                   onRequest: (ctx) => {
@@ -129,7 +143,7 @@ export default function SignupPage() {
               );
               // signup.mutate({ email, password });
             }}
-            disabled={isPending}
+            disabled={isPending || !name || !email || !password}
           >
             Weiter
           </button>
