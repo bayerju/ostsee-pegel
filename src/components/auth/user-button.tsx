@@ -7,7 +7,10 @@ import {
   LogOutIcon,
   PlusCircleIcon,
   SettingsIcon,
+  TrashIcon,
   UserRoundPlus,
+  BellIcon,
+  WavesIcon,
 } from "lucide-react";
 import {
   Fragment,
@@ -103,9 +106,7 @@ export function UserButton({
     <DropdownMenu>
       <DropdownMenuTrigger
         asChild={size === "full"}
-        className={cn(
-          size === "icon" && "rounded-full",
-        )}
+        className={cn(size === "icon" && "rounded-full")}
       >
         <UserAvatar
           key={user?.image}
@@ -166,12 +167,26 @@ export function UserButton({
         ) : (
           <>
             {!disableDefaultLinks && (
-              <Link href={`/account/settings`}>
-                <DropdownMenuItem>
-                  <SettingsIcon />
-                  Einstellungen
-                </DropdownMenuItem>
-              </Link>
+              <>
+                <Link href={`/protected/settings`}>
+                  <DropdownMenuItem>
+                    <WavesIcon />
+                    Warnung konfigurieren
+                  </DropdownMenuItem>
+                </Link>
+                <Link href={`/protected/notifications`}>
+                  <DropdownMenuItem>
+                    <BellIcon />
+                    Benachrichtigungen konfigurieren
+                  </DropdownMenuItem>
+                </Link>
+                <Link href={`/account/settings`}>
+                  <DropdownMenuItem>
+                    <SettingsIcon />
+                    Account-Einstellungen
+                  </DropdownMenuItem>
+                </Link>
+              </>
             )}
 
             <DropdownMenuSeparator />

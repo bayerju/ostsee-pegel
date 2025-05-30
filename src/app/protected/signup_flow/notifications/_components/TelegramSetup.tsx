@@ -4,7 +4,7 @@ import { useState, useTransition } from "react";
 import { Button } from "~/components/ui/button";
 import QRCode from "react-qr-code";
 import Link from "next/link";
-
+import { env } from "~/env";
 interface TelegramSetupProps {
   onBack: () => void;
   initialOtp: string;
@@ -19,6 +19,10 @@ export function TelegramSetup({
   const [telegramUsername, setTelegramUsername] = useState("");
   const [currentOtp, setCurrentOtp] = useState(initialOtp);
   const [isPending, startTransition] = useTransition();
+  const botName =
+    env.NEXT_PUBLIC_ENV === "production"
+      ? "WasserstandsWarnungBot"
+      : "ostseepegeldevBot";
 
   return (
     <div className="space-y-4 rounded-lg border border-white/20 bg-white/5 p-6">
@@ -36,11 +40,11 @@ export function TelegramSetup({
       <div className="space-y-6">
         <div className="flex flex-col items-center gap-4 rounded-lg bg-white p-6">
           <QRCode
-            value={`https://t.me/WasserstandsWarnungBot?text=${currentOtp}`}
+            value={`https://t.me/${botName}?text=${currentOtp}`}
             className="h-48 w-48"
           />
           <Link
-            href={`https://t.me/WasserstandsWarnungBot?text=${currentOtp}`}
+            href={`https://t.me/${botName}?text=${currentOtp}`}
             className="text-sm text-blue-600 hover:text-blue-800 disabled:opacity-50"
           >
             Öffne den Link mit Telegram

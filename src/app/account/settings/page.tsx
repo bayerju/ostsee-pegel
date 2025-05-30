@@ -30,17 +30,17 @@ export default function SettingsPage() {
       await authClient.updateUser({
         name,
       });
-      toast.success("Name updated successfully");
+      toast.success("Name erfolgreich aktualisiert");
     } catch (error) {
-      console.error("Failed to update name:", error);
-      toast.error("Failed to update name");
+      console.error("Fehler beim Aktualisieren des Namens:", error);
+      toast.error("Fehler beim Aktualisieren des Namens");
     }
   };
 
   const handleDeleteAccount = async () => {
     if (
       confirm(
-        "Are you sure you want to delete your account? This action cannot be undone.",
+        "Sind Sie sicher, dass Sie Ihr Konto löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
       )
     ) {
       try {
@@ -49,14 +49,14 @@ export default function SettingsPage() {
           fetchOptions: {
             onSuccess: () => {
               router.refresh();
-              toast.success("Account deleted successfully");
+              toast.success("Konto erfolgreich gelöscht");
               router.push("/");
             },
           },
         });
       } catch (error) {
-        console.error("Failed to delete account:", error);
-        toast.error("Failed to delete account");
+        console.error("Fehler beim Löschen des Kontos:", error);
+        toast.error("Fehler beim Löschen des Kontos");
       }
     }
   };
@@ -66,7 +66,7 @@ export default function SettingsPage() {
       <Card className="border border-white/20 bg-white/5 shadow-lg backdrop-blur-lg">
         <CardHeader className="px-4 sm:px-6">
           <CardTitle className="text-xl font-bold sm:text-2xl">
-            Account Settings
+            Kontoeinstellungen
           </CardTitle>
         </CardHeader>
         <CardContent className="px-4 sm:px-6">
@@ -93,28 +93,28 @@ export default function SettingsPage() {
                   id="name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="Enter your name"
+                  placeholder="Geben Sie Ihren Namen ein"
                   className="border-white/20 bg-white/5 text-white placeholder:text-white/50"
                 />
                 <Button
                   onClick={handleUpdateName}
                   className="border-white/20 bg-white/10 text-white hover:bg-white/20"
                 >
-                  Update
+                  Aktualisieren
                 </Button>
               </div>
             </div>
 
             <div className="border-t border-white/20 pt-6">
               <h3 className="mb-4 text-lg font-semibold text-red-400">
-                Danger Zone
+                Gefahrenbereich
               </h3>
               <Button
                 variant="destructive"
                 onClick={handleDeleteAccount}
                 className="border-red-500/50 bg-red-500/50 hover:bg-red-500/70"
               >
-                Delete Account
+                Konto löschen
               </Button>
             </div>
           </div>
