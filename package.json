@@ -52,7 +52,6 @@
     "nodemailer": "^6.10.0",
     "postgres": "^3.4.5",
     "posthog-js": "^1.233.0",
-    "puppeteer": "^24.1.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-qr-code": "^2.0.15",
