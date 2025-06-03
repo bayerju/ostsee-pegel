@@ -25,6 +25,7 @@ export const env = createEnv({
    * `NEXT_PUBLIC_`.
    */
   client: {
+    NEXT_PUBLIC_ENV: z.enum(["production", "development"]).default("development"),
     // NEXT_PUBLIC_CLIENTVAR: z.string(),
   },
 
@@ -35,6 +36,7 @@ export const env = createEnv({
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
     NODE_ENV: process.env.NODE_ENV,
+    NEXT_PUBLIC_ENV: process.env.NEXT_PUBLIC_ENV,
     // SENDGRID_API_KEY: process.env.SENDGRID_API_KEY,
     PLUNK_API_KEY: process.env.PLUNK_API_KEY,
     IMPRINT_NAME: process.env.IMPRINT_NAME,

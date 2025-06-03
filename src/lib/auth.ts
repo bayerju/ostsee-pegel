@@ -10,6 +10,11 @@ export const auth = betterAuth({
     database: prismaAdapter(prisma, {
         provider: "postgresql", // or "mysql", "postgresql", ...etc
     }),
+    user: {
+        deleteUser: {
+            enabled: true,
+        },
+    },
     emailAndPassword: {  
         enabled: true,
         sendResetPassword: async ({user, url, token}) => {

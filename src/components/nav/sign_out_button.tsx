@@ -2,8 +2,9 @@
 
 import { useRouter } from "next/navigation";
 import { authClient } from "~/lib/auth-client";
+import { cn } from "~/lib/utils";
 
-export function SignOutButton() {
+export function SignOutButton(props: { className?: string }) {
   const router = useRouter();
   return (
     <button
@@ -17,7 +18,10 @@ export function SignOutButton() {
           },
         })
       }
-      className="rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-sm text-white transition-colors hover:bg-white/20"
+      className={cn(
+        "rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-sm text-black transition-colors hover:bg-white/20",
+        props.className
+      )}
     >
       Abmelden
     </button>

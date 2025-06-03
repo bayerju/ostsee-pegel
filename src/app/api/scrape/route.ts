@@ -1,5 +1,3 @@
-import { NextResponse } from "next/server";
-import puppeteer from "puppeteer";
 import { db } from "~/server/db";
 import { scrapeWebsite } from "~/scripts/scrape";
 import type waterLevels from "~/scripts/water_levels.json";

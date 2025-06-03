@@ -3,9 +3,9 @@ interface NotificationOptionProps {
   description: string;
   isSelected?: boolean;
   children?: React.ReactNode;
-  isPremium?: boolean;
-  price?: string;
   disabled?: boolean;
+  isActive?: boolean;
+  isSetup?: boolean;
   onClick?: () => void;
   comingSoon?: boolean;
 }
@@ -14,11 +14,11 @@ export function NotificationOption({
   title,
   description,
   isSelected,
-  isPremium,
-  price,
   onClick,
   children,
   comingSoon,
+  isActive,
+  isSetup,
 }: NotificationOptionProps) {
   if (!isSelected) {
     return (
@@ -40,15 +40,18 @@ export function NotificationOption({
           <h2 className="text-xl font-semibold">{title}</h2>
           <p className="mt-1 text-sm text-gray-300">{description}</p>
         </div>
-        {!comingSoon &&
-          (isPremium ? (
-            <div className="text-right">
-              <div className="text-sm text-yellow-400">Premium</div>
-              <div className="text-sm text-gray-300">{price}</div>
-            </div>
-          ) : (
-            <span className="text-sm text-green-400">Kostenlos</span>
-          ))}
+        {!comingSoon && isSetup && (
+          <span
+            className={`text-sm ${
+              isActive ? "text-green-400" : "text-red-400"
+            }`}
+          >
+            {isActive ? "Aktiv" : "Inaktiv"}
+          </span>
+        )}
+        {!comingSoon && !isSetup && (
+          <span className="text-sm text-gray-300">Nicht eingerichtet</span>
+        )}
       </button>
     );
   }

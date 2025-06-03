@@ -12,9 +12,10 @@ import {
   NavigationMenuLink,
 } from "~/components/ui/navigation-menu";
 import HamburgerMenu from "~/components/ui/mobile-nav";
+import { UserButton } from "../auth/user-button";
 
 const menuItems = [
-  { title: "Home", href: "/" },
+  { title: "Startseite", href: "/" },
   { title: "Preise", href: "/pricing" },
   { title: "FAQ", href: "/faq" },
 ];
@@ -48,7 +49,7 @@ export function Nav() {
       </NavigationMenu>
       <HamburgerMenu menuItems={menuItems} />
 
-      {session?.data?.user ? <SignOutButton /> : <SignInButton />}
+      {session?.data?.user ? <UserButton /> : <SignInButton />}
     </div>
   );
 }

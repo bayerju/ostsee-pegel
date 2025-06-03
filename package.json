@@ -24,8 +24,10 @@
   },
   "dependencies": {
     "@prisma/client": "^5.14.0",
+    "@radix-ui/react-avatar": "^1.1.9",
     "@radix-ui/react-collapsible": "^1.1.8",
     "@radix-ui/react-dialog": "^1.1.6",
+    "@radix-ui/react-dropdown-menu": "^2.1.14",
     "@radix-ui/react-navigation-menu": "^1.2.10",
     "@radix-ui/react-slot": "^1.1.2",
     "@react-email/components": "0.0.36",
@@ -50,7 +52,6 @@
     "nodemailer": "^6.10.0",
     "postgres": "^3.4.5",
     "posthog-js": "^1.233.0",
-    "puppeteer": "^24.1.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-qr-code": "^2.0.15",
