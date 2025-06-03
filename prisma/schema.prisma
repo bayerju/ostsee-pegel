@@ -64,6 +64,7 @@ model telegram_services {
   username         String?
   telegramUserId   String?
   telegramMessages telegram_messages[]
+  isActive         Boolean             @default(true)
   createdAt        DateTime            @default(now()) @db.Timestamptz(6)
   updatedAt        DateTime            @default(now()) @db.Timestamptz(6)
 

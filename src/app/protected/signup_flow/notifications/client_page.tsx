@@ -4,6 +4,8 @@ import { useState } from "react";
 import { NotificationOption } from "./_components/NotificationOption";
 import { EmailSetup } from "./_components/EmailSetup";
 import { TelegramSetup } from "./_components/TelegramSetup";
+import { api } from "~/trpc/react";
+import { isNil } from "lodash";
 
 type NotificationMethod = "email" | "telegram" | "whatsapp" | "sms" | null;
 
@@ -16,6 +18,14 @@ export function ClientNotificationsSetupPage({
 }) {
   const [selectedMethod, setSelectedMethod] =
     useState<NotificationMethod>(null);
+  const { data: notificationService, refetch } =
+    api.notifications.getActiveNotificationService.useQuery();
+  const { mutate: updateTelegramService } =
+    api.notifications.updateTelegramService.useMutation({
+      onSettled: () => {
+        void refetch();
+      },
+    });
 
   return (
     <main className="flex min-h-screen flex-col items-center bg-gradient-to-b from-[#0066cc] to-[#001a33] text-white">
@@ -35,9 +45,18 @@ export function ClientNotificationsSetupPage({
             description="Erhalten Sie sofortige Benachrichtigungen direkt in Telegram"
             onClick={() => setSelectedMethod("telegram")}
             isSelected={selectedMethod === "telegram"}
+            isSetup={!isNil(notificationService?.id)}
+            isActive={notificationService?.service === "telegram"}
           >
             <TelegramSetup
-              onBack={() => setSelectedMethod(null)}
+              isActive={notificationService?.service === "telegram"}
+              notificationId={notificationService?.id}
+              // onBack={() => setSelectedMethod(null)}
+              onComplete={() => {
+                setSelectedMethod(null);
+                void refetch();
+              }}
+              updateTelegramService={updateTelegramService}
               initialOtp={initialOtp}
               recreateOTP={recreateOTP}
             />
@@ -55,8 +74,7 @@ export function ClientNotificationsSetupPage({
           <NotificationOption
             title="WhatsApp"
             description="Erhalten Sie Benachrichtigungen direkt in WhatsApp"
-            isPremium
-            price="2€/Monat"
+            isActive={false}
             disabled
             comingSoon
           />
@@ -64,8 +82,7 @@ export function ClientNotificationsSetupPage({
           <NotificationOption
             title="SMS"
             description="Erhalten Sie Benachrichtigungen per SMS"
-            isPremium
-            price="3€/Monat"
+            isActive={false}
             disabled
             comingSoon
           />
