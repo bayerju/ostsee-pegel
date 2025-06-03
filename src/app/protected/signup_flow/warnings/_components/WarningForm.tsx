@@ -38,8 +38,8 @@ export function WarningForm({
     },
   });
   // const [state, formAction] = useActionState(setFirstWarning, { message: "" });
-  const [selectedRegions, setSelectedRegions] = useState<string[] | null>(
-    lastWarning?.regions ?? null,
+  const [selectedRegions, setSelectedRegions] = useState<string[]>(
+    lastWarning?.regions ?? [],
   );
   const [highWaterThreshold, setHighWaterThreshold] = useState<string | null>(
     lastWarning?.highWaterThreshold?.toString() ?? "50",
@@ -146,6 +146,7 @@ export function WarningForm({
         <SubmitButton
           buttonText={submitButtonText}
           pending={submitWarningMutation.isPending}
+          disabled={selectedRegions?.length === 0}
           onClick={() => {
             if (
               isNil(selectedRegions) ||
@@ -183,12 +184,13 @@ function SubmitButton(props: {
   buttonText: string;
   onClick: () => void;
   pending: boolean;
+  disabled?: boolean;
 }) {
   // const { pending } = useFormStatus();
   return (
     <button
       type="button"
-      disabled={props.pending}
+      disabled={props.pending || props.disabled}
       className="w-full rounded-full bg-blue-500 px-8 py-3 text-lg font-semibold transition-colors hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-50"
       onClick={props.onClick}
     >
