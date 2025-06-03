@@ -28,66 +28,59 @@ export function ClientNotificationsSetupPage({
     });
 
   return (
-    <main className="flex min-h-screen flex-col items-center bg-gradient-to-b from-[#0066cc] to-[#001a33] text-white">
-      <div className="container mx-auto max-w-2xl px-4 py-16">
-        <div className="mb-8 flex items-center justify-end">
-          <div className="text-sm text-gray-300">Schritt 2 von 2</div>
-        </div>
+    <>
+      <h1 className="mb-8 text-3xl font-bold">
+        Benachrichtigungsmethode auswählen
+      </h1>
 
-        <h1 className="mb-8 text-3xl font-bold">
-          Benachrichtigungsmethode auswählen
-        </h1>
-
-        {/* {!selectedMethod ? ( */}
-        <div className="space-y-4">
-          <NotificationOption
-            title="Telegram"
-            description="Erhalten Sie sofortige Benachrichtigungen direkt in Telegram"
-            onClick={() => setSelectedMethod("telegram")}
-            isSelected={selectedMethod === "telegram"}
-            isSetup={!isNil(notificationService?.id)}
+      <div className="space-y-4">
+        <NotificationOption
+          title="Telegram"
+          description="Erhalten Sie sofortige Benachrichtigungen direkt in Telegram"
+          onClick={() => setSelectedMethod("telegram")}
+          isSelected={selectedMethod === "telegram"}
+          isSetup={!isNil(notificationService?.id)}
+          isActive={notificationService?.service === "telegram"}
+        >
+          <TelegramSetup
             isActive={notificationService?.service === "telegram"}
-          >
-            <TelegramSetup
-              isActive={notificationService?.service === "telegram"}
-              notificationId={notificationService?.id}
-              // onBack={() => setSelectedMethod(null)}
-              onComplete={() => {
-                setSelectedMethod(null);
-                void refetch();
-              }}
-              updateTelegramService={updateTelegramService}
-              initialOtp={initialOtp}
-              recreateOTP={recreateOTP}
-            />
-          </NotificationOption>
-          <NotificationOption
-            title="E-Mail"
-            description="Erhalten Sie detaillierte Benachrichtigungen per E-Mail"
-            onClick={() => setSelectedMethod("email")}
-            isSelected={selectedMethod === "email"}
-            comingSoon
-          >
-            <EmailSetup onBack={() => setSelectedMethod(null)} />
-          </NotificationOption>
-
-          <NotificationOption
-            title="WhatsApp"
-            description="Erhalten Sie Benachrichtigungen direkt in WhatsApp"
-            isActive={false}
-            disabled
-            comingSoon
+            notificationId={notificationService?.id}
+            // onBack={() => setSelectedMethod(null)}
+            onComplete={() => {
+              setSelectedMethod(null);
+              void refetch();
+            }}
+            updateTelegramService={updateTelegramService}
+            initialOtp={initialOtp}
+            recreateOTP={recreateOTP}
           />
+        </NotificationOption>
+        <NotificationOption
+          title="E-Mail"
+          description="Erhalten Sie detaillierte Benachrichtigungen per E-Mail"
+          onClick={() => setSelectedMethod("email")}
+          isSelected={selectedMethod === "email"}
+          comingSoon
+        >
+          <EmailSetup onBack={() => setSelectedMethod(null)} />
+        </NotificationOption>
 
-          <NotificationOption
-            title="SMS"
-            description="Erhalten Sie Benachrichtigungen per SMS"
-            isActive={false}
-            disabled
-            comingSoon
-          />
-        </div>
+        <NotificationOption
+          title="WhatsApp"
+          description="Erhalten Sie Benachrichtigungen direkt in WhatsApp"
+          isActive={false}
+          disabled
+          comingSoon
+        />
+
+        <NotificationOption
+          title="SMS"
+          description="Erhalten Sie Benachrichtigungen per SMS"
+          isActive={false}
+          disabled
+          comingSoon
+        />
       </div>
-    </main>
+    </>
   );
 }
