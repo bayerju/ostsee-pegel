@@ -15,7 +15,7 @@ import {
 } from "~/components/ui/dialog";
 import { Button } from "~/components/ui/button";
 import { ForgotPasswordDialog } from "./forgot_password_dialog";
-import { Input } from "~/components/ui/input";
+import { Input } from "~/components/ui/inputs/input";
 import { authClient } from "~/lib/auth-client";
 export default function LoginPage() {
   // const handleSubmit = async (e: React.FormEvent) => {

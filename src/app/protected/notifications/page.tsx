@@ -4,9 +4,11 @@ import { createNotificationOTP } from "../signup_flow/notifications/actions/otp"
 export default async function NotificationsPage() {
   const initialOtp = await createNotificationOTP();
   return (
-    <ClientNotificationsSetupPage
-      initialOtp={initialOtp}
-      recreateOTP={createNotificationOTP}
-    />
+    <div className="flex flex-col items-center justify-center">
+      <ClientNotificationsSetupPage
+        initialOtp={initialOtp}
+        recreateOTP={createNotificationOTP}
+      />
+    </div>
   );
 }

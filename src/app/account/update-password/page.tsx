@@ -67,8 +67,16 @@ export default function UpdatePasswordPage() {
               const token = new URLSearchParams(window.location.search).get(
                 "token",
               );
+              // const error = INVALID_TOKEN
+              const tokenError = new URLSearchParams(window.location.search).get(
+                "error",
+              );
               if (!token) {
                 toast.error("Kein Token gefunden");
+                return;
+              }
+              if (tokenError === "INVALID_TOKEN") {
+                toast.error("Ungültiger Link. Der Link ist abgelaufen oder ungültig. Bedenke, dass er nur einmal verwendet werden kann.");
                 return;
               }
               if (password !== confirmPassword) {

@@ -2,6 +2,7 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { PrismaClient } from "@prisma/client";
 import { sendEmail } from "./email/sendmail";
+import { ResetPasswordEmail } from "./email/templates/reset_password_email";
 // https://react.email/docs/utilities/render
 import { render } from '@react-email/render';
  
@@ -23,7 +24,7 @@ export const auth = betterAuth({
                 to: user.email,
                 subject: "Passwort zurücksetzen",
                 html: `<p>Klicken Sie <a href="${url}">hier</a>, um Ihr Passwort zurückzusetzen.</p>`,
-                // text: await render(<p>Klicken Sie <a href="${url}">hier</a>, um Ihr Passwort zurückzusetzen.</p>))
+                // text: await render(<ResetPasswordEmail />)
             });
             console.log("sendResetPassword", user, url, token);
         },

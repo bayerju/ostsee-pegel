@@ -9,9 +9,12 @@ import { useState } from "react";
 import { api } from "~/trpc/react";
 import { authClient } from "~/lib/auth-client";
 import { useRouter } from "next/navigation";
+import { PasswordInput } from "~/components/ui/inputs/password_input";
+import { Input } from "~/components/ui/inputs/input";
 export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [name, setName] = useState("");
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState("");
@@ -46,7 +49,7 @@ export default function SignupPage() {
 
         <h1 className="mb-8 text-3xl font-bold">Konto erstellen</h1>
 
-        <form className="space-y-6">
+        <form className="flex flex-col gap-4 space-y-6">
           {/* Name */}
           <div>
             <label className="mb-2 block text-lg">Name</label>
@@ -78,8 +81,7 @@ export default function SignupPage() {
           {/* Password */}
           <div>
             <label className="mb-2 block text-lg">Passwort</label>
-            <input
-              type="password"
+            <PasswordInput
               name="password"
               className="w-full rounded-lg border border-white/20 bg-white/10 p-3 focus:border-blue-400 focus:outline-none"
               required
@@ -110,10 +112,31 @@ export default function SignupPage() {
               </Button> */}
             </div>
           </div>
+          <div>
+            <label className="mb-2 block text-lg" htmlFor="password-confirm">
+              Passwort bestätigen
+            </label>
+            <PasswordInput
+              type="password"
+              name="password-confirm"
+              className="w-full rounded-lg border border-white/20 bg-white/10 p-3 focus:border-blue-400 focus:outline-none"
+              required
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              value={confirmPassword}
+            />
+            {password !== confirmPassword ? (
+              <p className="text-red-500">Passwörter stimmen nicht überein</p>
+            ) : (
+              <p className="invisible text-green-500">
+                Passwörter stimmen überein
+              </p>
+            )}
+          </div>
 
           {/* Submit Button */}
-          <button
+          <Button
             // formAction={signup}
+            // disabled={isPending || !name || !email || !password || !confirmPassword}
             type="submit"
             className="w-full rounded-full bg-blue-500 px-8 py-3 text-lg font-semibold transition-colors hover:bg-blue-600"
             onClick={async () => {
@@ -143,10 +166,17 @@ export default function SignupPage() {
               );
               // signup.mutate({ email, password });
             }}
-            disabled={isPending || !name || !email || !password}
+            disabled={
+              isPending ||
+              !name ||
+              !email ||
+              !password ||
+              !confirmPassword ||
+              password !== confirmPassword
+            }
           >
             Weiter
-          </button>
+          </Button>
 
           {/* Alternative Sign-up Methods */}
           <div className="relative">
