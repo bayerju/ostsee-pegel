@@ -5,6 +5,7 @@ import { sendEmail } from "./email/sendmail";
 import { ResetPasswordEmail } from "./email/templates/reset_password_email";
 // https://react.email/docs/utilities/render
 import { render } from '@react-email/render';
+import { tryCatch } from "./try-catch";
  
 const prisma = new PrismaClient();
 export const auth = betterAuth({
@@ -32,12 +33,16 @@ export const auth = betterAuth({
     emailVerification: {
         sendVerificationEmail: async ({user, url, token}, request) => {
             console.log("sendVerificationEmail", user, url, token, request);
-            await sendEmail({
+            const res = await tryCatch(sendEmail({
                 to: user.email,
                 subject: "E-Mail-Verifizierung",
                 html: `<p>Klicken Sie <a href="${url}">hier</a>, um Ihre E-Mail-Adresse zu verifizieren.</p>`,
                 // text: await render(<ResetPasswordEmail />)
-            });
+            }));
+            if (res.error) {
+                console.error("sendVerificationEmail", res.error);
+                throw new Error("Failed to send verification email");
+            }
         }
     }
 });
