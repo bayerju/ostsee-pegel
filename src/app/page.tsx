@@ -37,7 +37,7 @@ export default async function Home() {
         {redirect("/settings")}
       </SignedIn> */}
       {/* <SignedOut> */}
-      <main className="flex min-h-screen flex-col items-center bg-gradient-to-b from-[hsl(210,100%,40%)] to-[#001a33] text-white">
+      <main className="flex min-h-screen flex-col items-center">
         {/* Hero Section */}
         <div className="container mx-auto px-4 py-16 text-center">
           <h1 className="mb-6 text-5xl font-bold">Ostsee Wasserstand-Alarm</h1>
@@ -103,7 +103,8 @@ export default async function Home() {
               </button>
             </SignUpButton> */}
             <p className="mt-4 text-sm text-gray-300">
-              Dauerhaft kostenlos bei Anmeldung vor Juni 2025
+              Kostenlos bis ich die Bezahlfunktion implementiert habe. Aber
+              mindestens bis November 2025.
             </p>
           </div>
         </div>

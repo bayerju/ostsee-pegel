@@ -25,7 +25,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
-      <body className="flex min-h-screen flex-col">
+      <body className="flex min-h-screen flex-col bg-gradient-to-b from-[hsl(210,100%,40%)] to-[#001a33] text-white">
         <PostHogProvider>
           {/* <header className="flex h-16 items-center justify-end gap-4 p-4">
               <SignedOut>

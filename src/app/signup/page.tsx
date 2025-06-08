@@ -38,7 +38,7 @@ export default function SignupPage() {
   // });
 
   return (
-    <main className="flex min-h-screen flex-col items-center bg-gradient-to-b from-[#0066cc] to-[#001a33] text-white">
+    <main className="flex min-h-screen flex-col items-center">
       <div className="container mx-auto max-w-2xl px-4 py-16">
         <Link
           href="/"
@@ -81,7 +81,6 @@ export default function SignupPage() {
             <label className="mb-2 block text-lg">Passwort</label>
             <PasswordInput
               name="password"
-              className="w-full rounded-lg border border-white/20 bg-white/10 p-3 focus:border-blue-400 focus:outline-none"
               required
               minLength={8}
               onChange={(e) => setPassword(e.target.value)}
@@ -116,7 +115,6 @@ export default function SignupPage() {
             </label>
             <PasswordInput
               name="password-confirm"
-              className="w-full rounded-lg border border-white/20 bg-white/10 p-3 focus:border-blue-400 focus:outline-none"
               required
               onChange={(e) => setConfirmPassword(e.target.value)}
               value={confirmPassword}
