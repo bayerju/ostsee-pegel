@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 import { api, HydrateClient } from "~/trpc/server";
 import { headers } from "next/headers";
 import { auth } from "~/lib/auth";
+import { LoggedInMainPage } from "./_logged_in_main_page";
 // import { ScrapeButton } from "~/components/ScrapeButton";
 
 export default async function Home() {
@@ -22,12 +23,11 @@ export default async function Home() {
   // const hello = await api.post.hello({ text: "from tRPC" });
 
   // const session = await clerkClient.sessions.getUser();
-  const session = await auth.api.getSession({ headers: await headers() });
 
-  console.log({ session });
-  if (session?.user.id) {
-    redirect("/protected/settings");
-  }
+  // console.log({ session });
+  // if (session?.user.id) {
+  //   redirect("/protected/settings");
+  // }
 
   // void api.post.getLatest.prefetch();
 
@@ -37,6 +37,7 @@ export default async function Home() {
         {redirect("/settings")}
       </SignedIn> */}
       {/* <SignedOut> */}
+      <LoggedInMainPage />
       <main className="flex min-h-screen flex-col items-center">
         {/* Hero Section */}
         <div className="w-full max-w-7xl px-4 py-12">
