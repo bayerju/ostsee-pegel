@@ -117,10 +117,9 @@ export function WarningForm({
       <WaterLevelSlider
         label="Hochwasser-Schwellenwert"
         name="highWaterThreshold"
-        defaultValue={highWaterThreshold ?? "50"}
+        defaultValue={highWaterThreshold ?? "70"}
         min="0"
-        max="100"
-        showPlus
+        max="120"
         value={highWaterThreshold ?? "50"}
         onChange={setHighWaterThreshold}
       />
@@ -129,7 +128,7 @@ export function WarningForm({
         label="Niedrigwasser-Schwellenwert"
         name="lowWaterThreshold"
         defaultValue={lowWaterThreshold ?? "-70"}
-        min="-100"
+        min="-120"
         max="0"
         value={lowWaterThreshold ?? "-70"}
         onChange={setLowWaterThreshold}

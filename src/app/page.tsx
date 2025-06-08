@@ -19,7 +19,7 @@ export default async function Home() {
   //   redirect("/settings");
   // }
 
-  const hello = await api.post.hello({ text: "from tRPC" });
+  // const hello = await api.post.hello({ text: "from tRPC" });
 
   // const session = await clerkClient.sessions.getUser();
   const session = await auth.api.getSession({ headers: await headers() });

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { redirect } from "next/navigation";
 import { authClient } from "~/lib/auth-client";
+import { Input } from "~/components/ui/inputs/input";
 
 export default function UpdatePasswordPage() {
   // const updatePassword = api.auth.changePassword.useMutation({
@@ -33,10 +34,9 @@ export default function UpdatePasswordPage() {
 
           <div>
             <label className="mb-2 block text-lg">Neues Passwort</label>
-            <input
+            <Input
               type="password"
               name="password"
-              className="w-full rounded-lg border border-white/20 bg-white/10 p-3 focus:border-blue-400 focus:outline-none"
               required
               minLength={8}
               value={password}
@@ -49,10 +49,9 @@ export default function UpdatePasswordPage() {
             <label className="mb-2 block text-lg">
               Neues Passwort bestätigen
             </label>
-            <input
+            <Input
               type="password"
               name="confirmPassword"
-              className="w-full rounded-lg border border-white/20 bg-white/10 p-3 focus:border-blue-400 focus:outline-none"
               required
               minLength={8}
               value={confirmPassword}

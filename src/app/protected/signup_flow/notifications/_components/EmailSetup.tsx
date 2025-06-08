@@ -1,3 +1,5 @@
+import { Input } from "~/components/ui/inputs/input";
+
 interface EmailSetupProps {
   onBack: () => void;
 }
@@ -16,7 +18,7 @@ export function EmailSetup({ onBack }: EmailSetupProps) {
         </button>
       </div>
       <label className="flex items-center space-x-2">
-        <input
+        <Input
           type="checkbox"
           name="emailNotifications"
           className="h-4 w-4"

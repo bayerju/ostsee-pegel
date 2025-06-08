@@ -9,7 +9,6 @@ interface WaterLevelSliderProps {
   min: string;
   max: string;
   standardText?: string;
-  showPlus?: boolean;
   value: string;
   onChange: (value: string) => void;
 }
@@ -21,7 +20,6 @@ export function WaterLevelSlider({
   min,
   max,
   standardText,
-  showPlus = false,
   value,
   onChange,
 }: WaterLevelSliderProps) {
@@ -47,7 +45,7 @@ export function WaterLevelSlider({
           className="w-full accent-blue-400"
         />
         <span className="min-w-[4rem] text-center text-blue-300">
-          {showPlus && value !== "0" ? "+" : ""}
+          {Number(value) > 0 ? "+" : ""}
           {value} cm
         </span>
       </div>

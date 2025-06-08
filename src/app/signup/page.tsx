@@ -53,11 +53,10 @@ export default function SignupPage() {
           {/* Name */}
           <div>
             <label className="mb-2 block text-lg">Name</label>
-            <input
+            <Input
               type="text"
               name="name"
               id="name"
-              className="w-full rounded-lg border border-white/20 bg-white/10 p-3 focus:border-blue-400 focus:outline-none"
               required
               onChange={(e) => setName(e.target.value)}
               value={name}
@@ -66,11 +65,10 @@ export default function SignupPage() {
           {/* Email */}
           <div>
             <label className="mb-2 block text-lg">E-Mail Adresse</label>
-            <input
+            <Input
               type="email"
               name="email"
               id="email"
-              className="w-full rounded-lg border border-white/20 bg-white/10 p-3 focus:border-blue-400 focus:outline-none"
               required
               onChange={(e) => setEmail(e.target.value)}
               value={email}
@@ -117,7 +115,6 @@ export default function SignupPage() {
               Passwort bestätigen
             </label>
             <PasswordInput
-              type="password"
               name="password-confirm"
               className="w-full rounded-lg border border-white/20 bg-white/10 p-3 focus:border-blue-400 focus:outline-none"
               required

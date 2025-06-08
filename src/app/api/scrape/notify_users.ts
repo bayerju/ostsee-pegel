@@ -89,13 +89,17 @@ export async function notifyUsers(predictions: ParsedData) {
     }
   }));
 
+  const settingsLInk = `Du kannst deine Einstellungen hier ändern: https://ostsee-pegel.de/protected/settings \n\n Die nächste Warning wirst du frühestens in 24h erhalten.`;
+
   function createNotificationMessage(user: typeof userWithPredictionWarningMapping[number]) {
     if (user.predictionWarnings[0]?.warnings[0]?.exceedsHighWaterThreshold) {
-      return `Das Wasser in ${user.predictionWarnings[0]?.prediction.location} liegt mit +${user.predictionWarnings[0]?.warnings[0]?.exceedsHighWaterThreshold}cm über der Warnschwelle von ${user.predictionWarnings[0]?.warnings[0]?.highWaterThreshold}cm.`;
+      return `Das Wasser in ${user.predictionWarnings[0]?.prediction.location} liegt mit +${user.predictionWarnings[0]?.warnings[0]?.exceedsHighWaterThreshold}cm über der Warnschwelle von ${user.predictionWarnings[0]?.warnings[0]?.highWaterThreshold}cm. \n\n ${settingsLInk}`;
     }
     if (user.predictionWarnings[0]?.warnings[0]?.exceedsLowWaterThreshold) {
-      return `Das Wasser in ${user.predictionWarnings[0]?.prediction.location} liegt mit -${user.predictionWarnings[0]?.warnings[0]?.exceedsLowWaterThreshold}cm unter der Warnschwelle von ${user.predictionWarnings[0]?.warnings[0]?.lowWaterThreshold}cm.`;
+      return `Das Wasser in ${user.predictionWarnings[0]?.prediction.location} liegt mit -${user.predictionWarnings[0]?.warnings[0]?.exceedsLowWaterThreshold}cm unter der Warnschwelle von ${user.predictionWarnings[0]?.warnings[0]?.lowWaterThreshold}cm. \n\n ${settingsLInk}`;
     }
+    console.error("hier ist keine Warnung angeschlagen, dass du eine Nachricht kriegst hätte nicht passieren sollen. wir untersuchen das.");
+    console.dir(user, { depth: null });
     return `hier ist keine Warnung angeschlagen, dass du eine Nachricht kriegst hätte nicht passieren sollen. wir untersuchen das.`;
   }
 
