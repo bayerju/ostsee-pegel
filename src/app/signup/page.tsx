@@ -146,7 +146,10 @@ export default function SignupPage() {
                     setIsPending(true);
                     console.log("ctx", ctx);
                   },
-                  onSuccess: (data) => {
+                  onSuccess: async (data) => {
+                    await authClient.sendVerificationEmail({
+                      email: email,
+                    });
                     setIsPending(false);
                     router.refresh();
                     router.push("/protected/signup_flow/warnings");

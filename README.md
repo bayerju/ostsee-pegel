@@ -11,6 +11,8 @@
 7. ~~impressum~~
 8. ~~datenschutzvereinbarung~~
 9. new logo
-10. more mobile friendly
-11. startseite verbessern:
-    1.  registrierungsbutton hochziehen
+10. ~~more mobile friendly~~
+~~11. startseite verbessern:~~
+    ~~1.  registrierungsbutton hochziehen~~
+12. sentry hinzufügen
+13. loggdrain

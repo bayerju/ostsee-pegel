@@ -32,6 +32,12 @@ export const auth = betterAuth({
     emailVerification: {
         sendVerificationEmail: async ({user, url, token}, request) => {
             console.log("sendVerificationEmail", user, url, token, request);
+            await sendEmail({
+                to: user.email,
+                subject: "E-Mail-Verifizierung",
+                html: `<p>Klicken Sie <a href="${url}">hier</a>, um Ihre E-Mail-Adresse zu verifizieren.</p>`,
+                // text: await render(<ResetPasswordEmail />)
+            });
         }
     }
 });
