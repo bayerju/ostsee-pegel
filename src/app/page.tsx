@@ -38,7 +38,7 @@ export default async function Home() {
       </SignedIn> */}
       {/* <SignedOut> */}
       <LoggedInMainPage />
-      <main className="flex min-h-screen flex-col items-center">
+      <main className="flex min-h-screen flex-col items-center text-center">
         {/* Hero Section */}
         <div className="w-full max-w-7xl px-4 py-12">
           <div className="grid grid-cols-1 items-stretch gap-8 md:grid-cols-2">
