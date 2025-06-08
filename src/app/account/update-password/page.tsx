@@ -4,6 +4,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { redirect } from "next/navigation";
 import { authClient } from "~/lib/auth-client";
+import { Input } from "~/components/ui/inputs/input";
 
 export default function UpdatePasswordPage() {
   // const updatePassword = api.auth.changePassword.useMutation({
@@ -18,7 +19,7 @@ export default function UpdatePasswordPage() {
   const [error, setError] = useState("");
 
   return (
-    <main className="flex min-h-screen flex-col items-center bg-gradient-to-b from-[#0066cc] to-[#001a33] text-white">
+    <main className="flex min-h-screen flex-col items-center">
       <div className="container mx-auto max-w-md px-4 py-16">
         <h1 className="mb-8 text-3xl font-bold">Passwort ändern</h1>
 
@@ -33,10 +34,9 @@ export default function UpdatePasswordPage() {
 
           <div>
             <label className="mb-2 block text-lg">Neues Passwort</label>
-            <input
+            <Input
               type="password"
               name="password"
-              className="w-full rounded-lg border border-white/20 bg-white/10 p-3 focus:border-blue-400 focus:outline-none"
               required
               minLength={8}
               value={password}
@@ -49,10 +49,9 @@ export default function UpdatePasswordPage() {
             <label className="mb-2 block text-lg">
               Neues Passwort bestätigen
             </label>
-            <input
+            <Input
               type="password"
               name="confirmPassword"
-              className="w-full rounded-lg border border-white/20 bg-white/10 p-3 focus:border-blue-400 focus:outline-none"
               required
               minLength={8}
               value={confirmPassword}
@@ -67,8 +66,16 @@ export default function UpdatePasswordPage() {
               const token = new URLSearchParams(window.location.search).get(
                 "token",
               );
+              // const error = INVALID_TOKEN
+              const tokenError = new URLSearchParams(window.location.search).get(
+                "error",
+              );
               if (!token) {
                 toast.error("Kein Token gefunden");
+                return;
+              }
+              if (tokenError === "INVALID_TOKEN") {
+                toast.error("Ungültiger Link. Der Link ist abgelaufen oder ungültig. Bedenke, dass er nur einmal verwendet werden kann.");
                 return;
               }
               if (password !== confirmPassword) {

@@ -7,7 +7,7 @@ export default async function NotificationsSetupPage() {
   const initialOtp = await createNotificationOTP();
 
   return (
-    <main className="flex min-h-screen flex-col items-center bg-gradient-to-b from-[#0066cc] to-[#001a33] text-white">
+    <main className="flex min-h-screen flex-col items-center">
       <div className="container mx-auto max-w-2xl px-4 py-16">
         <div className="mb-8 flex items-center justify-between">
           <Link

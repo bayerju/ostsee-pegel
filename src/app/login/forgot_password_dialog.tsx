@@ -10,7 +10,7 @@ import {
 } from "~/components/ui/dialog";
 import { Button } from "~/components/ui/button";
 import { useEffect, useState } from "react";
-import { Input } from "~/components/ui/input";
+import { Input } from "~/components/ui/inputs/input";
 import { authClient } from "~/lib/auth-client";
 
 export function ForgotPasswordDialog(props: { email: string }) {
@@ -18,13 +18,7 @@ export function ForgotPasswordDialog(props: { email: string }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isSuccess, setIsSuccess] = useState(false);
-  useEffect(() => {
-    console.log("ForgotPasswordDialog rendered");
-  }, []);
-  useEffect(() => {
-    console.log("ForgotPasswordDialog email changed", email);
-    setEmail(props.email);
-  }, [props.email]);
+
   // if (isLoading) return <div>Loading...</div>;
   return (
     <>

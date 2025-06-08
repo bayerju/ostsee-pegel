@@ -15,7 +15,7 @@ import {
 } from "~/components/ui/dialog";
 import { Button } from "~/components/ui/button";
 import { ForgotPasswordDialog } from "./forgot_password_dialog";
-import { Input } from "~/components/ui/input";
+import { Input } from "~/components/ui/inputs/input";
 import { authClient } from "~/lib/auth-client";
 export default function LoginPage() {
   // const handleSubmit = async (e: React.FormEvent) => {
@@ -41,7 +41,7 @@ export default function LoginPage() {
   if (isPending) return <div>Loading...</div>;
 
   return (
-    <main className="flex min-h-screen flex-col items-center bg-gradient-to-b from-[#0066cc] to-[#001a33] text-white">
+    <main className="flex min-h-screen flex-col items-center">
       <div className="container mx-auto max-w-md px-4 py-16">
         <Link
           href="/"

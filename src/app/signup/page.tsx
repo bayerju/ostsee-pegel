@@ -9,9 +9,12 @@ import { useState } from "react";
 import { api } from "~/trpc/react";
 import { authClient } from "~/lib/auth-client";
 import { useRouter } from "next/navigation";
+import { PasswordInput } from "~/components/ui/inputs/password_input";
+import { Input } from "~/components/ui/inputs/input";
 export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [name, setName] = useState("");
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState("");
@@ -35,7 +38,7 @@ export default function SignupPage() {
   // });
 
   return (
-    <main className="flex min-h-screen flex-col items-center bg-gradient-to-b from-[#0066cc] to-[#001a33] text-white">
+    <main className="flex min-h-screen flex-col items-center">
       <div className="container mx-auto max-w-2xl px-4 py-16">
         <Link
           href="/"
@@ -46,15 +49,14 @@ export default function SignupPage() {
 
         <h1 className="mb-8 text-3xl font-bold">Konto erstellen</h1>
 
-        <form className="space-y-6">
+        <form className="flex flex-col gap-4 space-y-6">
           {/* Name */}
           <div>
             <label className="mb-2 block text-lg">Name</label>
-            <input
+            <Input
               type="text"
               name="name"
               id="name"
-              className="w-full rounded-lg border border-white/20 bg-white/10 p-3 focus:border-blue-400 focus:outline-none"
               required
               onChange={(e) => setName(e.target.value)}
               value={name}
@@ -63,11 +65,10 @@ export default function SignupPage() {
           {/* Email */}
           <div>
             <label className="mb-2 block text-lg">E-Mail Adresse</label>
-            <input
+            <Input
               type="email"
               name="email"
               id="email"
-              className="w-full rounded-lg border border-white/20 bg-white/10 p-3 focus:border-blue-400 focus:outline-none"
               required
               onChange={(e) => setEmail(e.target.value)}
               value={email}
@@ -78,10 +79,8 @@ export default function SignupPage() {
           {/* Password */}
           <div>
             <label className="mb-2 block text-lg">Passwort</label>
-            <input
-              type="password"
+            <PasswordInput
               name="password"
-              className="w-full rounded-lg border border-white/20 bg-white/10 p-3 focus:border-blue-400 focus:outline-none"
               required
               minLength={8}
               onChange={(e) => setPassword(e.target.value)}
@@ -110,10 +109,29 @@ export default function SignupPage() {
               </Button> */}
             </div>
           </div>
+          <div>
+            <label className="mb-2 block text-lg" htmlFor="password-confirm">
+              Passwort bestätigen
+            </label>
+            <PasswordInput
+              name="password-confirm"
+              required
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              value={confirmPassword}
+            />
+            {password !== confirmPassword ? (
+              <p className="text-red-500">Passwörter stimmen nicht überein</p>
+            ) : (
+              <p className="invisible text-green-500">
+                Passwörter stimmen überein
+              </p>
+            )}
+          </div>
 
           {/* Submit Button */}
-          <button
+          <Button
             // formAction={signup}
+            // disabled={isPending || !name || !email || !password || !confirmPassword}
             type="submit"
             className="w-full rounded-full bg-blue-500 px-8 py-3 text-lg font-semibold transition-colors hover:bg-blue-600"
             onClick={async () => {
@@ -128,7 +146,10 @@ export default function SignupPage() {
                     setIsPending(true);
                     console.log("ctx", ctx);
                   },
-                  onSuccess: (data) => {
+                  onSuccess: async (data) => {
+                    await authClient.sendVerificationEmail({
+                      email: email,
+                    });
                     setIsPending(false);
                     router.refresh();
                     router.push("/protected/signup_flow/warnings");
@@ -143,10 +164,17 @@ export default function SignupPage() {
               );
               // signup.mutate({ email, password });
             }}
-            disabled={isPending || !name || !email || !password}
+            disabled={
+              isPending ||
+              !name ||
+              !email ||
+              !password ||
+              !confirmPassword ||
+              password !== confirmPassword
+            }
           >
             Weiter
-          </button>
+          </Button>
 
           {/* Alternative Sign-up Methods */}
           <div className="relative">

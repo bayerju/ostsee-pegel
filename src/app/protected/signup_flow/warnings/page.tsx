@@ -5,7 +5,7 @@ import { auth } from "~/lib/auth";
 import { headers } from "next/headers";
 
 export default async function WarningsSetupPage() {
-  const session = await auth.api.getSession({headers: await headers()});
+  const session = await auth.api.getSession({ headers: await headers() });
   const user = session?.user;
 
   if (!user) {
@@ -30,7 +30,7 @@ export default async function WarningsSetupPage() {
   ];
 
   return (
-    <main className="flex min-h-screen flex-col items-center bg-gradient-to-b from-[#0066cc] to-[#001a33] text-white">
+    <main className="flex min-h-screen flex-col items-center">
       <div className="container mx-auto max-w-2xl px-4 py-16">
         <div className="mb-8 flex items-center justify-end">
           <div className="justify-self-end text-sm text-gray-300">

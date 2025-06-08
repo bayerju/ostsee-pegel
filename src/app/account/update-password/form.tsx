@@ -5,6 +5,7 @@ import { toast } from "sonner";
 // import { updatePassword } from "~/app/auth/actions";
 import { Button } from "~/components/ui/button";
 import { authClient } from "~/lib/auth-client";
+import { Input } from "~/components/ui/inputs/input";
 // import { api } from "~/trpc/react";
 
 export default function UpdatePasswordForm() {
@@ -31,7 +32,7 @@ export default function UpdatePasswordForm() {
 
       <div>
         <label className="mb-2 block text-lg">Neues Passwort</label>
-        <input
+        <Input
           type="password"
           name="password"
           className="w-full rounded-lg border border-white/20 bg-white/10 p-3 focus:border-blue-400 focus:outline-none"
@@ -45,10 +46,9 @@ export default function UpdatePasswordForm() {
 
       <div>
         <label className="mb-2 block text-lg">Neues Passwort bestätigen</label>
-        <input
+        <Input
           type="password"
           name="confirmPassword"
-          className="w-full rounded-lg border border-white/20 bg-white/10 p-3 focus:border-blue-400 focus:outline-none"
           required
           minLength={8}
           value={confirmPassword}
