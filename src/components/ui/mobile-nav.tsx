@@ -77,8 +77,8 @@ export default function HamburgerMenu({
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="md:hidden">
-          <Menu className="h-5 w-5" />
+        <Button variant="ghost" className="p-0 md:hidden [&_svg]:!size-8">
+          <Menu />
           <span className="sr-only">Toggle menu</span>
         </Button>
       </SheetTrigger>
