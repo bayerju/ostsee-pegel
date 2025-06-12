@@ -5,11 +5,11 @@ export async function sendMessage(chatId: string, text: string) {
     `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=${chatId}&text=${text}`,
   );
   if (!response.ok) {
-    console.error("Failed to send message", { status: 500 });
+    console.error("Failed to send message", { status: 500, response: await response.text() });
     return new Response("Failed to send message", { status: 500 });
   }
   const data = (await response.json()) as unknown;
-  console.log({data})
+  console.log(`sent message ${text} to ${chatId}`, {data})
   const parsedData = sendResponseSchema.parse(data);
   return parsedData;
 }

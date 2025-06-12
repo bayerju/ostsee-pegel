@@ -72,26 +72,32 @@ export async function notifyUsers(predictions: ParsedData) {
     };
   });
 
-  console.log({userWithPredictionWarningMapping});
-
-  await Promise.all(userWithPredictionWarningMapping.map(async (user) => {
-    const userWasntNotifiedIn24Hours = user.warnings.some(iWarning => isNil(iWarning.last_notified) || iWarning.last_notified < new Date(Date.now() - 1000 * 60 * 60 * 24)); 
-    if (user.telegramService?.chatId && userWasntNotifiedIn24Hours && user.predictionWarnings.length > 0) {
-      const message = createNotificationMessage(user) + `\n\n ${BSH_URL}`;
-      // `Achtung folgende Warnung(en) haben angeschlagen: \n ${user.predictionWarnings
-      //   .map((iPredictionWarning) => ` Das Wasser in ${iPredictionWarning.prediction.location} liegt zwischen ${iPredictionWarning.prediction.min} und ${iPredictionWarning.prediction.max} Meter.`)
-      //   .join("\n")} \n\n ${BSH_URL}`;
-      await sendMessage(user.telegramService.chatId, message);
-      await db.warnings.updateMany({
-        where: { user_id: user.id },
-        data: { last_notified: new Date() },
-      });
-    }
-  }));
-
-  const settingsLInk = `Du kannst deine Einstellungen hier ändern: https://ostsee-pegel.de/protected/settings \n\n Die nächste Warning wirst du frühestens in 24h erhalten.`;
-
+  // console.log({userWithPredictionWarningMapping});
+  try {
+    await Promise.all(userWithPredictionWarningMapping.map(async (user) => {
+      const userWasntNotifiedIn24Hours = user.warnings.some(iWarning => isNil(iWarning.last_notified) || iWarning.last_notified < new Date(Date.now() - 1000 * 60 * 60 * 24)); 
+      if (user.telegramService?.chatId && userWasntNotifiedIn24Hours && user.predictionWarnings.length > 0) {
+        const message = createNotificationMessage(user) + `\n\n ${BSH_URL}`;
+        // `Achtung folgende Warnung(en) haben angeschlagen: \n ${user.predictionWarnings
+        //   .map((iPredictionWarning) => ` Das Wasser in ${iPredictionWarning.prediction.location} liegt zwischen ${iPredictionWarning.prediction.min} und ${iPredictionWarning.prediction.max} Meter.`)
+        //   .join("\n")} \n\n ${BSH_URL}`;
+        await sendMessage(user.telegramService.chatId, message);
+        await db.warnings.updateMany({
+          where: { user_id: user.id },
+          data: { last_notified: new Date() },
+        });
+      }
+    }));
+    
+  } catch (error) {
+    console.error("Error sending notifications:", error);
+    throw error
+  }
+  
+  
+  
   function createNotificationMessage(user: typeof userWithPredictionWarningMapping[number]) {
+    const settingsLInk = `Du kannst deine Einstellungen hier ändern: https://ostsee-pegel.de/protected/settings \n\n Die nächste Warning wirst du frühestens in 24h erhalten.`;
     if (user.predictionWarnings[0]?.warnings[0]?.exceedsHighWaterThreshold) {
       return `Das Wasser in ${user.predictionWarnings[0]?.prediction.location} liegt mit +${user.predictionWarnings[0]?.warnings[0]?.exceedsHighWaterThreshold}cm über der Warnschwelle von ${user.predictionWarnings[0]?.warnings[0]?.highWaterThreshold}cm. \n\n ${settingsLInk}`;
     }
@@ -100,7 +106,7 @@ export async function notifyUsers(predictions: ParsedData) {
     }
     console.error("hier ist keine Warnung angeschlagen, dass du eine Nachricht kriegst hätte nicht passieren sollen. wir untersuchen das.");
     console.dir(user, { depth: null });
-    return `hier ist keine Warnung angeschlagen, dass du eine Nachricht kriegst hätte nicht passieren sollen. wir untersuchen das.`;
+    return `hier ist keine Warnung angeschlagen, dass du eine Nachricht kriegst hätte nicht passieren sollen. wir untersuchen das. `;
   }
 
   // const usersToNotify = users
