@@ -84,15 +84,26 @@ export default async function Home() {
               </div>
             </div>
             <div className="flex flex-col justify-center">
-              <div className="rounded-lg border border-gray-100 bg-white p-8 shadow-sm">
-                <p className="mb-6 text-center text-lg text-gray-700">
-                  In 2 min zur ersten Telegram-Warnung
-                </p>
-                <Link href="/signup">
-                  <button className="w-full rounded-lg bg-blue-500 px-6 py-4 text-base font-medium text-white transition-colors hover:bg-blue-600">
-                    Kostenlos ausprobieren
-                  </button>
-                </Link>
+              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-300 to-indigo-300 p-8 backdrop-blur-sm">
+                <div className="absolute inset-0 bg-white/30"></div>
+                <div className="relative">
+                  <div className="mb-6 space-y-2">
+                    <h3 className="text-xl font-semibold text-gray-800">
+                      Schnell & Einfach
+                    </h3>
+                    <p className="text-gray-600">
+                      In 2 min zur ersten Telegram-Warnung
+                    </p>
+                  </div>
+                  <Link href="/signup">
+                    <button className="group relative w-full overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4 text-base font-medium text-white transition-all hover:from-blue-700 hover:to-indigo-700">
+                      <span className="relative z-10">
+                        Kostenlos ausprobieren
+                      </span>
+                      <div className="absolute inset-0 bg-gradient-to-r from-blue-400/0 via-white/20 to-blue-400/0 opacity-0 transition-opacity group-hover:opacity-100"></div>
+                    </button>
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
