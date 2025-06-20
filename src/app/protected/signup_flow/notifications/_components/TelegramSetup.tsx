@@ -14,6 +14,9 @@ import {
   DialogTrigger,
 } from "~/components/ui/dialog";
 import { isNil } from "lodash";
+import { NotificationServices } from "~/server/api/routers/types";
+import { api } from "~/trpc/react";
+import { TelegramQR } from "./telegram_qr";
 interface TelegramSetupProps {
   // onBack: () => void;
   initialOtp: string;
@@ -22,6 +25,7 @@ interface TelegramSetupProps {
   onComplete: () => void;
   updateTelegramService: (data: { isActive: boolean }) => void;
   notificationId?: string;
+  notificationServices: NotificationServices;
 }
 
 export function TelegramSetup({
@@ -32,12 +36,10 @@ export function TelegramSetup({
   onComplete,
   updateTelegramService,
   notificationId,
+  notificationServices,
 }: TelegramSetupProps) {
-  const [currentOtp, setCurrentOtp] = useState(initialOtp);
-  const botName =
-    env.NEXT_PUBLIC_ENV === "production"
-      ? "WasserstandsWarnungBot"
-      : "ostseepegeldevBot";
+  const sendTestMessageMutation =
+    api.notifications.sendTestMessage.useMutation();
 
   return (
     <div className="w-full max-w-full space-y-4 rounded-lg border border-white/20 bg-white/5 p-6">
@@ -53,37 +55,15 @@ export function TelegramSetup({
       </div>
 
       <div className="space-y-6">
-        <div className="flex flex-col items-center gap-4 rounded-lg bg-white p-6">
-          <QRCode
-            value={`https://t.me/${botName}?text=${currentOtp}`}
-            className="h-48 w-48"
-          />
-          <Link
-            href={`https://t.me/${botName}?text=${currentOtp}`}
-            className="text-sm text-blue-600 hover:text-blue-800 disabled:opacity-50"
-          >
-            Öffne den Link mit Telegram
-          </Link>
-          {/* <button
-            onClick={() => {
-              startTransition(async () => {
-                const newOtp = await recreateOTP();
-                setCurrentOtp(newOtp);
-              });
-            }}
-            disabled={isPending}
-            className="text-sm text-blue-600 hover:text-blue-800 disabled:opacity-50"
-          >
-            {isPending ? "Wird aktualisiert..." : "QR-Code aktualisieren"}
-          </button> */}
-        </div>
+        <TelegramQR initialOtp={initialOtp} recreateOTP={recreateOTP} />
 
         <ol className="space-y-3 text-sm">
           <li className="flex items-start gap-2">
             <span className="flex h-6 w-6 min-w-6 shrink-0 items-center justify-center rounded-full bg-blue-500 text-sm">
               1
             </span>
-            Scanne den QR-Code oder öffne den Link mit Telegram
+            Scanne den QR-Code oder öffne den Link mit Telegram (einfach den
+            Text oben anklicken)
           </li>
           <li className="flex items-start gap-2">
             <span className="flex h-6 w-6 min-w-6 shrink-0 items-center justify-center rounded-full bg-blue-500 text-sm">
@@ -138,7 +118,7 @@ export function TelegramSetup({
                   <DialogDescription>
                     {isActive
                       ? "Deaktiviere die Telegram-Benachrichtigung. Dann werden keine Benachrichtigungen mehr an dich gesendet."
-                      : "Aktiviere die Telegram-Benachrichtigung. Dann werden Benachrichtigungen an dich gesendet."}
+                      : "Aktiviere die Telegram-Benachrichtigung. Dann werden Benachrichtigungen über Telegram an dich gesendet. Du kannst aber nur einen Service zur Zeit aktiv nutzen."}
                   </DialogDescription>
                 </DialogHeader>
                 <Button
@@ -187,6 +167,17 @@ export function TelegramSetup({
             </Button>
           )} */}
             </Dialog>
+          )}
+          {notificationId && notificationServices.telegram?.isActive && (
+            <Button
+              variant="secondary"
+              onClick={() =>
+                sendTestMessageMutation.mutate({ service: "telegram" })
+              }
+              disabled={sendTestMessageMutation.isPending}
+            >
+              Testnachricht senden
+            </Button>
           )}
 
           {/* <Button

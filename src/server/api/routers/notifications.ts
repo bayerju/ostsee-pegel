@@ -2,8 +2,9 @@ import { z } from "zod/v4";
 import { protectedProcedure } from "../trpc";
 
 import { createTRPCRouter } from "../trpc";
-import { sendVerifySms, verifySmsCode } from "~/lib/sms/send_sms";
+import { sendSms, sendVerifySms, verifySmsCode } from "~/lib/sms/send_sms";
 import { TRPCError } from "@trpc/server";
+import { sendMessage } from "~/app/api/telegram_update/_send_message";
 
 export const notificationServices = {
   telegram: "telegram" as const,
@@ -75,6 +76,12 @@ export const notificationsRouter = createTRPCRouter({
       },
     });
 
+    const telegramService = await ctx.db.telegram_services.findUnique({
+      where: {
+        userId: ctx.user.id,
+      },
+    });
+
     if (!smsService) {
       throw new Error("SMS service not found");
     }
@@ -87,6 +94,7 @@ export const notificationsRouter = createTRPCRouter({
         },
         data: {
           isVerified: true,
+          isActive: !telegramService?.isActive,
         },
       });
       return {
@@ -108,6 +116,17 @@ export const notificationsRouter = createTRPCRouter({
     isActive: z.boolean(),
   })).mutation(async ({ input, ctx }) => {
     const {isActive} = input;
+
+    if (isActive) {
+      await ctx.db.telegram_services.update({
+        where: {
+          userId: ctx.user.id,
+        },
+        data: {
+          isActive: false,
+        },
+      });
+    }
     await ctx.db.sms_services.update({
       where: {
         userId: ctx.user.id,
@@ -116,5 +135,34 @@ export const notificationsRouter = createTRPCRouter({
         isActive: isActive,
       },
     });
+  }),
+  sendTestMessage: protectedProcedure
+  .input(z.object({
+    service: z.enum(notificationServices),
+  })).mutation(async ({ input, ctx }) => {
+    const {service} = input;
+    const text = "Dies ist eine Testnachricht. Du hast alles Korreckt eingerichtet und kriegst auf diesem Weg in Zukunft Benachrichtigungen, wenn der Wasserstand sich ändert";
+    if (service === "telegram") {
+      const telegramService = await ctx.db.telegram_services.findUnique({
+        where: {
+          userId: ctx.user.id,
+        },
+      });
+      if (!telegramService) {
+        throw new Error("Telegram service not found");
+      }
+      await sendMessage(telegramService.chatId, text);
+    }
+    if (service === "sms") {
+      const smsService = await ctx.db.sms_services.findUnique({
+        where: {
+          userId: ctx.user.id,
+        },
+      });
+      if (!smsService) {
+        throw new Error("SMS service not found");
+      }
+      await sendSms(smsService.phone, text);
+    }
   }),
 });
