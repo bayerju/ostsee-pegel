@@ -70,6 +70,20 @@ model telegram_services {
 
 }
 
+model sms_services {
+  id               String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId           String              @unique
+  user             User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  phone            String
+  isActive         Boolean             @default(true)
+  isVerified       Boolean             @default(false)
+  // serviceSid       String?
+  // verificationSid  String?
+  createdAt        DateTime            @default(now()) @db.Timestamptz(6)
+  updatedAt        DateTime            @default(now()) @db.Timestamptz(6)
+
+}
+
 model telegram_messages {
   id                String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   telegramServiceId String?            @db.Uuid
@@ -113,9 +127,9 @@ model User {
   accounts      Account[]
   warnings      warnings[]
   telegramService   telegram_services?
+  smsService        sms_services?
   telegram_username String?
   otps              otps[]
-
   @@unique([email])
   @@map("user")
 }

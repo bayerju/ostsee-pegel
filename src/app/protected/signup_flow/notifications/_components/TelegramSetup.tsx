@@ -40,7 +40,7 @@ export function TelegramSetup({
       : "ostseepegeldevBot";
 
   return (
-    <div className="space-y-4 rounded-lg border border-white/20 bg-white/5 p-6">
+    <div className="w-full max-w-full space-y-4 rounded-lg border border-white/20 bg-white/5 p-6">
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold">Telegram</h2>
         <button

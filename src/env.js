@@ -17,6 +17,9 @@ export const env = createEnv({
     IMPRINT_ADDRESS: z.string(),
     IMPRINT_CITY: z.string(),
     IMPRINT_EMAIL: z.string(),
+    TWILIO_ACCOUNT_SID: z.string(),
+    TWILIO_AUTH_TOKEN: z.string(),
+    TWILIO_VERIFY_SERVICE_SID: z.string(),
   },
 
   /**
@@ -43,6 +46,9 @@ export const env = createEnv({
     IMPRINT_ADDRESS: process.env.IMPRINT_ADDRESS,
     IMPRINT_CITY: process.env.IMPRINT_CITY,
     IMPRINT_EMAIL: process.env.IMPRINT_EMAIL,
+    TWILIO_ACCOUNT_SID: process.env.TWILIO_ACCOUNT_SID,
+    TWILIO_AUTH_TOKEN: process.env.TWILIO_AUTH_TOKEN,
+    TWILIO_VERIFY_SERVICE_SID: process.env.TWILIO_VERIFY_SERVICE_SID,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**
