@@ -62,8 +62,9 @@
     "tailwindcss-animate": "^1.0.7",
     "ts-node": "^10.9.2",
     "tsx": "^4.19.2",
+    "twilio": "^5.7.1",
     "zeptomail": "^6.2.0",
-    "zod": "^3.23.3"
+    "zod": "^3.25.67"
   },
   "devDependencies": {
     "@types/eslint": "^8.56.10",

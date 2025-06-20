@@ -6,6 +6,7 @@ import { EmailSetup } from "./_components/EmailSetup";
 import { TelegramSetup } from "./_components/TelegramSetup";
 import { api } from "~/trpc/react";
 import { isNil } from "lodash";
+import { SmsSetup } from "./_components/sms_setup";
 
 type NotificationMethod = "email" | "telegram" | "whatsapp" | "sms" | null;
 
@@ -18,18 +19,22 @@ export function ClientNotificationsSetupPage({
 }) {
   const [selectedMethod, setSelectedMethod] =
     useState<NotificationMethod>(null);
-  const { data: notificationService, refetch } =
-    api.notifications.getActiveNotificationService.useQuery();
+  const { data: notificationServices, refetch: refetchNotificationService } =
+    api.notifications.getNotificationServices.useQuery();
   const { mutate: updateTelegramService } =
     api.notifications.updateTelegramService.useMutation({
       onSettled: () => {
-        void refetch();
+        void refetchNotificationService();
       },
     });
 
+  if (!notificationServices) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <>
-      <h1 className="mb-8 text-3xl font-bold">
+      <h1 className="mb-8 text-2xl font-bold lg:text-3xl">
         Benachrichtigungsmethode auswählen
       </h1>
 
@@ -39,20 +44,34 @@ export function ClientNotificationsSetupPage({
           description="Erhalten Sie sofortige Benachrichtigungen direkt in Telegram"
           onClick={() => setSelectedMethod("telegram")}
           isSelected={selectedMethod === "telegram"}
-          isSetup={!isNil(notificationService?.id)}
-          isActive={notificationService?.service === "telegram"}
+          isSetup={!isNil(notificationServices?.telegram?.id)}
+          isActive={notificationServices?.telegram?.isActive}
         >
           <TelegramSetup
-            isActive={notificationService?.service === "telegram"}
-            notificationId={notificationService?.id}
+            isActive={!!notificationServices?.telegram?.isActive}
+            notificationId={notificationServices?.telegram?.id}
             // onBack={() => setSelectedMethod(null)}
             onComplete={() => {
               setSelectedMethod(null);
-              void refetch();
+              void refetchNotificationService();
             }}
             updateTelegramService={updateTelegramService}
             initialOtp={initialOtp}
             recreateOTP={recreateOTP}
+          />
+        </NotificationOption>
+        <NotificationOption
+          title="SMS"
+          description="Erhalten Sie Benachrichtigungen per SMS"
+          isSetup={!isNil(notificationServices?.sms?.id)}
+          isActive={!!notificationServices?.sms?.isActive}
+          onClick={() => setSelectedMethod("sms")}
+          isSelected={selectedMethod === "sms"}
+        >
+          <SmsSetup
+            notificationServices={notificationServices}
+            refetchNotificationServices={refetchNotificationService}
+            onCloseButtonClick={() => setSelectedMethod(null)}
           />
         </NotificationOption>
         <NotificationOption
@@ -68,14 +87,6 @@ export function ClientNotificationsSetupPage({
         <NotificationOption
           title="WhatsApp"
           description="Erhalten Sie Benachrichtigungen direkt in WhatsApp"
-          isActive={false}
-          disabled
-          comingSoon
-        />
-
-        <NotificationOption
-          title="SMS"
-          description="Erhalten Sie Benachrichtigungen per SMS"
           isActive={false}
           disabled
           comingSoon

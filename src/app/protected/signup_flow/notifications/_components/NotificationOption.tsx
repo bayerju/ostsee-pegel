@@ -56,5 +56,5 @@ export function NotificationOption({
     );
   }
 
-  return <div>{children}</div>;
+  return <div className="w-full max-w-full">{children}</div>;
 }
