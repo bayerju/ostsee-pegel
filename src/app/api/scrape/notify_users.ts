@@ -3,6 +3,7 @@ import { type ParsedData } from "./types";
 import { sendMessage } from "../telegram_update/_send_message";
 import { BSH_URL } from "~/scripts/scrape";
 import { isNil } from "lodash";
+import { sendSms } from "~/lib/sms/send_sms";
 
 export async function notifyUsers(predictions: ParsedData) {
   const users = await db.user.findMany({
@@ -25,6 +26,7 @@ export async function notifyUsers(predictions: ParsedData) {
     },
     include: {
       telegramService: true,
+      smsService: true,
       warnings: {
         where: {
           OR: predictions.data.map((iPrediction) => ({
@@ -81,7 +83,14 @@ export async function notifyUsers(predictions: ParsedData) {
         // `Achtung folgende Warnung(en) haben angeschlagen: \n ${user.predictionWarnings
         //   .map((iPredictionWarning) => ` Das Wasser in ${iPredictionWarning.prediction.location} liegt zwischen ${iPredictionWarning.prediction.min} und ${iPredictionWarning.prediction.max} Meter.`)
         //   .join("\n")} \n\n ${BSH_URL}`;
-        await sendMessage(user.telegramService.chatId, message);
+        if (user.smsService?.isActive && user.smsService.phone && user.smsService.isVerified) {
+          await sendSms(user.smsService.phone, message);
+        } else if(user.telegramService?.isActive && user.telegramService.chatId) {
+
+          await sendMessage(user.telegramService.chatId, message);
+        } else {
+          console.warn("user has no active notification service, but should be warned", user);
+        }
         await db.warnings.updateMany({
           where: { user_id: user.id },
           data: { last_notified: new Date() },
