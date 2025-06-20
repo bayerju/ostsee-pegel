@@ -75,7 +75,7 @@ model sms_services {
   userId           String              @unique
   user             User                @relation(fields: [userId], references: [id], onDelete: Cascade)
   phone            String
-  isActive         Boolean             @default(true)
+  isActive         Boolean             @default(false)
   isVerified       Boolean             @default(false)
   // serviceSid       String?
   // verificationSid  String?

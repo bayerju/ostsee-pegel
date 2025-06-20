@@ -58,6 +58,7 @@ export function ClientNotificationsSetupPage({
             updateTelegramService={updateTelegramService}
             initialOtp={initialOtp}
             recreateOTP={recreateOTP}
+            notificationServices={notificationServices}
           />
         </NotificationOption>
         <NotificationOption
