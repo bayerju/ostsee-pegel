@@ -9,16 +9,16 @@ const client = new Twilio(env.TWILIO_ACCOUNT_SID, env.TWILIO_AUTH_TOKEN);
 
 export async function sendSms(to: string, body: string) {
 
-await client.messages.create({
-    to,
-    from: '+12186568912',
-    body,
-  })
-  .then(message => console.log(message.sid))
-  .catch(error => {
-    console.error("error sending sms", "to: ", to, "body: ", body, "error: ", error);
-    throw error;
-  });
+    await client.messages.create({
+        to,
+        from: '+12186568912',
+        body,
+    })
+    .then(message => console.log(message.sid))
+    .catch(error => {
+        console.error("error sending sms", "to: ", to, "body: ", body, "error: ", error);
+        throw error;
+    });
 }
 
 export async function sendVerifySms(to: string) {
