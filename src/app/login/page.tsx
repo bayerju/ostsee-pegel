@@ -84,7 +84,6 @@ export default function LoginPage() {
             <div>
               <label className="mb-2 block text-lg">Passwort</label>
               <PasswordInput
-                type="password"
                 name="password"
                 className="w-full rounded-lg border border-white/20 bg-white/10 p-3 focus:border-blue-400 focus:outline-none"
                 required
