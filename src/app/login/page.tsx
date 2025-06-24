@@ -18,6 +18,8 @@ import { ForgotPasswordDialog } from "./forgot_password_dialog";
 import { Input } from "~/components/ui/inputs/input";
 import { authClient } from "~/lib/auth-client";
 import { PasswordInput } from "~/components/ui/inputs/password_input";
+import { MagicLinkButton } from "./magic-link-button";
+
 export default function LoginPage() {
   // const handleSubmit = async (e: React.FormEvent) => {
   //   e.preventDefault();
@@ -84,7 +86,6 @@ export default function LoginPage() {
             <div>
               <label className="mb-2 block text-lg">Passwort</label>
               <PasswordInput
-                type="password"
                 name="password"
                 className="w-full rounded-lg border border-white/20 bg-white/10 p-3 focus:border-blue-400 focus:outline-none"
                 required
@@ -146,6 +147,7 @@ export default function LoginPage() {
             Jetzt registrieren
           </Link>
         </div>
+        <MagicLinkButton email={email} className="mt-4" />
       </div>
     </main>
   );

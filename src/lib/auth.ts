@@ -6,7 +6,7 @@ import { ResetPasswordEmail } from "./email/templates/reset_password_email";
 // https://react.email/docs/utilities/render
 import { render } from '@react-email/render';
 import { tryCatch } from "./try-catch";
- 
+import { magicLink } from "better-auth/plugins/magic-link";
 const prisma = new PrismaClient();
 export const auth = betterAuth({
     database: prismaAdapter(prisma, {
@@ -31,6 +31,8 @@ export const auth = betterAuth({
         },
     },
     emailVerification: {
+        autoSignInAfterVerification: true,
+        sendOnSignUp: true,
         sendVerificationEmail: async ({user, url, token}, request) => {
             console.log("sendVerificationEmail", user, url, token, request);
             const res = await tryCatch(sendEmail({
@@ -44,5 +46,21 @@ export const auth = betterAuth({
                 throw new Error("Failed to send verification email");
             }
         }
-    }
+    },
+    plugins: [
+        magicLink({
+            sendMagicLink: async ({email, url, token}) => {
+                console.log("sendMagicLink", email, url, token);
+                const res = await tryCatch(sendEmail({
+                    to: email,
+                    subject: "Login Link",
+                    html: `<p>Klicken Sie <a href="${url}">hier</a>, um sich anzumelden.</p>`,
+                }));
+                if (res.error) {
+                    console.error("sendMagicLink", res.error);
+                    throw new Error("Failed to send magic link");
+                }
+            }
+        })
+    ]
 });
