@@ -76,17 +76,37 @@ export async function notifyUsers(predictions: ParsedData) {
 
   // console.log({userWithPredictionWarningMapping});
   try {
+    console.log(`Found ${userWithPredictionWarningMapping.length} users with active warnings`);
+    
     await Promise.all(userWithPredictionWarningMapping.map(async (user) => {
       const userWasntNotifiedIn24Hours = user.warnings.some(iWarning => isNil(iWarning.last_notified) || iWarning.last_notified < new Date(Date.now() - 1000 * 60 * 60 * 24)); 
+      
+      console.log(`Processing user ${user.id}:`, {
+        hasTelegramService: !!user.telegramService?.chatId,
+        telegramActive: user.telegramService?.isActive,
+        hasSmsService: !!user.smsService?.phone,
+        smsActive: user.smsService?.isActive,
+        smsVerified: user.smsService?.isVerified,
+        wasNotifiedIn24Hours: !userWasntNotifiedIn24Hours,
+        predictionWarningsCount: user.predictionWarnings.length,
+        warnings: user.predictionWarnings.map(pw => ({
+          location: pw.prediction.location,
+          min: pw.prediction.min,
+          max: pw.prediction.max,
+          warningCount: pw.warnings.length
+        }))
+      });
+      
       if (user.telegramService?.chatId && userWasntNotifiedIn24Hours && user.predictionWarnings.length > 0) {
         const message = createNotificationMessage(user) + `\n\n ${BSH_URL}`;
         // `Achtung folgende Warnung(en) haben angeschlagen: \n ${user.predictionWarnings
         //   .map((iPredictionWarning) => ` Das Wasser in ${iPredictionWarning.prediction.location} liegt zwischen ${iPredictionWarning.prediction.min} und ${iPredictionWarning.prediction.max} Meter.`)
         //   .join("\n")} \n\n ${BSH_URL}`;
         if (user.smsService?.isActive && user.smsService.phone && user.smsService.isVerified) {
+          console.log(`Sending SMS to user ${user.id} at ${user.smsService.phone}`);
           await sendSms(user.smsService.phone, message);
         } else if(user.telegramService?.isActive && user.telegramService.chatId) {
-
+          console.log(`Sending Telegram message to user ${user.id} at chatId ${user.telegramService.chatId}`);
           await sendMessage(user.telegramService.chatId, message);
         } else {
           console.warn("user has no active notification service, but should be warned", user);
@@ -94,6 +114,12 @@ export async function notifyUsers(predictions: ParsedData) {
         await db.warnings.updateMany({
           where: { user_id: user.id },
           data: { last_notified: new Date() },
+        });
+      } else {
+        console.log(`Skipping user ${user.id}:`, {
+          reason: !user.telegramService?.chatId ? 'no telegram service' : 
+                  !userWasntNotifiedIn24Hours ? 'notified in last 24h' : 
+                  user.predictionWarnings.length === 0 ? 'no prediction warnings' : 'unknown'
         });
       }
     }));

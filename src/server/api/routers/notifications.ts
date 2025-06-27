@@ -38,12 +38,21 @@ export const notificationsRouter = createTRPCRouter({
     isActive: z.boolean(),
   })).mutation(async ({ input, ctx }) => {
     const user = ctx.user;
+    if (input.isActive) {
+      await ctx.db.telegram_services.update({
+        where: { userId: user.id },
+        data: {
+          isActive: false,
+        },
+      });
+    }
     const telegramNotification = await ctx.db.telegram_services.update({
       where: { userId: user.id },
       data: {
         isActive: input.isActive,
       },
     });
+
   }),
   verifySms: protectedProcedure
   .input(z.object({
