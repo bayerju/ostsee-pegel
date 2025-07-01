@@ -150,7 +150,7 @@ export const notificationsRouter = createTRPCRouter({
     service: z.enum(notificationServices),
   })).mutation(async ({ input, ctx }) => {
     const {service} = input;
-    const text = "Dies ist eine Testnachricht. Du hast alles Korreckt eingerichtet und kriegst auf diesem Weg in Zukunft Benachrichtigungen, wenn der Wasserstand sich ändert";
+    const text = "Dies ist eine Testnachricht. Du hast alles korrekt eingerichtet und bekommst auf diesem Weg in Zukunft Benachrichtigungen, wenn sich der Wasserstand ändert";
     if (service === "telegram") {
       const telegramService = await ctx.db.telegram_services.findUnique({
         where: {
