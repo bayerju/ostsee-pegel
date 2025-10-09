@@ -83,7 +83,11 @@ function getNumbers(aString: string | undefined) {
   if (!aString) {
     throw new Error("No string found");
   }
-  const matches = /([+-]\d+)([+-]\d+)/.exec(aString);
+  
+  // Normalize Unicode minus signs to ASCII minus signs
+  const normalizedString = aString.replace(/[−]/g, '-');
+  
+  const matches = /([+-]\d+)([+-]\d+)/.exec(normalizedString);
   const firstNumber = matches?.[1] ? parseInt(matches[1]) : null; // e.g., +35
   const secondNumber = matches?.[2] ? parseInt(matches[2]) : null; // e.g., -5 or +10
 
