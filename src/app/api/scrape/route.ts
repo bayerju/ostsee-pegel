@@ -92,7 +92,12 @@ function getNumbers(aString: string | undefined) {
   const secondNumber = matches?.[2] ? parseInt(matches[2]) : null; // e.g., -5 or +10
 
   if (isNil(firstNumber) || isNil(secondNumber)) {
-    debugger;
+    if (isNil(firstNumber)) {
+      console.error(`No numbers found in first number: "${firstNumber}"`);
+    }
+    if (isNil(secondNumber)) {
+      console.error(`No numbers found in second number: "${secondNumber}"`);
+    }
     throw new Error(`No numbers found in string: "${aString}"`);
   }
 
