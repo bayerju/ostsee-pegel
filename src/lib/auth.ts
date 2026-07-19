@@ -9,6 +9,7 @@ import { tryCatch } from "./try-catch";
 import { magicLink } from "better-auth/plugins/magic-link";
 const prisma = new PrismaClient();
 export const auth = betterAuth({
+    trustedOrigins: ["*.ostsee-pegel.de"],
     database: prismaAdapter(prisma, {
         provider: "postgresql", // or "mysql", "postgresql", ...etc
     }),

@@ -4,6 +4,7 @@ import type { Session, User } from "better-auth";
 import {
   ChevronsUpDown,
   LogInIcon,
+  LogOutIcon,
   PlusCircleIcon,
   SettingsIcon,
   TrashIcon,
@@ -189,7 +190,9 @@ export function UserButton({
             )}
 
             <DropdownMenuSeparator />
-            <SignOutButton />
+            <DropdownMenuItem>
+              <SignOutButton />
+            </DropdownMenuItem>
           </>
         )}
       </DropdownMenuContent>
