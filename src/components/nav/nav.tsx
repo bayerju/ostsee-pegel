@@ -15,41 +15,46 @@ import HamburgerMenu from "~/components/ui/mobile-nav";
 import { UserButton } from "../auth/user-button";
 
 const menuItems = [
-  { title: "Startseite", href: "/" },
-  { title: "Preise", href: "/pricing" },
-  { title: "FAQ", href: "/faq" },
+  { title: "So funktioniert's", href: "/#so-funktionierts" },
+  { title: "Regionen", href: "/#regionen" },
+  { title: "Warum kostenlos?", href: "/#warum-kostenlos" },
 ];
 
 export function Nav() {
   const session = authClient.useSession();
   return (
     // <div>
-    <div className="left-0 top-0 flex w-full items-center justify-between gap-4 p-4">
-      <NavigationMenu className="hidden w-full md:flex md:justify-between">
-        <Link
-          href="/"
-          className="flex h-8 w-8 items-center justify-center rounded-lg transition-colors hover:bg-accent/10"
-        >
-          <img src="/icon.webp" alt="Home" className="h-6 w-6" />
-        </Link>
-        <div className="w-full">
-          <NavigationMenuList>
-            {menuItems.map((item) => (
-              <NavigationMenuItem key={item.href}>
-                <NavigationMenuLink
-                  className="group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-accent/10 hover:text-foreground focus:bg-accent/10 focus:text-foreground focus:outline-none"
-                  href={item.href}
-                >
-                  {item.title}
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-            ))}
-          </NavigationMenuList>
-        </div>
-      </NavigationMenu>
-      <HamburgerMenu menuItems={menuItems} />
+    <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-[#062d33]/90 text-white backdrop-blur-xl">
+      <div className="h-18 mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4 lg:px-10">
+        <NavigationMenu className="hidden max-w-none flex-1 md:flex md:justify-between">
+          <Link
+            href="/"
+            className="flex items-center gap-3 rounded-lg transition-opacity hover:opacity-80"
+          >
+            <img src="/ostsee-pegel.svg" alt="" className="h-9 w-9" />
+            <span className="font-semibold tracking-[-0.02em]">
+              Ostsee-Pegel
+            </span>
+          </Link>
+          <div>
+            <NavigationMenuList>
+              {menuItems.map((item) => (
+                <NavigationMenuItem key={item.href}>
+                  <NavigationMenuLink
+                    className="group inline-flex h-10 w-max items-center justify-center rounded-full px-4 py-2 text-sm font-medium text-white/75 transition-colors hover:bg-white/5 hover:text-white focus:bg-white/5 focus:text-white focus:outline-none"
+                    href={item.href}
+                  >
+                    {item.title}
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+              ))}
+            </NavigationMenuList>
+          </div>
+        </NavigationMenu>
+        <HamburgerMenu menuItems={menuItems} />
 
-      {session?.data?.user ? <UserButton /> : <SignInButton />}
-    </div>
+        {session?.data?.user ? <UserButton /> : <SignInButton />}
+      </div>
+    </header>
   );
 }
