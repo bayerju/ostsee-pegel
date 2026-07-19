@@ -29,7 +29,7 @@ export function WaterLevelSlider({
     <div>
       <label className="mb-2 block text-lg">
         {label}
-        <span className="ml-2 text-sm text-blue-300">
+        <span className="ml-2 text-sm text-[#8edfd5]">
           Warnung bei{" "}
           {name.includes("high") ? "Überschreitung" : "Unterschreitung"}
         </span>
@@ -42,16 +42,16 @@ export function WaterLevelSlider({
           max={max}
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="w-full accent-blue-400"
+          className="w-full cursor-pointer accent-[#77d8cc]"
         />
-        <span className="min-w-[4rem] text-center text-blue-300">
+        <span className="min-w-[4rem] text-center font-medium text-[#8edfd5]">
           {Number(value) > 0 ? "+" : ""}
           {value} cm
         </span>
       </div>
       <div className="flex justify-between text-sm">
         <span>{min} cm</span>
-        <span className="text-blue-300">{standardText}</span>
+        <span className="text-[#8edfd5]">{standardText}</span>
         <span>{max} cm</span>
       </div>
     </div>

@@ -1,8 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { SignInButton } from "./sign_in_button";
-import { SignOutButton } from "./sign_out_button";
 import { authClient } from "~/lib/auth-client";
 import * as React from "react";
 import {
@@ -31,7 +31,13 @@ export function Nav() {
             href="/"
             className="flex items-center gap-3 rounded-lg transition-opacity hover:opacity-80"
           >
-            <img src="/ostsee-pegel.svg" alt="" className="h-9 w-9" />
+            <Image
+              src="/ostsee-pegel.svg"
+              alt=""
+              width={36}
+              height={36}
+              priority
+            />
             <span className="font-semibold tracking-[-0.02em]">
               Ostsee-Pegel
             </span>
