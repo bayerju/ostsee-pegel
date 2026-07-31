@@ -10,9 +10,16 @@ import { Nav } from "~/components/nav/nav";
 import { Footer } from "~/components/footer/footer";
 
 export const metadata: Metadata = {
-  title: "Hochwasser-Warnung",
-  description: "Einfach gewarnt werden bei Hochwasser und Niedrigwasser",
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
+  title: "Ostsee-Pegel – Kostenlose Hochwasser-Warnungen",
+  description:
+    "Kostenlose, persönliche Warnungen bei kritischen Wasserständen an der Ostsee.",
+  icons: {
+    icon: [
+      { url: "/ostsee-pegel.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", sizes: "32x32" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
+  },
 };
 
 export default async function RootLayout({
@@ -24,8 +31,8 @@ export default async function RootLayout({
   // } = await supabase.auth.getUser();
 
   return (
-    <html lang="en" className={`${GeistSans.variable}`}>
-      <body className="mx-2 flex min-h-screen flex-col bg-gradient-to-b from-[hsl(210,100%,40%)] to-[#001a33] text-white">
+    <html lang="de" className={`${GeistSans.variable}`}>
+      <body className="flex min-h-screen flex-col bg-[#062d33] text-white antialiased">
         <PostHogProvider>
           {/* <header className="flex h-16 items-center justify-end gap-4 p-4">
               <SignedOut>

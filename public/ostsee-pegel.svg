@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Ostsee-Pegel</title>
+  <desc id="desc">Eine Pegellatte vor einer stilisierten Welle</desc>
+
+  <rect width="512" height="512" rx="112" fill="#073b40" />
+
+  <path
+    d="M254 102v236"
+    fill="none"
+    stroke="#f4c75c"
+    stroke-linecap="round"
+    stroke-width="24"
+  />
+  <path
+    d="M205 154h31M218 205h18M205 256h31"
+    fill="none"
+    stroke="#f4c75c"
+    stroke-linecap="round"
+    stroke-width="14"
+  />
+
+  <path
+    d="M64 314c55-43 105 43 160 0s105 43 160 0c22-17 43-24 64-21v155H64V314Z"
+    fill="#77d8cc"
+  />
+  <path
+    d="M64 314c55-43 105 43 160 0s105 43 160 0c22-17 43-24 64-21"
+    fill="none"
+    stroke="#f7fbfa"
+    stroke-linecap="round"
+    stroke-width="18"
+  />
+</svg>
