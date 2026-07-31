@@ -51,8 +51,8 @@ export default function Home() {
           <div className="absolute -right-24 top-28 -z-10 h-80 w-80 rounded-full border border-white/10" />
           <div className="absolute -right-10 top-44 -z-10 h-56 w-56 rounded-full border border-white/10" />
 
-          <div className="mx-auto grid min-h-[680px] max-w-7xl items-center gap-16 px-6 pb-28 pt-20 lg:grid-cols-[1.05fr_0.95fr] lg:px-10 lg:pb-36 lg:pt-24">
-            <div className="max-w-2xl">
+          <div className="mx-auto grid min-h-[680px] max-w-7xl grid-cols-1 items-center gap-16 px-6 pb-28 pt-20 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:px-10 lg:pb-36 lg:pt-24">
+            <div className="min-w-0 max-w-2xl">
               <h1 className="text-balance text-5xl font-semibold leading-[1.02] tracking-[-0.045em] sm:text-6xl lg:text-7xl">
                 Wissen, wenn das
                 <span className="block text-[#8ee3d7]">Wasser kommt.</span>
@@ -94,7 +94,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="relative mx-auto w-full max-w-lg lg:mx-0 lg:justify-self-end">
+            <div className="relative mx-auto w-full min-w-0 max-w-lg lg:mx-0 lg:justify-self-end">
               <div className="absolute -left-8 top-14 h-[75%] w-[75%] rounded-full bg-[#4cd1c0]/20 blur-3xl" />
               <div className="relative rotate-[1.5deg] rounded-[2rem] border border-white/15 bg-white/[0.09] p-3 shadow-2xl backdrop-blur-xl">
                 <div className="rounded-[1.45rem] bg-[#f7fbfa] p-5 text-[#12302f] sm:p-7">

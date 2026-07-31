@@ -26,7 +26,7 @@ export function Nav() {
     // <div>
     <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-[#062d33]/90 text-white backdrop-blur-xl">
       <div className="h-18 mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4 lg:px-10">
-        <NavigationMenu className="hidden max-w-none flex-1 md:flex md:justify-between">
+        <NavigationMenu className="hidden max-w-none flex-1 lg:flex lg:justify-between">
           <Link
             href="/"
             className="flex items-center gap-3 rounded-lg transition-opacity hover:opacity-80"
