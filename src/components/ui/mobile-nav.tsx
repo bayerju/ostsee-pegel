@@ -3,7 +3,12 @@
 import * as React from "react";
 import { Menu, ChevronDown, ChevronRight } from "lucide-react";
 import { Button } from "~/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "~/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetTitle,
+  SheetTrigger,
+} from "~/components/ui/sheet";
 import {
   Collapsible,
   CollapsibleContent,
@@ -83,6 +88,7 @@ export default function HamburgerMenu({
         </Button>
       </SheetTrigger>
       <SheetContent side="left" className="w-[240px] sm:w-[300px]">
+        <SheetTitle className="sr-only">Navigation</SheetTitle>
         <nav className="flex flex-col space-y-4">
           {menuItems.map((item) => (
             <MenuItemComponent key={item.title} item={item} />
