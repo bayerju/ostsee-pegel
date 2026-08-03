@@ -1,14 +1,46 @@
 // import { SignUpButton } from "@clerk/nextjs";
 import Link from "next/link";
-// import { createClient } from "~/lib/supabase/server";
-import { redirect } from "next/navigation";
 
 // import { LatestPost } from "~/app/_components/post";
-import { api, HydrateClient } from "~/trpc/server";
-import { headers } from "next/headers";
-import { auth } from "~/lib/auth";
+import { HydrateClient } from "~/trpc/server";
 import { LoggedInMainPage } from "./_logged_in_main_page";
+import type { Metadata } from "next";
+import { site } from "~/lib/site";
 // import { ScrapeButton } from "~/components/ScrapeButton";
+
+export const metadata: Metadata = {
+  title: "Ostsee Wasserstand aktuell | Ostsee Pegel",
+  description: site.description,
+  alternates: { canonical: "/" },
+  openGraph: {
+    url: "/",
+    title: "Ostsee Wasserstand aktuell | Ostsee Pegel",
+    description: site.description,
+  },
+};
+
+const regions = [
+  {
+    name: "Kieler Bucht",
+    href: "https://www2.bsh.de/aktdat/wvd/ostsee/modellkurve/g1.htm",
+  },
+  {
+    name: "Lübecker Bucht",
+    href: "https://www2.bsh.de/aktdat/wvd/ostsee/modellkurve/g2.htm",
+  },
+  {
+    name: "Westlich Rügens",
+    href: "https://www2.bsh.de/aktdat/wvd/ostsee/modellkurve/g3.htm",
+  },
+  {
+    name: "Östlich Rügens",
+    href: "https://www2.bsh.de/aktdat/wvd/ostsee/modellkurve/g4.htm",
+  },
+  {
+    name: "Kleines Haff",
+    href: "https://www2.bsh.de/aktdat/wvd/ostsee/modellkurve/g5.htm",
+  },
+] as const;
 
 export default async function Home() {
   // const supabase = await createClient();
@@ -138,12 +170,24 @@ export default async function Home() {
         {/* Regions Section */}
         <div className="w-full max-w-7xl px-4 py-12">
           <h2 className="mb-6 text-3xl font-bold">Überwachte Regionen</h2>
+          <p className="mb-6 text-gray-200">
+            Öffnen Sie für jede Region die aktuellen Messwerte und
+            Modellvorhersagen des BSH.
+          </p>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-            <div className="rounded-lg bg-white/5 p-4">Kieler Bucht</div>
-            <div className="rounded-lg bg-white/5 p-4">Lübecker Bucht</div>
-            <div className="rounded-lg bg-white/5 p-4">Westlich Rügens</div>
-            <div className="rounded-lg bg-white/5 p-4">Östlich Rügens</div>
-            <div className="rounded-lg bg-white/5 p-4">Kleines Haff</div>
+            {regions.map((region) => (
+              <div className="rounded-lg bg-white/5 p-4" key={region.name}>
+                <div className="font-semibold">{region.name}</div>
+                <a
+                  className="mt-2 inline-block text-sm text-blue-200 underline decoration-blue-200/50 underline-offset-4 hover:text-white"
+                  href={region.href}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  BSH-Prognose öffnen ↗
+                </a>
+              </div>
+            ))}
           </div>
         </div>
 
@@ -162,7 +206,7 @@ export default async function Home() {
             </button>
           </Link>
           <p className="mt-4 text-sm text-gray-300">
-            Kostenlos bis November 2025
+            Aktuell kostenlos verfügbar
           </p>
         </div>
       </main>

@@ -1,6 +1,4 @@
-import { headers } from "next/headers";
 import { NextResponse, type NextRequest } from "next/server";
-import { auth } from "~/lib/auth";
 import { getSessionCookie } from "better-auth/cookies";
 // import { updateSession } from "~/lib/supabase/middleware";
 
@@ -21,7 +19,6 @@ import { getSessionCookie } from "better-auth/cookies";
 //   ],
 // };
 
-
 // import { clerkMiddleware } from '@clerk/nextjs/server'
 
 // export default clerkMiddleware()
@@ -36,11 +33,15 @@ import { getSessionCookie } from "better-auth/cookies";
 // }
 
 export async function middleware(request: NextRequest) {
+  let response: NextResponse;
+
   // Check if the request is for a protected route
-  if (request.nextUrl.pathname.startsWith('/protected')) {
+  if (request.nextUrl.pathname.startsWith("/protected")) {
     const sessionCookie = getSessionCookie(request);
     if (!sessionCookie) {
-      return NextResponse.redirect(new URL('/login', request.url));
+      response = NextResponse.redirect(new URL("/login", request.url));
+    } else {
+      response = NextResponse.next();
     }
     // // Get the session token from the cookies
     // const session = await auth.api.getSession({ headers: await headers() });
@@ -52,14 +53,28 @@ export async function middleware(request: NextRequest) {
     //   loginUrl.searchParams.set('redirect', request.nextUrl.pathname);
     //   return NextResponse.redirect(loginUrl);
     // }
+  } else {
+    response = NextResponse.next();
   }
 
-  return NextResponse.next();
+  const forwardedHost = request.headers.get("x-forwarded-host")?.split(",")[0];
+  const hostname =
+    forwardedHost?.trim().split(":")[0] ??
+    request.headers.get("host")?.split(":")[0] ??
+    request.nextUrl.hostname;
+  const isPreviewSubdomain =
+    hostname.endsWith(".ostsee-pegel.de") && hostname !== "www.ostsee-pegel.de";
+
+  if (isPreviewSubdomain) {
+    response.headers.set("X-Robots-Tag", "noindex, nofollow");
+  }
+
+  return response;
 }
 
 export const config = {
   matcher: [
-    // Only run middleware on protected routes
-    '/protected/:path*',
+    // Protect account pages and keep deployment subdomains out of search results.
+    "/((?!api|_next/static|_next/image|favicon.ico|.*\\..*).*)",
   ],
 };
