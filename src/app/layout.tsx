@@ -13,23 +13,32 @@ import { site } from "~/lib/site";
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: "Ostsee Wasserstand aktuell | Ostsee Pegel",
-    template: "%s | Ostsee Pegel",
+    default: "Ostsee-Pegel – Kostenlose Hochwasser-Warnungen",
+    template: "%s | Ostsee-Pegel",
   },
-  description: site.description,
+  description:
+    "Kostenlose, persönliche Warnungen bei kritischen Wasserständen an der Ostsee.",
   openGraph: {
     type: "website",
     locale: "de_DE",
     siteName: site.name,
-    title: "Ostsee Wasserstand aktuell | Ostsee Pegel",
-    description: site.description,
+    title: "Ostsee-Pegel – Kostenlose Hochwasser-Warnungen",
+    description:
+      "Kostenlose, persönliche Warnungen bei kritischen Wasserständen an der Ostsee.",
   },
   twitter: {
     card: "summary",
-    title: "Ostsee Wasserstand aktuell | Ostsee Pegel",
-    description: site.description,
+    title: "Ostsee-Pegel – Kostenlose Hochwasser-Warnungen",
+    description:
+      "Kostenlose, persönliche Warnungen bei kritischen Wasserständen an der Ostsee.",
   },
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
+  icons: {
+    icon: [
+      { url: "/ostsee-pegel.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", sizes: "32x32" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
+  },
 };
 
 export default async function RootLayout({
@@ -42,7 +51,7 @@ export default async function RootLayout({
 
   return (
     <html lang="de" className={`${GeistSans.variable}`}>
-      <body className="mx-2 flex min-h-screen flex-col bg-gradient-to-b from-[hsl(210,100%,40%)] to-[#001a33] text-white">
+      <body className="flex min-h-screen flex-col bg-[#062d33] text-white antialiased">
         <PostHogProvider>
           {/* <header className="flex h-16 items-center justify-end gap-4 p-4">
               <SignedOut>

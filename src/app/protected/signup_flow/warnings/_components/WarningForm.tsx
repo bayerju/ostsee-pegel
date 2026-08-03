@@ -79,12 +79,15 @@ export function WarningForm({
         <label className="mb-2 block text-lg">Regionen auswählen</label>
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
           {regions.map((region) => (
-            <label key={region} className="flex items-center space-x-2">
+            <label
+              key={region}
+              className="flex cursor-pointer items-center space-x-2"
+            >
               <input
                 type="checkbox"
                 name="regions"
                 value={region}
-                className="h-4 w-4"
+                className="h-4 w-4 cursor-pointer accent-[#77d8cc]"
                 defaultChecked={lastWarning?.regions?.includes(region)}
                 onChange={(e) => {
                   if (e.target.checked) {
@@ -134,7 +137,7 @@ export function WarningForm({
         onChange={setLowWaterThreshold}
       />
 
-      <p className="text-sm text-gray-300">
+      <p className="text-sm leading-5 text-white/65">
         Sie erhalten Benachrichtigungen, wenn der Wasserstand über den
         Hochwasser-Schwellenwert steigt oder unter den
         Niedrigwasser-Schwellenwert fällt. Der Normalwasserstand ist als 0 cm
@@ -190,7 +193,7 @@ function SubmitButton(props: {
     <button
       type="button"
       disabled={props.pending || props.disabled}
-      className="w-full rounded-full bg-blue-500 px-8 py-3 text-lg font-semibold transition-colors hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-50"
+      className="w-full rounded-full bg-[#f4c75c] px-8 py-3 text-lg font-semibold text-[#173333] transition-colors hover:bg-[#ffda7c] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f4c75c] focus-visible:ring-offset-2 focus-visible:ring-offset-[#073b40] disabled:cursor-not-allowed disabled:opacity-45"
       onClick={props.onClick}
     >
       {props.pending ? "Speichern..." : props.buttonText}
