@@ -1,5 +1,11 @@
 import React from "react";
 import { env } from "~/env";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Datenschutzerklärung",
+  alternates: { canonical: "/privacy-policy" },
+};
 
 export default function PrivacyPolicy() {
   return (
@@ -146,15 +152,15 @@ export default function PrivacyPolicy() {
           Löschung von Daten wenden Sie sich bitte an:
         </p>
         <p>
-          Musterfirma GmbH
+          {env.IMPRINT_NAME}
           <br />
-          Musterstraße 123
+          {env.IMPRINT_ADDRESS}
           <br />
-          12345 Musterstadt
+          {env.IMPRINT_CITY}
           <br />
           Deutschland
           <br />
-          E-Mail: datenschutz@musterfirma.de
+          E-Mail: {env.IMPRINT_EMAIL}
         </p>
       </section>
 

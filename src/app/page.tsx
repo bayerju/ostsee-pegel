@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import {
   ArrowRight,
   BellRing,
@@ -15,14 +16,41 @@ import {
 
 import { LoggedInMainPage } from "./_logged_in_main_page";
 import { HydrateClient } from "~/trpc/server";
+import { site } from "~/lib/site";
 
 const locations = [
-  "Kieler Bucht",
-  "Lübecker Bucht",
-  "Westlich Rügens",
-  "Östlich Rügens",
-  "Kleines Haff",
-];
+  {
+    name: "Kieler Bucht",
+    href: "https://www2.bsh.de/aktdat/wvd/ostsee/modellkurve/g1.htm",
+  },
+  {
+    name: "Lübecker Bucht",
+    href: "https://www2.bsh.de/aktdat/wvd/ostsee/modellkurve/g2.htm",
+  },
+  {
+    name: "Westlich Rügens",
+    href: "https://www2.bsh.de/aktdat/wvd/ostsee/modellkurve/g3.htm",
+  },
+  {
+    name: "Östlich Rügens",
+    href: "https://www2.bsh.de/aktdat/wvd/ostsee/modellkurve/g4.htm",
+  },
+  {
+    name: "Kleines Haff",
+    href: "https://www2.bsh.de/aktdat/wvd/ostsee/modellkurve/g5.htm",
+  },
+] as const;
+
+export const metadata: Metadata = {
+  title: { absolute: "Ostsee Wasserstand aktuell | Ostsee-Pegel" },
+  description: site.description,
+  alternates: { canonical: "/" },
+  openGraph: {
+    url: "/",
+    title: "Ostsee Wasserstand aktuell | Ostsee-Pegel",
+    description: site.description,
+  },
+};
 
 const steps = [
   {
@@ -288,19 +316,20 @@ export default function Home() {
                   </span>
                 </div>
                 <div className="mt-10 space-y-3">
-                  {locations.map((location, index) => (
-                    <div
-                      key={location}
-                      className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/[0.07] px-5 py-4 backdrop-blur-sm"
+                  {locations.map((location) => (
+                    <a
+                      key={location.name}
+                      href={location.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/[0.07] px-5 py-4 backdrop-blur-sm transition hover:border-white/25 hover:bg-white/[0.12]"
                     >
                       <span className="flex items-center gap-3 font-medium">
                         <span className="h-2 w-2 rounded-full bg-[#6dd8cb] shadow-[0_0_0_5px_rgba(109,216,203,0.12)]" />
-                        {location}
+                        {location.name}
                       </span>
-                      <span className="text-xs text-white/50">
-                        0{index + 1}
-                      </span>
-                    </div>
+                      <span className="text-xs text-white/60">BSH&nbsp;↗</span>
+                    </a>
                   ))}
                 </div>
               </div>
