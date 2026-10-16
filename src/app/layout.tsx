@@ -8,11 +8,30 @@ import { Toaster } from "sonner";
 import { PostHogProvider } from "~/components/providers/posthog";
 import { Nav } from "~/components/nav/nav";
 import { Footer } from "~/components/footer/footer";
+import { site } from "~/lib/site";
 
 export const metadata: Metadata = {
-  title: "Ostsee-Pegel – Kostenlose Hochwasser-Warnungen",
+  metadataBase: new URL(site.url),
+  title: {
+    default: "Ostsee-Pegel – Kostenlose Hochwasser-Warnungen",
+    template: "%s | Ostsee-Pegel",
+  },
   description:
     "Kostenlose, persönliche Warnungen bei kritischen Wasserständen an der Ostsee.",
+  openGraph: {
+    type: "website",
+    locale: "de_DE",
+    siteName: site.name,
+    title: "Ostsee-Pegel – Kostenlose Hochwasser-Warnungen",
+    description:
+      "Kostenlose, persönliche Warnungen bei kritischen Wasserständen an der Ostsee.",
+  },
+  twitter: {
+    card: "summary",
+    title: "Ostsee-Pegel – Kostenlose Hochwasser-Warnungen",
+    description:
+      "Kostenlose, persönliche Warnungen bei kritischen Wasserständen an der Ostsee.",
+  },
   icons: {
     icon: [
       { url: "/ostsee-pegel.svg", type: "image/svg+xml" },

@@ -1,4 +1,10 @@
 import { env } from "~/env";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Impressum",
+  alternates: { canonical: "/imprint" },
+};
 
 export default async function Imprint() {
   // You can fetch from environment variables
