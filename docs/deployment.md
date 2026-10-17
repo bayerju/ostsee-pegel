@@ -57,9 +57,17 @@ server, project, environment and Docker network. Keep the old app until verified
    Do not invoke the scrape or SMS test routes as a health check: they send messages.
    Inspect scheduled tasks associated with the old app before retiring it.
 
-Registry credentials live in the server Docker login, not application environment
-variables. Verify the GHCR package is private and linked to this repository after
-its first publication. GitHub Actions uses its automatic `GITHUB_TOKEN` to publish.
+The GHCR package is public, matching this public repository, and linked to it.
+No production secrets enter the image. GitHub Actions uses its automatic
+`GITHUB_TOKEN` to publish. Registry credentials, when needed, live in the server
+Docker login rather than application environment variables.
+
+Coolify uses a command health check because the runtime image intentionally has
+neither curl nor wget. Configure `health_check_type=command` with:
+
+```sh
+node -e "fetch('http://127.0.0.1:3000/login').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+```
 
 ## Rollback
 
