@@ -61,7 +61,7 @@ export async function scrapeWebsite(): Promise<ScrapedData> {
       });
 
       res.on('end', () => {
-        const $ = cheerio.load(data) as cheerio.CheerioAPI;
+        const $ = cheerio.load(data);
 
         const tableData: string[][] = [];
 
