@@ -34,6 +34,7 @@ try {
     await sleep(1000);
   }
   check(ready, 'Application did not start with the production command');
+  docker('exec', `${prefix}-app`, 'node', '/app/healthcheck.mjs');
   check(docker('exec', `${prefix}-app`, 'id', '-u') !== '0', 'Runtime must not run as root');
   for (const path of ['/imprint', '/privacy-policy']) {
     const r = await fetch(`${base}${path}`);

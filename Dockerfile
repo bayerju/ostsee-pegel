@@ -27,7 +27,9 @@ COPY --from=build --chown=node:node /app/public ./public
 COPY --from=build --chown=node:node /app/prisma ./prisma
 COPY --from=build --chown=node:node /app/package.json /app/next.config.js ./
 COPY --from=build --chown=node:node /app/src/env.js ./src/env.js
+COPY --chown=node:node deploy/healthcheck.mjs ./healthcheck.mjs
 USER node
 EXPOSE 3000
+HEALTHCHECK --interval=15s --timeout=5s --start-period=60s --retries=3 CMD ["node", "/app/healthcheck.mjs"]
 # Preserve the existing start behavior, including Prisma schema synchronization.
 CMD ["sh", "-c", "./node_modules/.bin/prisma db push && exec ./node_modules/.bin/next start --hostname 0.0.0.0"]

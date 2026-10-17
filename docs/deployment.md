@@ -63,10 +63,11 @@ No production secrets enter the image. GitHub Actions uses its automatic
 Docker login rather than application environment variables.
 
 Coolify uses a command health check because the runtime image intentionally has
-neither curl nor wget. Configure `health_check_type=command` with:
+neither curl nor wget. The image includes the same native Docker health check. Configure
+`health_check_type=cmd` with:
 
 ```sh
-node -e "fetch('http://127.0.0.1:3000/login').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+node /app/healthcheck.mjs
 ```
 
 ## Rollback
