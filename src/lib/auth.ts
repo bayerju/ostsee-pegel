@@ -2,9 +2,6 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { PrismaClient } from "@prisma/client";
 import { sendEmail } from "./email/sendmail";
-import { ResetPasswordEmail } from "./email/templates/reset_password_email";
-// https://react.email/docs/utilities/render
-import { render } from '@react-email/render';
 import { tryCatch } from "./try-catch";
 import { magicLink } from "better-auth/plugins/magic-link";
 const prisma = new PrismaClient();
@@ -26,7 +23,6 @@ export const auth = betterAuth({
                 to: user.email,
                 subject: "Passwort zurücksetzen",
                 html: `<p>Klicken Sie <a href="${url}">hier</a>, um Ihr Passwort zurückzusetzen.</p>`,
-                // text: await render(<ResetPasswordEmail />)
             });
             console.log("sendResetPassword", user, url, token);
         },
@@ -40,7 +36,6 @@ export const auth = betterAuth({
                 to: user.email,
                 subject: "E-Mail-Verifizierung",
                 html: `<p>Klicken Sie <a href="${url}">hier</a>, um Ihre E-Mail-Adresse zu verifizieren.</p>`,
-                // text: await render(<ResetPasswordEmail />)
             }));
             if (res.error) {
                 console.error("sendVerificationEmail", res.error);
