@@ -7,6 +7,9 @@ export const metadata: Metadata = {
   alternates: { canonical: "/privacy-policy" },
 };
 
+// Legal details come from Coolify runtime environment, not the CI build.
+export const dynamic = "force-dynamic";
+
 export default function PrivacyPolicy() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">

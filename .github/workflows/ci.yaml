@@ -1,23 +1,33 @@
 name: CI
 
-on: [push]
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Install Dependencies
-        run: npm install -g pnpm && pnpm install
-
-      - name: Copy .env.example files
-        shell: bash
-        run: find . -type f -name ".env.example" -exec sh -c 'cp "$1" "${1%.*}"' _ {} \;
-
-      - name: Typecheck
-        run: pnpm typecheck
-
-      - name: Lint
-        run: pnpm lint
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test scripts/deploy-production.test.mjs
+      - uses: docker/setup-buildx-action@v3
+      - name: Build and check application
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          load: true
+          tags: ostsee-pegel:test
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Verify runtime against a disposable database
+        run: node scripts/smoke-image.mjs ostsee-pegel:test

@@ -1,0 +1,7 @@
+{
+  "appUuid": "l7g3zld5lzsp1xcd8yasouwv",
+  "previousAppUuid": "posgkc8wssww4kcowkgggw8c",
+  "image": "ghcr.io/bayerju/ostsee-pegel",
+  "domain": "https://ostsee-pegel.de",
+  "server": "prod"
+}

@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   alternates: { canonical: "/imprint" },
 };
 
+// Legal details come from Coolify runtime environment, not the CI build.
+export const dynamic = "force-dynamic";
+
 export default async function Imprint() {
   // You can fetch from environment variables
   const imprint = {
