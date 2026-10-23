@@ -1,0 +1,9 @@
+# The Pi uses Nixpacks independently of the production Docker deployment.
+[variables]
+NIXPACKS_NODE_VERSION = "22"
+
+# Nixpacks selects a major version from its pinned Nix archive. Install the
+# exact security release and put it before the archive's Node in every phase.
+[phases.setup]
+cmds = ["npm install --prefix /opt/node-runtime --no-audit --no-fund node@22.23.4", "/opt/node-runtime/node_modules/node/bin/node --version"]
+paths = ["/opt/node-runtime/node_modules/node/bin"]
